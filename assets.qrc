@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/images/login.jpg</file>
+        <file>assets/images/logo.png</file>
+        <file>assets/images/logo-100.png</file>
+        <file>assets/images/excel-100.png</file>
+        <file>assets/images/plus-100.png</file>
     </qresource>
 </RCC>

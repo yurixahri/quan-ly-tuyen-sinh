@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
 
     if (login.exec() == QDialog::Accepted) {
         MainWindow w;
-        w.show();
+        w.show();        
         return a.exec();
     }
+    return 0;
 }
