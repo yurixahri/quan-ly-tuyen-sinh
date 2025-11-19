@@ -136,14 +136,14 @@ void MainWindow::updateToHop(long id){
 }
 
 void MainWindow::deleteToHop(long id){
-    custom_message_box confirm("", "Bạn có chắc muốn xóa môn này?", custom_message_box::Question, true);
+    custom_message_box confirm("", "Bạn có chắc muốn xóa tổ hợp này?", custom_message_box::Question, true);
     if (confirm.exec() == QDialog::Accepted){
         if (!deleteToHopById(id)){
-            custom_message_box("", "Xóa không thành công", custom_message_box::Error);
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
         }else{
-            custom_message_box("", "Xóa thành công", custom_message_box::Information);
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
         }
-        fillMonHocTable(ui->mon_hoc_table, ui->monhoc_size);
+        fillToHopTable(ui->tohop_mon_table, ui->tohop_size);
     }
 }
 

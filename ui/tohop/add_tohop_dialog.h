@@ -27,8 +27,19 @@ public:
 private slots:
     void on_accept_clicked();
 
+    void on_close_clicked();
+
+    void on_cancel_clicked();
+
 private:
     Ui::add_tohop_dialog *ui;
+    bool m_dragging = false;
+    QPoint m_dragPosition;
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 #endif // ADD_TOHOP_DIALOG_H

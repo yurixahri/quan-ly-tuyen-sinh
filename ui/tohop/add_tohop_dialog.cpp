@@ -10,6 +10,7 @@ add_tohop_dialog::add_tohop_dialog(Type type, QWidget *parent)
     , ui(new Ui::add_tohop_dialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
     auto monhoc_list = getAllMonHoc();
     for (const auto &monhoc : *monhoc_list){
@@ -22,9 +23,11 @@ add_tohop_dialog::add_tohop_dialog(Type type, QWidget *parent)
     switch (this->type) {
         case Type::ADD:
             ui->accept->setText("Thêm");
+            ui->title->setText("Thêm tổ hợp");
             break;
         case Type::CHANGE:
             ui->accept->setText("Thay đổi");
+            ui->title->setText("Thay đổi tổ hợp");
             break;
     }
 }
@@ -77,5 +80,30 @@ void add_tohop_dialog::on_accept_clicked(){
         }
         break;
     }
+}
+
+void add_tohop_dialog::on_close_clicked(){
+    reject();
+}
+
+void add_tohop_dialog::on_cancel_clicked(){
+    reject();
+}
+
+void add_tohop_dialog::mousePressEvent(QMouseEvent *event){
+    if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
+        m_dragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        m_dragging = true;
+    }
+}
+
+void add_tohop_dialog::mouseMoveEvent(QMouseEvent *event){
+    if (m_dragging && (event->buttons() & Qt::LeftButton)) {
+        move(event->globalPosition().toPoint() - m_dragPosition);
+    }
+}
+
+void add_tohop_dialog::mouseReleaseEvent(QMouseEvent *event){
+    m_dragging = false;
 }
 
