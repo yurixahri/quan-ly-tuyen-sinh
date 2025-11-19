@@ -1,4 +1,4 @@
-QT       += core gui sql core5compat
+QT += core gui sql core5compat
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 INCLUDEPATH += C:/msys64/mingw64/include
@@ -25,6 +25,10 @@ SOURCES += \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
+    ui/add_mon_hoc_dialog.cpp \
+    ui/change_mon_hoc_dialog.cpp \
+    ui/custom_message_box.cpp \
+    ui/tohop/add_tohop_dialog.cpp \
     utils/config.cpp
 
 HEADERS += \
@@ -32,15 +36,25 @@ HEADERS += \
     db/models/mon_hoc.h \
     db/models/to_hop_mon.h \
     db/monhoc_dao.h \
+    db/tohop_dao.h \
     excel/read_excel.h \
     logindialog.h \
     mainwindow.h \
     pages/monhoc_page.h \
+    pages/tohop_page.h \
+    ui/add_mon_hoc_dialog.h \
+    ui/change_mon_hoc_dialog.h \
+    ui/custom_message_box.h \
+    ui/tohop/add_tohop_dialog.h \
     utils/config.h
 
 FORMS += \
     logindialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    ui/add_mon_hoc_dialog.ui \
+    ui/change_mon_hoc_dialog.ui \
+    ui/custom_message_box.ui \
+    ui/tohop/add_tohop_dialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -49,3 +63,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     assets.qrc
+
+DISTFILES += \
+    assets/images/error-96.png \
+    assets/images/info-96.png \
+    assets/images/question-96.png \
+    assets/images/warning-96.png

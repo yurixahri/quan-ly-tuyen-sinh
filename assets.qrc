@@ -5,5 +5,9 @@
         <file>assets/images/logo-100.png</file>
         <file>assets/images/excel-100.png</file>
         <file>assets/images/plus-100.png</file>
+        <file>assets/images/info-96.png</file>
+        <file>assets/images/question-96.png</file>
+        <file>assets/images/error-96.png</file>
+        <file>assets/images/warning-96.png</file>
     </qresource>
 </RCC>

@@ -9,6 +9,8 @@ extern uint16_t database_port;
 extern QString username;
 extern QString password;
 
-void setConfig(QSettings *settings);
+extern QSettings *settings;
+
+void getConfig();
 
 #endif // CONFIG_H

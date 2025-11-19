@@ -18,7 +18,19 @@ public:
     ~MainWindow();
 
 private slots:
+    // mon hoc
     void on_monhoc_button_clicked();
+    void on_add_monhoc_button_clicked();
+    void monHocTableContextMenu(const QPoint& pos);
+    void updateMonHoc(long id);
+    void deleteMonHoc(long id);
+
+
+    void on_tohop_button_clicked();
+    void on_add_tohop_button_clicked();
+    void on_tohop_mon_table_customContextMenuRequested(const QPoint &pos);
+    void updateToHop(long id);
+    void deleteToHop(long id);
 
 private:
     Ui::MainWindow *ui;

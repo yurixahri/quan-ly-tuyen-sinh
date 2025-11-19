@@ -1,6 +1,7 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
 #include "excel/read_excel.h"
+#include "utils/config.h"
 
 loginDialog::loginDialog(QWidget *parent)
     : QDialog(parent)
@@ -8,6 +9,12 @@ loginDialog::loginDialog(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+
+    ui->host_name->setText(host_name);
+    ui->database_name->setText(database_name);
+    ui->database_port->setText(QString::number(database_port));
+    ui->username->setText(username);
+    ui->password->setText(password);
     //ui->verticalSpacer->changeSize(0,0, QSizePolicy::Expanding, QSizePolicy::Expanding);
     //ui->verticalSpacer->setGeometry(0,0)
     //setFixedSize(800, 400);
@@ -28,9 +35,20 @@ void loginDialog::on_login_button_clicked(){
 
     if(!beginQX_DB(qx_db))
         QMessageBox::warning(this, " ", "Login Failed");
-    else
+    else{
         QMessageBox::information(this, " ", "Successful Login");
-    accept();
+        if (ui->remember->isChecked()){
+            settings->setValue("database/host", host_name);
+            settings->setValue("database/db", database_name);
+            settings->setValue("database/username", username);
+            settings->setValue("database/password", password);
+            settings->setValue("database/port", database_port);
+            settings->sync();
+        }
+
+        accept();
+    }
+
 }
 
 

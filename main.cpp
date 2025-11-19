@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "logindialog.h"
 #include <QApplication>
+#include "utils/config.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    getConfig();
 
     loginDialog login;
 
