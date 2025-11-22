@@ -32,6 +32,19 @@ private slots:
     void updateToHop(long id);
     void deleteToHop(long id);
 
+    void on_add_nhom_nganh_button_clicked();
+    void on_nhom_nganh_button_clicked();
+    void on_nhom_nganh_table_customContextMenuRequested(const QPoint &pos);
+    void updateNhomNganh(long id);
+    void deleteNhomNganh(long id);
+
+
+    void on_nganh_button_clicked();
+    void on_add_nganh_button_clicked();
+    void on_nganh_table_customContextMenuRequested(const QPoint &pos);
+    void updateNganh(long id);
+    void deleteNganh(long id);
+
 private:
     Ui::MainWindow *ui;
 };

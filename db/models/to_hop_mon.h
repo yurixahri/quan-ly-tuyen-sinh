@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QxOrm.h>
+#include "mon_hoc.h"
 
 class mon_hoc;
 
@@ -11,9 +12,9 @@ class to_hop_mon
 public:
     long id_tohop;
     QString ma_tohop;
-    std::shared_ptr<mon_hoc> mon_1;
-    std::shared_ptr<mon_hoc> mon_2;
-    std::shared_ptr<mon_hoc> mon_3;
+    mon_hoc_ptr mon_1;
+    mon_hoc_ptr mon_2;
+    mon_hoc_ptr mon_3;
 
     to_hop_mon();
     to_hop_mon(long id){

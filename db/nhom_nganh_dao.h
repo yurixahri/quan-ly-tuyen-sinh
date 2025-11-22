@@ -1,22 +1,25 @@
-#ifndef MONHOC_DAO_H
-#define MONHOC_DAO_H
+#ifndef NHOM_NGANH_DAO_H
+#define NHOM_NGANH_DAO_H
 
-#include "db/models/mon_hoc.h"
+#include "db/models/nhom_nganh.h"
 
-inline bool addMonHoc(QString ten){
-    mon_hoc_ptr adding;
-    adding.reset(new mon_hoc());
-    adding->ten_monhoc = ten;
+inline bool addNhomNganh(QString ten){
+    nhom_nganh_ptr adding;
+    adding.reset(new nhom_nganh());
+    adding->ten = ten;
 
     QSqlError err = qx::dao::insert(adding);
-    if (err.isValid())
+    if (err.isValid()){
         return false;
+    }
     else
         return true;
 }
 
-inline std::optional<QList<mon_hoc_ptr>> getAllMonHoc(){
-    QList<mon_hoc_ptr> list;
+inline std::optional<QList<nhom_nganh_ptr>> getAllNhomNganh(){
+    for (auto & name : *qx::QxClassX::getAllClasses())
+        qDebug() << "Registered:" << name.first;
+    QList<nhom_nganh_ptr> list;
 
     QSqlError err = qx::dao::fetch_all(list);
 
@@ -28,8 +31,8 @@ inline std::optional<QList<mon_hoc_ptr>> getAllMonHoc(){
     }
 }
 
-inline std::optional<mon_hoc_ptr> getMonHocById(long &id){
-    mon_hoc_ptr item = std::make_shared<mon_hoc>(id);
+inline std::optional<nhom_nganh_ptr> getNhomNganhById(long &id){
+    nhom_nganh_ptr item = std::make_shared<nhom_nganh>(id);
     QSqlError err = qx::dao::fetch_by_id(item);
 
     if (err.isValid()) {
@@ -40,8 +43,8 @@ inline std::optional<mon_hoc_ptr> getMonHocById(long &id){
     }
 }
 
-inline bool deleteMonHocById(long &id){
-    auto item = getMonHocById(id);
+inline bool deleteNhomNganhById(long &id){
+    auto item = getNhomNganhById(id);
     if (!item) return false;
     QSqlError err = qx::dao::delete_by_id(*item);
 
@@ -53,4 +56,4 @@ inline bool deleteMonHocById(long &id){
     }
 }
 
-#endif // MONHOC_DAO_H
+#endif // NHOM_NGANH_DAO_H

@@ -45,7 +45,6 @@ void loginDialog::on_login_button_clicked(){
             settings->setValue("database/port", database_port);
             settings->sync();
         }
-
         accept();
     }
 
