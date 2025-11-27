@@ -4,7 +4,6 @@
 #include <QString>
 #include <QxOrm.h>
 
-class tohop_mon;
 
 class mon_hoc
 {

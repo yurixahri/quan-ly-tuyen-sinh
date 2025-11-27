@@ -22,14 +22,20 @@ SOURCES += \
     db/db.cpp \
     db/models/mon_hoc.cpp \
     db/models/nhom_nganh.cpp \
-    db/models/nganh.cpp \
+    db/models/ptxt.cpp \
     db/models/to_hop_mon.cpp \
+    db/models/nganh.cpp \
+    db/models/ma_nganh_ptxt.cpp \
+    db/models/ma_nganh_tohop.cpp \
+    db/models/ma_nganh.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
     ui/add_mon_hoc_dialog.cpp \
     ui/change_mon_hoc_dialog.cpp \
+    ui/components/MultiSelectComboBox.cpp \
     ui/custom_message_box.cpp \
+    ui/ma_nganh/ma_nganh_dialog.cpp \
     ui/nganh/nganh_dialog.cpp \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
     ui/tohop/add_tohop_dialog.cpp \
@@ -39,22 +45,31 @@ HEADERS += \
     db/db.h \
     db/models/mon_hoc.h \
     db/models/nhom_nganh.h \
-    db/models/nganh.h \
+    db/models/ptxt.h \
     db/models/to_hop_mon.h \
+    db/models/nganh.h \
+    db/models/ma_nganh_tohop.h \
+    db/models/ma_nganh_ptxt.h \
+    db/models/ma_nganh.h \
     db/monhoc_dao.h \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \
+    db/ptxt_dao.h \
     db/tohop_dao.h \
+    db/ma_nganh_dao.h \
     excel/read_excel.h \
     logindialog.h \
     mainwindow.h \
+    pages/ma_nganh_page.h \
     pages/monhoc_page.h \
     pages/nganh_page.h \
     pages/nhom_nganh_page.h \
     pages/tohop_page.h \
     ui/add_mon_hoc_dialog.h \
     ui/change_mon_hoc_dialog.h \
+    ui/components/MultiSelectComboBox.h \
     ui/custom_message_box.h \
+    ui/ma_nganh/ma_nganh_dialog.h \
     ui/nganh/nganh_dialog.h \
     ui/nhom_nganh/nhom_nganh_dialog.h \
     ui/tohop/add_tohop_dialog.h \
@@ -67,6 +82,7 @@ FORMS += \
     ui/add_mon_hoc_dialog.ui \
     ui/change_mon_hoc_dialog.ui \
     ui/custom_message_box.ui \
+    ui/ma_nganh/ma_nganh_dialog.ui \
     ui/nganh/nganh_dialog.ui \
     ui/nhom_nganh/nhom_nganh_dialog.ui \
     ui/tohop/add_tohop_dialog.ui

@@ -4,7 +4,7 @@
 #include "db/models/nganh.h"
 #include "utils/string.h"
 
-inline bool addNganh(QString ma_nganh, QString ten_nganh, long id_nhom_nganh){
+inline bool addNganh(QString &ma_nganh, QString &ten_nganh, long &id_nhom_nganh){
     nganh_ptr adding;
     adding.reset(new nganh());
     adding->ma_nganh = ma_nganh;

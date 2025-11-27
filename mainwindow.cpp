@@ -16,6 +16,9 @@
 #include "pages/nganh_page.h"
 #include "ui/nganh/nganh_dialog.h"
 
+#include "pages/ma_nganh_page.h"
+#include "ui/ma_nganh/ma_nganh_dialog.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -274,3 +277,64 @@ void MainWindow::deleteNganh(long id){
         fillNganhTable(ui->nganh_table, ui->nganh_size);
     }
 }
+
+/* ma nganh */
+void MainWindow::on_ma_nganh_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(1);
+    fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+}
+
+void MainWindow::on_add_ma_nganh_button_clicked(){
+    ma_nganh_dialog dlg(ma_nganh_dialog::ADD, this);
+
+    if (dlg.exec() == QDialog::Accepted){
+        fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+    }
+}
+
+void MainWindow::on_ma_nganh_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->ma_nganh_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateMaNganh(ui->ma_nganh_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteMaNganh(ui->ma_nganh_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->ma_nganh_table->viewport()->mapToGlobal(pos));
+        // qDebug() << item->;
+    }
+}
+
+void MainWindow::updateMaNganh(long id){
+    auto item = getMaNganhById(id);
+    if (item){
+        ma_nganh_dialog dlg(ma_nganh_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+
+        if (dlg.exec() == QDialog::Accepted){
+            fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+        }
+    }
+}
+
+void MainWindow::deleteMaNganh(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa mã ngành này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteMaNganhById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+    }
+}
+

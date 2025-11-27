@@ -13,6 +13,7 @@ public:
     nhom_nganh();
     nhom_nganh(long id){
         this->id_nhom_nganh = id;
+        this->ten = "";
     };
 };
 

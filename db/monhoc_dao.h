@@ -3,7 +3,7 @@
 
 #include "db/models/mon_hoc.h"
 
-inline bool addMonHoc(QString ten){
+inline bool addMonHoc(QString &ten){
     mon_hoc_ptr adding;
     adding.reset(new mon_hoc());
     adding->ten_monhoc = ten;

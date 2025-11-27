@@ -12,4 +12,7 @@ void register_class(QxClass<nhom_nganh> & t){
     t.data(&nhom_nganh::ten, "ten_nhom_nganh");
 }}
 
-nhom_nganh::nhom_nganh() {}
+nhom_nganh::nhom_nganh() {
+    this->id_nhom_nganh = 0;
+    this->ten = "";
+}

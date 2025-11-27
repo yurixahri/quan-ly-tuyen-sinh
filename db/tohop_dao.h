@@ -3,9 +3,9 @@
 
 #include "db/models/to_hop_mon.h"
 
-inline bool addToHop(QString ma_tohop, long id_mon_1, long id_mon_2, long id_mon_3){
+inline bool addToHop(QString &ma_tohop, long &id_mon_1, long &id_mon_2, long &id_mon_3){
     tohop_mon_ptr tohop_adding;
-    tohop_adding.reset(new to_hop_mon());
+    tohop_adding.reset(new tohop_mon());
     tohop_adding->ma_tohop = ma_tohop;
     tohop_adding->mon_1 = std::make_shared<mon_hoc>(id_mon_1);
     tohop_adding->mon_2 = std::make_shared<mon_hoc>(id_mon_2);
@@ -33,7 +33,7 @@ inline std::optional<QList<tohop_mon_ptr>> getAllToHop(){
 }
 
 inline std::optional<tohop_mon_ptr> getToHopById(long &id){
-    tohop_mon_ptr item = std::make_shared<to_hop_mon>(id);
+    tohop_mon_ptr item = std::make_shared<tohop_mon>(id);
     QSqlError err = qx::dao::fetch_by_id(item);
 
     if (err.isValid()) {

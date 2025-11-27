@@ -3,7 +3,7 @@
 
 #include "db/models/nhom_nganh.h"
 
-inline bool addNhomNganh(QString ten){
+inline bool addNhomNganh(QString &ten){
     nhom_nganh_ptr adding;
     adding.reset(new nhom_nganh());
     adding->ten = ten;
