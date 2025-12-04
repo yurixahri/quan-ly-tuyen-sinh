@@ -15,8 +15,6 @@ void register_class(QxClass<tohop_mon> & t){
     t.relationManyToOne(&tohop_mon::mon_1, "id_mon_1");
     t.relationManyToOne(&tohop_mon::mon_2, "id_mon_2");
     t.relationManyToOne(&tohop_mon::mon_3, "id_mon_3");
-
-
 }}
 
 tohop_mon::tohop_mon() {}

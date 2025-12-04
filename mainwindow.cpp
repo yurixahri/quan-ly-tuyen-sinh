@@ -19,6 +19,9 @@
 #include "pages/ma_nganh_page.h"
 #include "ui/ma_nganh/ma_nganh_dialog.h"
 
+#include "pages/ptxt_page.h"
+#include "ui/ptxt/ptxt_dialog.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -335,6 +338,68 @@ void MainWindow::deleteMaNganh(long id){
             custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
         }
         fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+    }
+}
+
+/* ptxt */
+
+void MainWindow::on_ptxt_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(6);
+    fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
+}
+
+
+void MainWindow::on_add_ptxt_button_clicked(){
+    ptxt_dialog dlg(ptxt_dialog::ADD, this);
+
+    if (dlg.exec() == QDialog::Accepted){
+        fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
+    }
+}
+
+void MainWindow::on_ptxt_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->ptxt_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updatePtxt(ui->ptxt_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deletePtxt(ui->ptxt_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->ptxt_table->viewport()->mapToGlobal(pos));
+        // qDebug() << item->;
+    }
+}
+
+void MainWindow::updatePtxt(long id){
+    auto item = getPtxtById(id);
+    if (item){
+        ptxt_dialog dlg(ptxt_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+
+        if (dlg.exec() == QDialog::Accepted){
+            fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
+        }
+    }
+}
+
+void MainWindow::deletePtxt(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa phương thức xét tuyển này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deletePtxtById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
     }
 }
 

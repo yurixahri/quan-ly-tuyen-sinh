@@ -20,9 +20,13 @@ CONFIG += c++17
 
 SOURCES += \
     db/db.cpp \
+    db/models/chungchi_tienganh.cpp \
+    db/models/diem_hocba.cpp \
+    db/models/diem_thi_sat.cpp \
     db/models/mon_hoc.cpp \
     db/models/nhom_nganh.cpp \
     db/models/ptxt.cpp \
+    db/models/thi_sinh.cpp \
     db/models/to_hop_mon.cpp \
     db/models/nganh.cpp \
     db/models/ma_nganh_ptxt.cpp \
@@ -38,14 +42,21 @@ SOURCES += \
     ui/ma_nganh/ma_nganh_dialog.cpp \
     ui/nganh/nganh_dialog.cpp \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
+    ui/ptxt/ptxt_dialog.cpp \
+    ui/thi_sinh/thi_sinh_detail.cpp \
+    ui/thi_sinh/thi_sinh_dialog.cpp \
     ui/tohop/add_tohop_dialog.cpp \
     utils/config.cpp
 
 HEADERS += \
     db/db.h \
+    db/models/chungchi_tienganh.h \
+    db/models/diem_hocba.h \
+    db/models/diem_thi_sat.h \
     db/models/mon_hoc.h \
     db/models/nhom_nganh.h \
     db/models/ptxt.h \
+    db/models/thi_sinh.h \
     db/models/to_hop_mon.h \
     db/models/nganh.h \
     db/models/ma_nganh_tohop.h \
@@ -55,6 +66,7 @@ HEADERS += \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \
     db/ptxt_dao.h \
+    db/thi_sinh_dao.h \
     db/tohop_dao.h \
     db/ma_nganh_dao.h \
     excel/read_excel.h \
@@ -64,6 +76,7 @@ HEADERS += \
     pages/monhoc_page.h \
     pages/nganh_page.h \
     pages/nhom_nganh_page.h \
+    pages/ptxt_page.h \
     pages/tohop_page.h \
     ui/add_mon_hoc_dialog.h \
     ui/change_mon_hoc_dialog.h \
@@ -72,6 +85,9 @@ HEADERS += \
     ui/ma_nganh/ma_nganh_dialog.h \
     ui/nganh/nganh_dialog.h \
     ui/nhom_nganh/nhom_nganh_dialog.h \
+    ui/ptxt/ptxt_dialog.h \
+    ui/thi_sinh/thi_sinh_detail.h \
+    ui/thi_sinh/thi_sinh_dialog.h \
     ui/tohop/add_tohop_dialog.h \
     utils/config.h \
     utils/string.h
@@ -85,6 +101,9 @@ FORMS += \
     ui/ma_nganh/ma_nganh_dialog.ui \
     ui/nganh/nganh_dialog.ui \
     ui/nhom_nganh/nhom_nganh_dialog.ui \
+    ui/ptxt/ptxt_dialog.ui \
+    ui/thi_sinh/thi_sinh_detail.ui \
+    ui/thi_sinh/thi_sinh_dialog.ui \
     ui/tohop/add_tohop_dialog.ui
 
 # Default rules for deployment.

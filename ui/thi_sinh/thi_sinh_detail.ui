@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>thi_sinh_detail</class>
+ <widget class="QDialog" name="thi_sinh_detail">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>724</width>
+    <height>434</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(11, 25, 58, 142), stop:1 rgba(23, 35, 56, 218));
+	border: 1px solid rgb(0, 10, 50)
+}
+
+
+
+QLineEdit{
+	background-color: rgba(0, 0, 0, 150);
+	color: rgb(240,248,255);
+	padding: 5px;
+	border-radius: 3px
+}
+
+QLabel{
+	color: rgb(240,248,255)
+}
+
+QTableWidget {
+        background: transparent;
+        border: 1px solid rgb(181, 208, 220);
+        color: rgb(240,248,255);
+        gridline-color: rgb(181, 208, 220);
+        alternate-background-color: rgba(0, 95, 197, 40);
+        border-radius: 3px;
+    }
+
+QTableWidget QHeaderView, QTableWidget QHeaderView::section {
+    background: transparent;
+    color: rgb(240,248,255);
+}
+
+QTableWidget QHeaderView{
+    border-bottom: 1px solid rgb(181, 208, 220);
+}
+
+QTableWidget QHeaderView::section {
+    background: rgba(0, 0, 0, 20);
+    border-top: 1px solid rgb(181, 208, 220);
+    border-right: 1px solid rgb(181, 208, 220);
+    gridline-color: rgb(181, 208, 220);
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="title">
+        <property name="text">
+         <string>Chi tiết</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="drag_area">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="close">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>9</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#close{
+	background-color: rgba(0, 0, 0, 0);
+	color: rgb(240,248,255)
+}
+
+
+#close:hover{
+	background-color:  rgba(13, 103, 213, 120);
+}</string>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>10</width>
+          <height>10</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="h">
+        <attribute name="title">
+         <string>Điểm học bạ</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="_7">
+           <item>
+            <widget class="QPushButton" name="add_thi_sinh_button">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+             </property>
+             <property name="text">
+              <string> Thêm</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../../assets.qrc">
+               <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Số lượng</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="diem_hocba_size">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="diem_hocba_table">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Môn học</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Lớp 10</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Lớp 11</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Lớp 12</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Trung bình</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Điểm SAT</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Chứng chỉ tiếng anh</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../assets.qrc"/>
+ </resources>
+ <connections/>
+</ui>

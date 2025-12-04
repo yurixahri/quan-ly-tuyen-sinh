@@ -4,22 +4,37 @@
 #include "db/models/ptxt.h"
 #include "utils/string.h"
 
-// inline bool addPtxt(QString ma_nganh, QString ten_nganh, long id_nhom_nganh){
-//     ptxt_ptr adding;
-//     adding.reset(new nganh());
-//     adding->ma_nganh = ma_nganh;
-//     adding->ten_nganh = ten_nganh;
-//     adding->nhom_nganh = std::make_shared<nhom_nganh>(id_nhom_nganh);
+inline bool addPtxt(QString ma, QString ten, QString mo_ta){
+    ptxt_ptr adding;
+    adding.reset(new ptxt());
+    adding->ma = ma;
+    adding->ten = ten;
+    adding->mo_ta = mo_ta;
 
-//     trimLeadingAndTrailing(adding->ma_nganh);
-//     trimLeadingAndTrailing(adding->ten_nganh);
+    trimLeadingAndTrailing(adding->ma);
+    trimLeadingAndTrailing(adding->ten);
 
-//     QSqlError err = qx::dao::insert(adding);
-//     if (err.isValid())
-//         return false;
-//     else
-//         return true;
-// }
+    QSqlError err = qx::dao::insert(adding);
+    if (err.isValid())
+        return false;
+    else
+        return true;
+}
+
+inline bool changePtxt(ptxt_ptr item, QString ma, QString ten, QString mo_ta){
+    item->ma = ma;
+    item->ten = ten;
+    item->mo_ta = mo_ta;
+
+    trimLeadingAndTrailing(item->ma);
+    trimLeadingAndTrailing(item->ten);
+
+    QSqlError err = qx::dao::update(item);
+    if (err.isValid())
+        return false;
+    else
+        return true;
+}
 
 inline std::optional<QList<ptxt_ptr>> getAllPtxt(){
     QList<ptxt_ptr> list;

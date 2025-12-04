@@ -51,6 +51,12 @@ private slots:
     void updateMaNganh(long id);
     void deleteMaNganh(long id);
 
+    void on_ptxt_button_clicked();
+    void on_add_ptxt_button_clicked();
+    void on_ptxt_table_customContextMenuRequested(const QPoint &pos);
+    void updatePtxt(long id);
+    void deletePtxt(long id);
+
 private:
     Ui::MainWindow *ui;
 };
