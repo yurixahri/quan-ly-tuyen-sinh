@@ -4,11 +4,12 @@
 #include "db/models/ptxt.h"
 #include "utils/string.h"
 
-inline bool addPtxt(QString ma, QString ten, QString mo_ta){
+inline bool addPtxt(QString ma, QString ten, float thang_diem, QString mo_ta){
     ptxt_ptr adding;
     adding.reset(new ptxt());
     adding->ma = ma;
     adding->ten = ten;
+    adding->thang_diem = thang_diem;
     adding->mo_ta = mo_ta;
 
     trimLeadingAndTrailing(adding->ma);
@@ -21,9 +22,10 @@ inline bool addPtxt(QString ma, QString ten, QString mo_ta){
         return true;
 }
 
-inline bool changePtxt(ptxt_ptr item, QString ma, QString ten, QString mo_ta){
+inline bool changePtxt(ptxt_ptr item, QString ma, QString ten, float thang_diem, QString mo_ta){
     item->ma = ma;
     item->ten = ten;
+    item->thang_diem = thang_diem;
     item->mo_ta = mo_ta;
 
     trimLeadingAndTrailing(item->ma);
@@ -68,6 +70,17 @@ inline bool deletePtxtById(long &id){
 
     if (err.isValid()) {
         qDebug() << "Fetch error:" << err.text();
+        return false;
+    } else {
+        return true;
+    }
+}
+
+inline bool deleteAllPtxt(){
+    qx::QxSession session;
+    session += qx::dao::delete_all<ptxt>(session.database());
+
+    if (!session.isValid()) {
         return false;
     } else {
         return true;

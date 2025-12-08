@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QMenu>
+#include <QFileDialog>
 #include "pages/monhoc_page.h"
 #include "ui/add_mon_hoc_dialog.h"
 #include "ui/change_mon_hoc_dialog.h"
@@ -21,6 +22,10 @@
 
 #include "pages/ptxt_page.h"
 #include "ui/ptxt/ptxt_dialog.h"
+
+#include "pages/thi_sinh_page.h"
+#include "ui/thi_sinh/thi_sinh_dialog.h"
+#include "ui/thi_sinh/thi_sinh_detail.h".h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -98,6 +103,17 @@ void MainWindow::deleteMonHoc(long id){
     }
 }
 
+void MainWindow::on_delete_all_monhoc_clicked(){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa tất cả môn học?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteAllMonHoc()){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMonHocTable(ui->mon_hoc_table, ui->monhoc_size);
+    }
+}
 
 // to hop
 void MainWindow::on_tohop_button_clicked(){
@@ -157,6 +173,26 @@ void MainWindow::deleteToHop(long id){
         }
         fillToHopTable(ui->tohop_mon_table, ui->tohop_size);
     }
+}
+
+void MainWindow::on_delete_all_tohop_clicked(){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa tất cả tổ hợp?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteAllToHop()){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillToHopTable(ui->tohop_mon_table, ui->tohop_size);
+    }
+}
+
+void MainWindow::on_import_tohop_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importTohop(path);
+    }
+    fillToHopTable(ui->tohop_mon_table, ui->tohop_size);
 }
 
 /* nhom nganh */
@@ -341,6 +377,18 @@ void MainWindow::deleteMaNganh(long id){
     }
 }
 
+void MainWindow::on_delete_all_ma_nganh_clicked(){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa tất cả mã ngành?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteAllMaNganh()){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+    }
+}
+
 /* ptxt */
 
 void MainWindow::on_ptxt_button_clicked(){
@@ -400,6 +448,77 @@ void MainWindow::deletePtxt(long id){
             custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
         }
         fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
+    }
+}
+
+// thi sinh
+
+void MainWindow::on_thi_sinh_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(7);
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_add_thi_sinh_button_clicked(){
+    thi_sinh_dialog dlg(thi_sinh_dialog::ADD, this);
+
+    if (dlg.exec() == QDialog::Accepted){
+        fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+    }
+}
+
+void MainWindow::on_thi_sinh_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->thi_sinh_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr("Context Menu"), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        QAction* detail = new QAction("Chi tiết", this);
+        contextMenu.addAction(change);
+        contextMenu.addAction(detail);
+        contextMenu.addAction(del);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateThiSinh(ui->thi_sinh_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteThiSinh(ui->thi_sinh_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->thi_sinh_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::updateThiSinh(long id){
+    auto thiSinh = getThiSinhById(id);
+    if (thiSinh){
+        thi_sinh_dialog dlg(thi_sinh_dialog::CHANGE, this);
+        dlg.setEditItem(*thiSinh);
+
+        if (dlg.exec() == QDialog::Accepted){
+            fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+        }
+    }
+}
+
+void MainWindow::deleteThiSinh(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa thí sinh này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteThiSinhById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+    }
+}
+
+void MainWindow::thiSinhDetail(long id){
+    auto item = getThiSinhById(id);
+    if (item){
+        thi_sinh_detail dlg(this);
+        dlg.item = *item;
+        dlg.exec();
     }
 }
 

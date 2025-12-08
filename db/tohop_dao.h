@@ -2,6 +2,10 @@
 #define TOHOP_DAO_H
 
 #include "db/models/to_hop_mon.h"
+#include "excel/read_excel.h"
+#include "utils/string.h"
+#include "db/monhoc_dao.h"
+#include "ui/custom_message_box.h"
 
 inline bool addToHop(QString &ma_tohop, long &id_mon_1, long &id_mon_2, long &id_mon_3){
     tohop_mon_ptr tohop_adding;
@@ -54,6 +58,87 @@ inline bool deleteToHopById(long &id){
         return false;
     } else {
         return true;
+    }
+}
+
+inline bool deleteAllToHop(){
+    qx::QxSession session;
+    session += qx::dao::delete_all<tohop_mon>(session.database());
+
+    if (!session.isValid()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+inline void importTohop(QString &path){
+    qx::QxSession session;
+    // session += qx::dao::delete_all<tohop_mon>(session.database());
+
+    // if (!session.isValid()) {
+    //     return false;
+    // } else {
+    //     return true;
+    // }
+    int index = 3;
+    auto rows = readExcel(path);
+    qDebug() << rows;
+    if (rows->first().length() != 2){
+        custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
+        return;
+    }else{
+        for (auto &row : *rows){
+            auto monhoc_list = row[1].split(",");
+            for (auto &monhoc : monhoc_list){
+                trimLeadingAndTrailing(monhoc);
+                upperCaseFirstLetter(monhoc);
+            }
+            if (monhoc_list.length() != 3){
+                session.rollback();
+                custom_message_box("", "Số lượng môn học phải bằng 3 cho 1 tổ hợp. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+
+            if (monhoc_list[0] == monhoc_list[1] || monhoc_list[0] == monhoc_list[2] || monhoc_list[1] == monhoc_list[2]){
+                session.rollback();
+                custom_message_box("", "Có môn học bị trùng. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                                   return;
+            }
+
+            tohop_mon_ptr tohop_adding;
+            tohop_adding.reset(new tohop_mon());
+            tohop_adding->ma_tohop = row[0];
+            while (true){
+                if ( (tohop_adding->mon_1 = *getMonHocByName(monhoc_list[0])) ){
+                    break;
+                }else{
+                    addMonHoc(monhoc_list[0]);
+                }
+            }
+            while (true){
+                if ( (tohop_adding->mon_2 = *getMonHocByName(monhoc_list[1])) ){
+                    break;
+                }else{
+                    addMonHoc(monhoc_list[1]);
+                }
+            }
+            while (true){
+                if ( (tohop_adding->mon_3 = *getMonHocByName(monhoc_list[2])) ){
+                    break;
+                }else{
+                    addMonHoc(monhoc_list[2]);
+                }
+            }
+
+            session += qx::dao::insert(tohop_adding, session.database());
+            if (!session.isValid()){
+                custom_message_box("", "Có lỗi xảy ra khi thêm tổ hợp. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                                   return;
+                break;
+            }
+            ++index;
+        }
     }
 }
 

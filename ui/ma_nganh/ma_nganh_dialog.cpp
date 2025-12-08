@@ -32,21 +32,14 @@ void ma_nganh_dialog::setEditItem(ma_nganh_ptr &item){
 
     for (auto &tohop : item->list_tohop)
         list_tohop.append(QVariant::fromValue(tohop->tohop->id_tohop));
-    for (auto &ptxt : item->list_ptxt)
-        list_ptxt.append(QVariant::fromValue(ptxt->ptxt->id));
 
     ui->tohop->setSelectedValues(list_tohop);
-    ui->ptxt->setSelectedValues(list_ptxt);
 }
 
 void ma_nganh_dialog::update(){
     auto list_tohop = getAllToHop();
     for (auto &tohop : *list_tohop){
         ui->tohop->addItem(tohop->ma_tohop, QVariant::fromValue(tohop->id_tohop));
-    }
-    auto list_ptxt = getAllPtxt();
-    for (auto &ptxt : *list_ptxt){
-        ui->ptxt->addItem(ptxt->ma, QVariant::fromValue(ptxt->id));
     }
 
     if (type == Type::CHANGE) {
@@ -64,16 +57,16 @@ void ma_nganh_dialog::on_accept_clicked(){
     QString ghi_chu = ui->ghi_chu->text();
     long id_nganh = ui->nganh->currentData().toLongLong();
     QList<QVariant> list_tohop = ui->tohop->currentValues();
-    QList<QVariant> list_ptxt = ui->ptxt->currentValues();
+    // QList<QVariant> list_ptxt = ui->ptxt->currentValues();
 
     switch (this->type) {
     case Type::ADD:{
-        if (!addMaNganh(id_nganh, list_tohop, list_ptxt, chi_tieu, ghi_chu)) custom_message_box("", "Thêm thất bại", custom_message_box::Error).exec();
+        if (!addMaNganh(id_nganh, list_tohop, chi_tieu, ghi_chu)) custom_message_box("", "Thêm thất bại", custom_message_box::Error).exec();
         else accept();
     }
     break;
     case Type::CHANGE:{
-        if (!changeMaNganh(edit_item, list_tohop, list_ptxt, chi_tieu, ghi_chu)) custom_message_box("", "Thay đổi thất bại", custom_message_box::Error).exec();
+        if (!changeMaNganh(edit_item, list_tohop, chi_tieu, ghi_chu)) custom_message_box("", "Thay đổi thất bại", custom_message_box::Error).exec();
         else accept();
     }
     break;

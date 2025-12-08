@@ -13,8 +13,8 @@ void fillPtxtTable(QTableWidget *table, QLabel *size){
     }
     table->clearContents();
     table->setRowCount(0);
-    table->setColumnCount(4);
-    table->setHorizontalHeaderLabels({"ID", "Mã", "Tên", "Mô tả"});
+    table->setColumnCount(5);
+    table->setHorizontalHeaderLabels({"ID", "Mã", "Tên", "Thang điểm", "Mô tả"});
     // uint32_t stt = 1;
 
     for (auto &item : *list){
@@ -23,7 +23,8 @@ void fillPtxtTable(QTableWidget *table, QLabel *size){
         table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
         table->setItem(row, 1, new QTableWidgetItem(item->ma));
         table->setItem(row, 2, new QTableWidgetItem(item->ten));
-        table->setItem(row, 3, new QTableWidgetItem(item->mo_ta));
+        table->setItem(row, 3, new QTableWidgetItem(QString::number(item->thang_diem)));
+        table->setItem(row, 4, new QTableWidgetItem(item->mo_ta));
         // ++stt;
     }
 

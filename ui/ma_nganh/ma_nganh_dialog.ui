@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>314</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,7 +78,7 @@ QLabel{
       <item>
        <widget class="QLabel" name="title">
         <property name="text">
-         <string>Thêm ngành</string>
+         <string>Thêm mã ngành</string>
         </property>
        </widget>
       </item>
@@ -241,32 +241,6 @@ QLabel{
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="leftMargin">
-         <number>10</number>
-        </property>
-        <property name="rightMargin">
-         <number>10</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Phương thức xét tuyển</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="MultiSelectComboBox" name="ptxt"/>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="QWidget" name="horizontalWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="leftMargin">
@@ -295,7 +269,11 @@ QLabel{
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="chi_tieu"/>
+          <widget class="QSpinBox" name="chi_tieu">
+           <property name="maximum">
+            <number>1000000000</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

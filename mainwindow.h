@@ -57,6 +57,17 @@ private slots:
     void updatePtxt(long id);
     void deletePtxt(long id);
 
+    void on_add_thi_sinh_button_clicked();
+    void on_thi_sinh_button_clicked();
+    void on_thi_sinh_table_customContextMenuRequested(const QPoint &pos);
+    void updateThiSinh(long id);
+    void deleteThiSinh(long id);
+    void thiSinhDetail(long id);
+
+    void on_delete_all_ma_nganh_clicked();
+    void on_delete_all_tohop_clicked();
+    void on_delete_all_monhoc_clicked();
+    void on_import_tohop_clicked();
 private:
     Ui::MainWindow *ui;
 };

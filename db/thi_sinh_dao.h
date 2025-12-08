@@ -4,12 +4,12 @@
 #include "db/models/thi_sinh.h"
 #include "utils/string.h"
 
-uint16_t page = 0;
-uint16_t count = 100;
+static uint16_t page = 0;
+static uint16_t count = 100;
 
-inline bool addThiSinh(QString cccd, QString ho_ten,
-                       QDate ngay_sinh, QString gioi_tinh,
-                       QString dia_chi, QString email, QString sdt, QString ma_dinh_danh ){
+inline bool addThiSinh(QString &cccd, QString &ho_ten,
+                       QDate &ngay_sinh, QString &gioi_tinh,
+                       QString &dia_chi, QString &email, QString &sdt, QString &ma_dinh_danh ){
     thi_sinh_ptr adding;
     adding.reset(new thi_sinh());
     adding->cccd = cccd;
@@ -35,19 +35,30 @@ inline bool addThiSinh(QString cccd, QString ho_ten,
         return true;
 }
 
-inline bool changeThiSinh(thi_sinh_ptr item, QString ma, QString ten, QString mo_ta){
-    /*item->ma = ma;
-    item->ten = ten;
-    item->mo_ta = mo_ta;
+inline bool changeThiSinh(thi_sinh_ptr &item, QString &cccd, QString &ho_ten,
+                          QDate &ngay_sinh, QString &gioi_tinh,
+                          QString &dia_chi, QString &email, QString &sdt, QString &ma_dinh_danh){
+    item->cccd = cccd;
+    item->ho_ten = ho_ten;
+    item->ngay_sinh = ngay_sinh;
+    item->gioi_tinh = gioi_tinh;
+    item->dia_chi = dia_chi;
+    item->email = email;
+    item->sdt = sdt;
+    item->ma_dinh_danh = ma_dinh_danh;
 
-    trimLeadingAndTrailing(item->ma);
-    trimLeadingAndTrailing(item->ten);
+    trimLeadingAndTrailing(item->cccd);
+    trimLeadingAndTrailing(item->ho_ten);
+    trimLeadingAndTrailing(item->sdt);
+    trimLeadingAndTrailing(item->ma_dinh_danh);
+
+    if (!isPhoneNumberValid(item->sdt)) return false;
 
     QSqlError err = qx::dao::update(item);
     if (err.isValid())
         return false;
     else
-        return true*/;
+        return true;
 }
 
 inline std::optional<QList<thi_sinh_ptr>> getAllThiSinh(){

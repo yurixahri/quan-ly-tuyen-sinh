@@ -40,6 +40,21 @@ inline std::optional<mon_hoc_ptr> getMonHocById(long &id){
     }
 }
 
+inline std::optional<mon_hoc_ptr> getMonHocByName(QString &name){
+    QList<mon_hoc_ptr> list;
+    qx_query query;
+    query.where("ten_monhoc").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+
+    if (err.isValid()) {
+        qDebug() << "Fetch error:" << err.text();
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
+}
+
 inline bool deleteMonHocById(long &id){
     auto item = getMonHocById(id);
     if (!item) return false;
@@ -47,6 +62,17 @@ inline bool deleteMonHocById(long &id){
 
     if (err.isValid()) {
         qDebug() << "Fetch error:" << err.text();
+        return false;
+    } else {
+        return true;
+    }
+}
+
+inline bool deleteAllMonHoc(){
+    qx::QxSession session;
+    session += qx::dao::delete_all<mon_hoc>(session.database());
+
+    if (!session.isValid()) {
         return false;
     } else {
         return true;

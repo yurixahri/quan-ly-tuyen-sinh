@@ -7,9 +7,7 @@
 #include "db/models/to_hop_mon.h"
 #include "db/models/ptxt.h"
 
-typedef std::shared_ptr<ptxt> ptxt_ptr;
-
-inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, QList<QVariant> &list_ptxt, int &chi_tieu, QString &ghi_chu){
+inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, int &chi_tieu, QString &ghi_chu){
     ma_nganh_ptr adding;
     adding.reset(new ma_nganh());
     adding->nganh = std::make_shared<nganh>(id_nganh);
@@ -23,21 +21,11 @@ inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, QList<QVaria
         adding->list_tohop.append(temp);
     }
 
-    for (auto &item : list_ptxt){
-        auto temp = std::make_shared<ma_nganh_ptxt>();
-        temp->id_nganh = id_nganh;
-        temp->ptxt = std::make_shared<ptxt>(item.toLongLong());
-        adding->list_ptxt.append(temp);
-    }
-
     qx::QxSession session;
     session += qx::dao::insert(adding, session.database());
     //session += qx::dao::insert(adding->list_tohop, session.database());
 
     for (auto &item : adding->list_tohop){
-        session += qx::dao::insert(item, session.database());
-    }
-    for (auto &item : adding->list_ptxt){
         session += qx::dao::insert(item, session.database());
     }
     if (!session.isValid()){
@@ -47,12 +35,12 @@ inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, QList<QVaria
         return true;
 }
 
-inline bool changeMaNganh(ma_nganh_ptr &edit_item, QList<QVariant> &list_tohop, QList<QVariant> &list_ptxt, int &chi_tieu, QString &ghi_chu){
+inline bool changeMaNganh(ma_nganh_ptr &edit_item, QList<QVariant> &list_tohop, int &chi_tieu, QString &ghi_chu){
     qx::QxSession session;
     for (auto &item : edit_item->list_tohop) session += qx::dao::delete_by_id(item, session.database());
-    for (auto &item : edit_item->list_ptxt) session += qx::dao::delete_by_id(item, session.database());
     edit_item->list_tohop.clear();
-    edit_item->list_ptxt.clear();
+    edit_item->chi_tieu = chi_tieu;
+    edit_item->ghi_chu = ghi_chu;
 
     for (auto &item : list_tohop){
         auto temp = std::make_shared<ma_nganh_tohop>();
@@ -61,21 +49,7 @@ inline bool changeMaNganh(ma_nganh_ptr &edit_item, QList<QVariant> &list_tohop, 
         edit_item->list_tohop.append(temp);
     }
 
-    for (auto &item : list_ptxt){
-        auto temp = std::make_shared<ma_nganh_ptxt>();
-        temp->id_nganh = edit_item->nganh->id;
-        temp->ptxt = std::make_shared<ptxt>(item.toLongLong());
-        edit_item->list_ptxt.append(temp);
-    }
-
-    edit_item->chi_tieu = chi_tieu;
-    edit_item->ghi_chu = ghi_chu;
-
-
     for (auto &item : edit_item->list_tohop){
-        session += qx::dao::insert(item, session.database());
-    }
-    for (auto &item : edit_item->list_ptxt){
         session += qx::dao::insert(item, session.database());
     }
     session += qx::dao::update(edit_item, session.database());
@@ -97,9 +71,6 @@ inline std::optional<QList<ma_nganh_ptr>> getAllMaNganh(){
         qx_query query;
         query.where("id_nganh").isEqualTo(QVariant::fromValue(item->nganh->id));
         session += qx::dao::fetch_by_query_with_all_relation(query, item->list_tohop, session.database());
-        query.clear();
-        query.where("id_nganh").isEqualTo(QVariant::fromValue(item->nganh->id));
-        session += qx::dao::fetch_by_query_with_all_relation(query, item->list_ptxt, session.database());
     }
 
     if (!session.isValid()) {
@@ -117,9 +88,6 @@ inline std::optional<ma_nganh_ptr> getMaNganhById(long &id){
     qx_query query;
     query.where("id_nganh").isEqualTo(QVariant::fromValue(item->nganh->id));
     session += qx::dao::fetch_by_query_with_all_relation(query, item->list_tohop, session.database());
-    query.clear();
-    query.where("id_nganh").isEqualTo(QVariant::fromValue(item->nganh->id));
-    session += qx::dao::fetch_by_query_with_all_relation(query, item->list_ptxt, session.database());
 
     if (!session.isValid()) {
         return std::nullopt;
@@ -132,6 +100,17 @@ inline bool deleteMaNganhById(long &id){
     qx::QxSession session;
     auto item = std::make_shared<ma_nganh>(id);
     session += qx::dao::delete_by_id<>(item, session.database());
+
+    if (!session.isValid()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+inline bool deleteAllMaNganh(){
+    qx::QxSession session;
+    session += qx::dao::delete_all<ma_nganh>(session.database());
 
     if (!session.isValid()) {
         return false;

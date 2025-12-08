@@ -2,6 +2,7 @@
 #define CHUNGCHI_TIENGANH_H
 
 #include "db/models/thi_sinh.h"
+#include <QxOrm.h>
 
 class chungchi_tienganh
 {

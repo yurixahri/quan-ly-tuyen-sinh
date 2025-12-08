@@ -32,17 +32,19 @@ void ptxt_dialog::setEditItem(ptxt_ptr &item){
     this->edit_item = item;
     ui->ma->setText(item->ma);
     ui->ten->setText(item->ten);
+    ui->thang_diem->setValue(item->thang_diem);
     ui->mo_ta->setText(item->mo_ta);
 }
 
 void ptxt_dialog::on_accept_clicked(){
     QString ma = ui->ma->text();
     QString ten = ui->ten->text();
+    float thang_diem = ui->thang_diem->value();
     QString mo_ta = ui->mo_ta->text();
 
     switch (this->type) {
     case Type::ADD:{
-        if (!addPtxt(ma, ten, mo_ta)) custom_message_box("", "Thêm thất bại", custom_message_box::Error).exec();
+        if (!addPtxt(ma, ten, thang_diem, mo_ta)) custom_message_box("", "Thêm thất bại", custom_message_box::Error).exec();
         else accept();
     }
     break;
@@ -52,7 +54,7 @@ void ptxt_dialog::on_accept_clicked(){
             return;
         }
 
-        if (!changePtxt(edit_item, ma, ten, mo_ta)) {
+        if (!changePtxt(edit_item, ma, ten, thang_diem,mo_ta)) {
             custom_message_box("", "Cập nhật thất bại", custom_message_box::Error).exec();
         } else {
             custom_message_box("", "Cập nhật thành công", custom_message_box::Information).exec();

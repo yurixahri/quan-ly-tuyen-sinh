@@ -24,6 +24,18 @@ public:
 
 typedef std::shared_ptr<thi_sinh> thi_sinh_ptr;
 
+inline QDataStream &operator<<(QDataStream &out, const thi_sinh &m) {
+    out << qint64(m.id) << m.cccd << m.ho_ten << m.ngay_sinh << m.gioi_tinh << m.dia_chi << m.email << m.sdt << m.ma_dinh_danh;
+    return out;
+}
+
+inline QDataStream &operator>>(QDataStream &in, thi_sinh &m) {
+    qint64 id = 0;
+    in >> id;
+    m.id = static_cast<long>(id);
+    return in;
+}
+
 QX_REGISTER_HPP(thi_sinh, qx::trait::no_base_class_defined, 0)
 
 #endif // THI_SINH_H

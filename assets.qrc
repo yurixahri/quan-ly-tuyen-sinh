@@ -9,5 +9,6 @@
         <file>assets/images/question-96.png</file>
         <file>assets/images/error-96.png</file>
         <file>assets/images/warning-96.png</file>
+        <file>assets/images/delete-128.png</file>
     </qresource>
 </RCC>

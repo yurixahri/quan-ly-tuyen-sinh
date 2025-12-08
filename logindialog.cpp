@@ -19,7 +19,6 @@ loginDialog::loginDialog(QWidget *parent)
     //ui->verticalSpacer->setGeometry(0,0)
     //setFixedSize(800, 400);
     //db = QSqlDatabase::addDatabase("QPSQL");
-    qDebug() << readExcel("F:/Đồ Án Tốt Nghiệp 2025/File-du-lieu-tuyen-sinnh-2025 (3).xlsx");
 }
 
 loginDialog::~loginDialog(){

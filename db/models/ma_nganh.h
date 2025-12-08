@@ -16,7 +16,7 @@ public:
 
     nganh_ptr nganh;
     QList<std::shared_ptr<ma_nganh_tohop>> list_tohop;
-    QList<std::shared_ptr<ma_nganh_ptxt>> list_ptxt;
+    //QList<std::shared_ptr<ma_nganh_ptxt>> list_ptxt;
     ma_nganh();
     ma_nganh(long id){
         this->id = id;

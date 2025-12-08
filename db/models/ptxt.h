@@ -11,7 +11,7 @@ public:
     QString ma;
     QString ten;
     QString mo_ta;
-
+    float thang_diem;
 
     ptxt();
     ptxt(long id){

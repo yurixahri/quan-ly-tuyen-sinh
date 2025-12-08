@@ -10,7 +10,7 @@
 using namespace QXlsx;
 
 
-inline std::optional<QList<QStringList>> readExcel(QString file_path){
+inline std::optional<QList<QStringList>> readExcel(QString &file_path){
     Document xlsx(file_path);
     if (!xlsx.load()) {
         qDebug() << "File not found or failed to load.";
