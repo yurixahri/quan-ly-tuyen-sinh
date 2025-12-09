@@ -14,7 +14,7 @@ template<> void register_class(QxClass<thi_sinh> & t)
     t.data(&thi_sinh::dia_chi, "dia_chi");
     t.data(&thi_sinh::email, "email");
     t.data(&thi_sinh::sdt, "so_dien_thoai");
-    t.data(&thi_sinh::ma_dinh_danh, "ma_dinh_danh");
+    t.data(&thi_sinh::sbd, "so_bao_danh");
 }
 }
 

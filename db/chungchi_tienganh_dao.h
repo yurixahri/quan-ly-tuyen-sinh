@@ -2,19 +2,14 @@
 #define CHUNGCHI_TIENGANH_DAO_H
 
 #include "db/models/chungchi_tienganh.h"
-#include "utils/string.h"
 
-inline bool addChungchiTienganh(long &id_thi_sinh, QString &loai_chungchi, float &diem,
-                                QDate &ngay_cap, QDate &ngay_het_han){
+inline bool addChungchiTienganh(long &id_thi_sinh, long &id_ccnn, float &diem, long &id_ptxt){
     chungchi_tienganh_ptr adding;
     adding.reset(new chungchi_tienganh());
     adding->thi_sinh = std::make_shared<thi_sinh>(id_thi_sinh);
-    adding->loai_chungchi = loai_chungchi;
+    adding->ccnn = std::make_shared<ma_chungchinn>(id_ccnn);
+    adding->ptxt = std::make_shared<ptxt>(id_ptxt);
     adding->diem = diem;
-    adding->ngay_cap = ngay_cap;
-    adding->ngay_het_han = ngay_het_han;
-
-    trimLeadingAndTrailing(adding->loai_chungchi);
 
     QSqlError err = qx::dao::insert(adding);
     if (err.isValid())
@@ -23,15 +18,10 @@ inline bool addChungchiTienganh(long &id_thi_sinh, QString &loai_chungchi, float
         return true;
 }
 
-inline bool changeChungchiTienganh(chungchi_tienganh_ptr &item, QString &loai_chungchi,
-                                   float &diem, QDate &ngay_cap, QDate &ngay_het_han){
-    item->loai_chungchi = loai_chungchi;
+inline bool changeChungchiTienganh(chungchi_tienganh_ptr &item, long &id_ccnn, float &diem, long &id_ptxt){
     item->diem = diem;
-    item->ngay_cap = ngay_cap;
-    item->ngay_het_han = ngay_het_han;
-
-    trimLeadingAndTrailing(item->loai_chungchi);
-
+    item->ccnn = std::make_shared<ma_chungchinn>(id_ccnn);
+    item->ptxt = std::make_shared<ptxt>(id_ptxt);
     QSqlError err = qx::dao::update(item);
     if (err.isValid())
         return false;

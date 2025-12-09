@@ -25,13 +25,14 @@
 
 #include "pages/thi_sinh_page.h"
 #include "ui/thi_sinh/thi_sinh_dialog.h"
-#include "ui/thi_sinh/thi_sinh_detail.h".h"
+#include "ui/thi_sinh/thi_sinh_detail.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 }
 
 MainWindow::~MainWindow(){
@@ -331,6 +332,14 @@ void MainWindow::on_add_ma_nganh_button_clicked(){
     }
 }
 
+void MainWindow::on_ma_nganh_import_excel_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importMaNganh(path);
+    }
+    fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+}
+
 void MainWindow::on_ma_nganh_table_customContextMenuRequested(const QPoint &pos){
     QTableWidgetItem* item = ui->ma_nganh_table->itemAt(pos);
 
@@ -403,6 +412,14 @@ void MainWindow::on_add_ptxt_button_clicked(){
     if (dlg.exec() == QDialog::Accepted){
         fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
     }
+}
+
+void MainWindow::on_import_ptxt_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importPtxt(path);
+    }
+    fillPtxtTable(ui->ptxt_table, ui->ptxt_size);
 }
 
 void MainWindow::on_ptxt_table_customContextMenuRequested(const QPoint &pos){
@@ -485,6 +502,10 @@ void MainWindow::on_thi_sinh_table_customContextMenuRequested(const QPoint &pos)
         connect(del, &QAction::triggered, this, [=](){
             deleteThiSinh(ui->thi_sinh_table->item(item->row(), 0)->text().toLong());
         });
+
+        connect(detail, &QAction::triggered, this, [=](){
+            thiSinhDetail(ui->thi_sinh_table->item(item->row(), 0)->text().toLong());
+        });
         contextMenu.exec(ui->thi_sinh_table->viewport()->mapToGlobal(pos));
     }
 }
@@ -517,8 +538,38 @@ void MainWindow::thiSinhDetail(long id){
     auto item = getThiSinhById(id);
     if (item){
         thi_sinh_detail dlg(this);
-        dlg.item = *item;
+        dlg.setThiSinh(*item);
         dlg.exec();
     }
+}
+
+void MainWindow::on_import_sat_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importDiemSat(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+
+void MainWindow::mousePressEvent(QMouseEvent *event){
+    if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
+        m_dragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        m_dragging = true;
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event){
+    if (m_dragging && (event->buttons() & Qt::LeftButton)) {
+        move(event->globalPosition().toPoint() - m_dragPosition);
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event){
+    m_dragging = false;
+}
+
+void MainWindow::on_close_clicked(){
+    QCoreApplication::quit();
 }
 

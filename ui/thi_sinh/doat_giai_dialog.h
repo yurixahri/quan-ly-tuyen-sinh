@@ -1,15 +1,15 @@
-#ifndef CHUNGCHI_TIENGANH_DIALOG_H
-#define CHUNGCHI_TIENGANH_DIALOG_H
+#ifndef DOAT_GIAI_DIALOG_H
+#define DOAT_GIAI_DIALOG_H
 
 #include <QDialog>
 #include <QMouseEvent>
-#include "db/models/chungchi_tienganh.h"
+#include "db/models/doat_giai.h"
 
 namespace Ui {
-class chungchi_tienganh_dialog;
+class doat_giai_dialog;
 }
 
-class chungchi_tienganh_dialog : public QDialog
+class doat_giai_dialog : public QDialog
 {
     Q_OBJECT
 
@@ -20,15 +20,17 @@ public:
     };
     uint8_t type;
 
-    explicit chungchi_tienganh_dialog(Type type, QWidget *parent = nullptr);
-    ~chungchi_tienganh_dialog();
+    explicit doat_giai_dialog(Type type, QWidget *parent = nullptr);
+    ~doat_giai_dialog();
 
-    chungchi_tienganh_ptr edit_item;
+    doat_giai_ptr edit_item;
     long id_thi_sinh;
-    void setEditItem(chungchi_tienganh_ptr &item);
+    void setEditItem(doat_giai_ptr &item);
 
+    void loadPtxt();
+    void loadMonHoc();
 private:
-    Ui::chungchi_tienganh_dialog *ui;
+    Ui::doat_giai_dialog *ui;
     bool m_dragging = false;
     QPoint m_dragPosition;
 
@@ -43,4 +45,4 @@ private slots:
     void on_accept_clicked();
 };
 
-#endif // CHUNGCHI_TIENGANH_DIALOG_H
+#endif // DOAT_GIAI_DIALOG_H

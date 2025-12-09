@@ -101,7 +101,7 @@ QTableWidget QHeaderView::section {
       <item>
        <widget class="QLabel" name="title">
         <property name="text">
-         <string>Chi tiết</string>
+         <string>Chi tiết thí sinh</string>
         </property>
        </widget>
       </item>
@@ -189,8 +189,22 @@ QTableWidget QHeaderView::section {
      </property>
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="styleSheet">
+        <string notr="true">QTabWidget{
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(11, 25, 58, 142), stop:1 rgba(23, 35, 56, 218));
+	border: 0px;
+}
+
+QTabWidget::pane{
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(11, 25, 58, 142), stop:1 rgba(23, 35, 56, 218));
+	border: 0px;
+}</string>
+       </property>
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="documentMode">
+        <bool>true</bool>
        </property>
        <widget class="QWidget" name="h">
         <attribute name="title">
@@ -200,7 +214,7 @@ QTableWidget QHeaderView::section {
          <item>
           <layout class="QHBoxLayout" name="_7">
            <item>
-            <widget class="QPushButton" name="add_thi_sinh_button">
+            <widget class="QPushButton" name="add_diem_hocba_button">
              <property name="styleSheet">
               <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -310,11 +324,328 @@ QPushButton:hover{
         <attribute name="title">
          <string>Điểm SAT</string>
         </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QHBoxLayout" name="_8">
+           <item>
+            <widget class="QPushButton" name="add_diem_sat_button">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+             </property>
+             <property name="text">
+              <string> Thêm</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../../assets.qrc">
+               <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Số lượng</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="diem_sat_size">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="diem_sat_table">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Điểm</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Mã DVTCTDL</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tên DVTCTDL</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Phương thức xét tuyển</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
          <string>Chứng chỉ tiếng anh</string>
         </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <layout class="QHBoxLayout" name="_9">
+           <item>
+            <widget class="QPushButton" name="add_ccnn_button">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+             </property>
+             <property name="text">
+              <string> Thêm</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../../assets.qrc">
+               <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Số lượng</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="ccnn_size">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="ccnn_table">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Điểm</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Mã chứng chỉ</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tên chứng chỉ</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Phương thức xét tuyển</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Thành tích</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="_10">
+           <item>
+            <widget class="QPushButton" name="add_thanh_tich_button">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+             </property>
+             <property name="text">
+              <string> Thêm</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../../assets.qrc">
+               <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Số lượng</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="thanh_tich_size">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="thanh_tich_table">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Môn học</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tên thành tích</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Điểm</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Phương thức xét tuyển</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </item>

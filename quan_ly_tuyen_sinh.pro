@@ -32,6 +32,8 @@ SOURCES += \
     db/models/chungchi_tienganh.cpp \
     db/models/diem_hocba.cpp \
     db/models/diem_thi_sat.cpp \
+    db/models/doat_giai.cpp \
+    db/models/ma_chungchinn.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -44,16 +46,16 @@ SOURCES += \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
     ui/ptxt/ptxt_dialog.cpp \
     ui/thi_sinh/chungchi_tienganh_dialog.cpp \
+    ui/thi_sinh/diem_hocba_dialog.cpp \
+    ui/thi_sinh/diem_sat_dialog.cpp \
+    ui/thi_sinh/doat_giai_dialog.cpp \
     ui/thi_sinh/thi_sinh_detail.cpp \
     ui/thi_sinh/thi_sinh_dialog.cpp \
     ui/tohop/add_tohop_dialog.cpp \
     utils/config.cpp
 
 HEADERS += \
-    db/chungchi_tienganh_dao.h \
     db/db.h \
-    db/diem_hocba_dao.h \
-    db/diem_thi_sat_dao.h \
     db/models/mon_hoc.h \
     db/models/nhom_nganh.h \
     db/models/ptxt.h \
@@ -66,6 +68,8 @@ HEADERS += \
     db/models/chungchi_tienganh.h \
     db/models/diem_hocba.h \
     db/models/diem_thi_sat.h \
+    db/models/doat_giai.h \
+    db/models/ma_chungchinn.h \
     db/monhoc_dao.h \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \
@@ -73,6 +77,11 @@ HEADERS += \
     db/thi_sinh_dao.h \
     db/tohop_dao.h \
     db/ma_nganh_dao.h \
+    db/diem_hocba_dao.h \
+    db/diem_thi_sat_dao.h \
+    db/doat_giai_dao.h \
+    db/ma_chungchinn_dao.h \
+    db/chungchi_tienganh_dao.h \
     excel/read_excel.h \
     logindialog.h \
     mainwindow.h \
@@ -92,6 +101,9 @@ HEADERS += \
     ui/nhom_nganh/nhom_nganh_dialog.h \
     ui/ptxt/ptxt_dialog.h \
     ui/thi_sinh/chungchi_tienganh_dialog.h \
+    ui/thi_sinh/diem_hocba_dialog.h \
+    ui/thi_sinh/diem_sat_dialog.h \
+    ui/thi_sinh/doat_giai_dialog.h \
     ui/thi_sinh/thi_sinh_detail.h \
     ui/thi_sinh/thi_sinh_dialog.h \
     ui/tohop/add_tohop_dialog.h \
@@ -110,6 +122,9 @@ FORMS += \
     ui/nhom_nganh/nhom_nganh_dialog.ui \
     ui/ptxt/ptxt_dialog.ui \
     ui/thi_sinh/chungchi_tienganh_dialog.ui \
+    ui/thi_sinh/diem_hocba_dialog.ui \
+    ui/thi_sinh/diem_sat_dialog.ui \
+    ui/thi_sinh/doat_giai_dialog.ui \
     ui/thi_sinh/thi_sinh_detail.ui \
     ui/thi_sinh/thi_sinh_dialog.ui \
     ui/tohop/add_tohop_dialog.ui

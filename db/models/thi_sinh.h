@@ -16,7 +16,7 @@ public:
     QString dia_chi;
     QString email;
     QString sdt;
-    QString ma_dinh_danh;
+    QString sbd;
 
     thi_sinh();
     thi_sinh(long &id) : id(id){}
@@ -25,7 +25,7 @@ public:
 typedef std::shared_ptr<thi_sinh> thi_sinh_ptr;
 
 inline QDataStream &operator<<(QDataStream &out, const thi_sinh &m) {
-    out << qint64(m.id) << m.cccd << m.ho_ten << m.ngay_sinh << m.gioi_tinh << m.dia_chi << m.email << m.sdt << m.ma_dinh_danh;
+    out << qint64(m.id) << m.cccd << m.ho_ten << m.ngay_sinh << m.gioi_tinh << m.dia_chi << m.email << m.sdt << m.sbd;
     return out;
 }
 

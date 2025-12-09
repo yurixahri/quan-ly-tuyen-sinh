@@ -16,11 +16,11 @@ thi_sinh_dialog::thi_sinh_dialog(Type type, QWidget *parent)
     switch (this->type) {
     case Type::ADD:
         ui->accept->setText("Thêm");
-        ui->title->setText("Thêm phương thức xét tuyển");
+        ui->title->setText("Thêm thí sinh");
         break;
     case Type::CHANGE:
         ui->accept->setText("Thay đổi");
-        ui->title->setText("Thay phương thức xét tuyển");
+        ui->title->setText("Thay thông tin thí sinh");
         break;
     }
 }
@@ -39,7 +39,7 @@ void thi_sinh_dialog::setEditItem(thi_sinh_ptr &item){
     ui->dia_chi->setText(item->dia_chi);
     ui->email->setText(item->email);
     ui->sdt->setText(item->sdt);
-    ui->ma_dinh_danh->setText(item->ma_dinh_danh);
+    ui->sbd->setText(item->sbd);
 }
 
 void thi_sinh_dialog::on_accept_clicked(){
@@ -50,11 +50,11 @@ void thi_sinh_dialog::on_accept_clicked(){
     QString dia_chi = ui->dia_chi->text();
     QString email = ui->email->text();
     QString sdt = ui->sdt->text();
-    QString ma_dinh_danh = ui->ma_dinh_danh->text();
+    QString sbd = ui->sbd->text();
 
     switch (this->type) {
     case Type::ADD:{
-        if (!addThiSinh(cccd, ho_ten, ngay_sinh, gioi_tinh, dia_chi, email, sdt, ma_dinh_danh)) custom_message_box("", "Thêm thất bại, ", custom_message_box::Error).exec();
+        if (!addThiSinh(cccd, ho_ten, ngay_sinh, gioi_tinh, dia_chi, email, sdt, sbd)) custom_message_box("", "Thêm thất bại, ", custom_message_box::Error).exec();
         else accept();
     }
     break;
@@ -64,7 +64,7 @@ void thi_sinh_dialog::on_accept_clicked(){
             return;
         }
 
-        if (!changeThiSinh(edit_item, cccd, ho_ten, ngay_sinh, gioi_tinh, dia_chi, email, sdt, ma_dinh_danh)) {
+        if (!changeThiSinh(edit_item, cccd, ho_ten, ngay_sinh, gioi_tinh, dia_chi, email, sdt, sbd)) {
             custom_message_box("", "Cập nhật thất bại", custom_message_box::Error).exec();
         } else {
             custom_message_box("", "Cập nhật thành công", custom_message_box::Information).exec();

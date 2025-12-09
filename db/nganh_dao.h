@@ -46,6 +46,21 @@ inline std::optional<nganh_ptr> getNganhById(long &id){
     }
 }
 
+inline std::optional<nganh_ptr> getNganhByName(QString &name){
+    QList<nganh_ptr> list;
+    qx_query query;
+    query.where("ma_nganh").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+
+    if (err.isValid()) {
+        qDebug() << "Fetch error:" << err.text();
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
+}
+
 inline bool deleteNganhById(long &id){
     auto item = getNganhById(id);
     if (!item) return false;

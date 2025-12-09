@@ -5,7 +5,13 @@
 #include "db/models/ma_nganh_tohop.h"
 #include "db/models/nganh.h"
 #include "db/models/to_hop_mon.h"
-#include "db/models/ptxt.h"
+#include "db/nganh_dao.h"
+#include "db/nhom_nganh_dao.h"
+#include "db/tohop_dao.h"
+
+#include "excel/read_excel.h"
+#include "ui/custom_message_box.h"
+#include "utils/string.h"
 
 inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, int &chi_tieu, QString &ghi_chu){
     ma_nganh_ptr adding;
@@ -116,6 +122,72 @@ inline bool deleteAllMaNganh(){
         return false;
     } else {
         return true;
+    }
+}
+
+inline void importMaNganh(QString &path){
+    qx::QxSession session;
+    int index = 3;
+    auto rows = readExcel(path);
+    qDebug() << rows;
+    if (rows->first().length() != 4){
+        custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
+        return;
+    }else{
+        for (auto &row : *rows){
+            qDebug() << "phase 1";
+            ma_nganh_ptr adding;
+            adding.reset(new ma_nganh());
+            adding->chi_tieu = 0;
+            for (auto &string : row) trimLeadingAndTrailing(string);
+
+            while (true){
+                qDebug() << "phase 2";
+                auto nganh_opt = getNganhByName(row[0]);
+                if (nganh_opt){
+                    adding->nganh = nganh_opt.value();
+                    break;
+                }else{
+                    nhom_nganh_ptr nhom_nganh;
+                    while (true) {
+                        auto nhom_nganh_otp = getNhomNganhByName(row[2]);
+                        if ( nhom_nganh_otp ){
+                            nhom_nganh = nhom_nganh_otp.value();
+                            break;
+                        }else{
+                            addNhomNganh(row[2]);
+                        }
+                    }
+                    addNganh(row[0], row[1], nhom_nganh->id_nhom_nganh);
+                }
+            }
+
+            auto tohop_list = row[3].split(",");
+            for (auto &tohop : tohop_list) {
+                trimLeadingAndTrailing(tohop);
+                auto temp = std::make_shared<ma_nganh_tohop>();
+                temp->id_nganh = adding->nganh->id;
+                if ( !(temp->tohop = *getToHopByName(tohop)) ){
+                    custom_message_box("", "Tổ hợp không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                    return;
+                }
+                adding->list_tohop.append(temp);
+            }
+
+            qx::QxSession session;
+            session += qx::dao::insert(adding, session.database());
+
+            for (auto &item : adding->list_tohop){
+                session += qx::dao::insert(item, session.database());
+            }
+
+            if (!session.isValid()){
+                custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+                break;
+            }
+            ++index;
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
-#include "excel/read_excel.h"
 #include "utils/config.h"
+#include "ui/custom_message_box.h"
 
 loginDialog::loginDialog(QWidget *parent)
     : QDialog(parent)
@@ -33,9 +33,8 @@ void loginDialog::on_login_button_clicked(){
     password = ui->password->text();
 
     if(!beginQX_DB(qx_db))
-        QMessageBox::warning(this, " ", "Login Failed");
+        custom_message_box("", "Đăng nhập thất bại", custom_message_box::Error).exec();
     else{
-        QMessageBox::information(this, " ", "Successful Login");
         if (ui->remember->isChecked()){
             settings->setValue("database/host", host_name);
             settings->setValue("database/db", database_name);

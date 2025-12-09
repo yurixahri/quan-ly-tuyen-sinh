@@ -48,6 +48,21 @@ inline std::optional<tohop_mon_ptr> getToHopById(long &id){
     }
 }
 
+inline std::optional<tohop_mon_ptr> getToHopByName(QString &name){
+    QList<tohop_mon_ptr> list;
+    qx_query query;
+    query.where("ma_tohop").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+
+    if (err.isValid()) {
+        qDebug() << "Fetch error:" << err.text();
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
+}
+
 inline bool deleteToHopById(long &id){
     auto item = getToHopById(id);
     if (!item) return false;
@@ -108,6 +123,7 @@ inline void importTohop(QString &path){
 
             tohop_mon_ptr tohop_adding;
             tohop_adding.reset(new tohop_mon());
+            trimLeadingAndTrailing(row[0]);
             tohop_adding->ma_tohop = row[0];
             while (true){
                 if ( (tohop_adding->mon_1 = *getMonHocByName(monhoc_list[0])) ){

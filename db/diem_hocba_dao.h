@@ -20,10 +20,11 @@ inline bool addDiemHocba(long &id_thi_sinh, long &id_mon_hoc, float &lop10,
         return true;
 }
 
-inline bool changeDiemHocba(diem_hocba_ptr &item, float &lop10, float &lop11, float &lop12){
+inline bool changeDiemHocba(diem_hocba_ptr &item, long &id_mon_hoc, float &lop10, float &lop11, float &lop12){
     item->lop10 = lop10;
     item->lop11 = lop11;
     item->lop12 = lop12;
+    item->mon_hoc = std::make_shared<mon_hoc>(id_mon_hoc);
 
     QSqlError err = qx::dao::update(item);
     if (err.isValid())

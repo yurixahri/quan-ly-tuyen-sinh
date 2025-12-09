@@ -14,7 +14,7 @@ void fillThiSinhTable(QTableWidget *table, QLabel *size){
     table->clearContents();
     table->setRowCount(0);
     table->setColumnCount(8);
-    table->setHorizontalHeaderLabels({"ID", "CCCD", "Họ tên", "Ngày sinh", "Giới tính", "Email", "SDT", "Mã định danh"});
+    table->setHorizontalHeaderLabels({"ID", "CCCD", "Họ tên", "Ngày sinh", "Giới tính", "Email", "SDT", "Số báo danh"});
     // uint32_t stt = 1;
 
     for (auto &item : *list){
@@ -27,7 +27,7 @@ void fillThiSinhTable(QTableWidget *table, QLabel *size){
         table->setItem(row, 4, new QTableWidgetItem(item->gioi_tinh));
         table->setItem(row, 5, new QTableWidgetItem(item->email));
         table->setItem(row, 6, new QTableWidgetItem(item->sdt));
-        table->setItem(row, 7, new QTableWidgetItem(item->ma_dinh_danh));
+        table->setItem(row, 7, new QTableWidgetItem(item->sbd));
         // ++stt;
     }
 

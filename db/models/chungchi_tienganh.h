@@ -2,6 +2,8 @@
 #define CHUNGCHI_TIENGANH_H
 
 #include "db/models/thi_sinh.h"
+#include "db/models/ma_chungchinn.h"
+#include "db/models/ptxt.h"
 #include <QxOrm.h>
 
 class chungchi_tienganh
@@ -9,10 +11,9 @@ class chungchi_tienganh
 public:
     long id;
     thi_sinh_ptr thi_sinh;
-    QString loai_chungchi;
     float diem;
-    QDate ngay_cap;
-    QDate ngay_het_han;
+    ma_chungchinn_ptr ccnn;
+    ptxt_ptr ptxt;
 
     chungchi_tienganh();
     chungchi_tienganh(long &id) : id(id){};

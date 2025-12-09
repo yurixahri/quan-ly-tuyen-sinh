@@ -338,7 +338,7 @@ QLabel{
            </item>
            <item>
             <property name="text">
-             <string>Nũ</string>
+             <string>Nữ</string>
             </property>
            </item>
           </widget>
@@ -507,12 +507,12 @@ QLabel{
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Mã định danh</string>
+            <string>Số báo danh</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="ma_dinh_danh">
+          <widget class="QLineEdit" name="sbd">
            <property name="maxLength">
             <number>50</number>
            </property>

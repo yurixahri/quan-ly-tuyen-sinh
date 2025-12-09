@@ -68,7 +68,22 @@ private slots:
     void on_delete_all_tohop_clicked();
     void on_delete_all_monhoc_clicked();
     void on_import_tohop_clicked();
+    void on_import_ptxt_clicked();
+
+    void on_ma_nganh_import_excel_clicked();
+
+    void on_import_sat_button_clicked();
+
+    void on_close_clicked();
+
 private:
     Ui::MainWindow *ui;
+    bool m_dragging = false;
+    QPoint m_dragPosition;
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 #endif // MAINWINDOW_H

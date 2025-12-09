@@ -2,16 +2,18 @@
 #define DIEM_THI_SAT_H
 
 #include "db/models/thi_sinh.h"
+#include "db//models/ptxt.h"
 
 class diem_thi_sat
 {
 public:
     long id;
     thi_sinh_ptr thi_sinh;
-    float reading;
-    float writing;
-    float math;
-    float total;
+    float diem;
+    QString ma_dvtctdl;
+    QString ten_dvtctdl;
+    ptxt_ptr ptxt;
+
     diem_thi_sat();
     diem_thi_sat(long &id) : id(id){};
 };

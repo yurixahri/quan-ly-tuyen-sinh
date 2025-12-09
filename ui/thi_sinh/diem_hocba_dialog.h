@@ -1,15 +1,15 @@
-#ifndef CHUNGCHI_TIENGANH_DIALOG_H
-#define CHUNGCHI_TIENGANH_DIALOG_H
+#ifndef DIEM_HOCBA_DIALOG_H
+#define DIEM_HOCBA_DIALOG_H
 
 #include <QDialog>
 #include <QMouseEvent>
-#include "db/models/chungchi_tienganh.h"
+#include "db/models/diem_hocba.h"
 
 namespace Ui {
-class chungchi_tienganh_dialog;
+class diem_hocba_dialog;
 }
 
-class chungchi_tienganh_dialog : public QDialog
+class diem_hocba_dialog : public QDialog
 {
     Q_OBJECT
 
@@ -20,15 +20,15 @@ public:
     };
     uint8_t type;
 
-    explicit chungchi_tienganh_dialog(Type type, QWidget *parent = nullptr);
-    ~chungchi_tienganh_dialog();
+    explicit diem_hocba_dialog(Type type, QWidget *parent = nullptr);
+    ~diem_hocba_dialog();
 
-    chungchi_tienganh_ptr edit_item;
+    diem_hocba_ptr edit_item;
     long id_thi_sinh;
-    void setEditItem(chungchi_tienganh_ptr &item);
+    void setEditItem(diem_hocba_ptr &item);
 
 private:
-    Ui::chungchi_tienganh_dialog *ui;
+    Ui::diem_hocba_dialog *ui;
     bool m_dragging = false;
     QPoint m_dragPosition;
 
@@ -43,4 +43,4 @@ private slots:
     void on_accept_clicked();
 };
 
-#endif // CHUNGCHI_TIENGANH_DIALOG_H
+#endif // DIEM_HOCBA_DIALOG_H

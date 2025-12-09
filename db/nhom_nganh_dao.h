@@ -43,6 +43,21 @@ inline std::optional<nhom_nganh_ptr> getNhomNganhById(long &id){
     }
 }
 
+inline std::optional<nhom_nganh_ptr> getNhomNganhByName(QString &name){
+    QList<nhom_nganh_ptr> list;
+    qx_query query;
+    query.where("ten_nhom_nganh").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+
+    if (err.isValid()) {
+        qDebug() << "Fetch error:" << err.text();
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
+}
+
 inline bool deleteNhomNganhById(long &id){
     auto item = getNhomNganhById(id);
     if (!item) return false;
