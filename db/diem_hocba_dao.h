@@ -54,6 +54,20 @@ inline std::optional<QList<diem_hocba_ptr>> getDiemHocbaByThiSinhId(long &id_thi
         return list;
 }
 
+inline std::optional<diem_hocba_ptr> getDiemHocbaByThiSinhIdAndName(long &id_thi_sinh, long &id_monhoc){
+    QList<diem_hocba_ptr> list;
+    qx_query query;
+    query.where("id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh))
+        .and_("id_monhoc").isEqualTo(QVariant::fromValue(id_monhoc));
+
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+    if (err.isValid())
+        return std::nullopt;
+    else
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+}
+
 inline bool deleteDiemHocbaById(long &id){
     diem_hocba_ptr item;
     item.reset(new diem_hocba(id));

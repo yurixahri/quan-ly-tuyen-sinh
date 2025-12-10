@@ -9,14 +9,14 @@ class thi_sinh
 {
 public:
     long id;
-    QString cccd;
-    QString ho_ten;
+    QString cccd = "";
+    QString ho_ten = "";
     QDate ngay_sinh;
-    QString gioi_tinh;
-    QString dia_chi;
-    QString email;
-    QString sdt;
-    QString sbd;
+    QString gioi_tinh = "";
+    QString dia_chi = "";
+    QString email = "";
+    QString sdt = "";
+    QString sbd = "";
 
     thi_sinh();
     thi_sinh(long &id) : id(id){}

@@ -41,5 +41,29 @@ inline std::optional<QList<QStringList>> readExcel(QString &file_path){
     return rows;
 }
 
+inline std::optional<QStringList> readHocBaMonHoc(QString &file_path){
+    Document xlsx(file_path);
+    if (!xlsx.load()) {
+        qDebug() << "File not found or failed to load.";
+        return std::nullopt;
+    }
+    QStringList sheets = xlsx.sheetNames();
+    xlsx.selectSheet(sheets.at(0));
+
+    auto dim = xlsx.dimension();
+    int row = dim.firstRow()+1;
+    int firstCol = 8;
+    int lastCol  = dim.lastColumn();
+
+    QStringList rowData;
+
+    for (int col = firstCol; col <= lastCol; ++col) {
+        auto cell = xlsx.cellAt(row, col);
+        rowData << (cell ? cell->value().toString() : "");
+    }
+
+    return rowData;
+}
+
 
 #endif // READ_EXCEL_H

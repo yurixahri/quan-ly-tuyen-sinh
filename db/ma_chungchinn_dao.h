@@ -4,9 +4,6 @@
 #include "db/models/ma_chungchinn.h"
 #include "utils/string.h"
 
-extern uint16_t page;
-extern uint16_t count;
-
 inline bool addMaChungchinn(QString &ma, QString &ten){
     ma_chungchinn_ptr adding;
     adding.reset(new ma_chungchinn());
@@ -62,13 +59,18 @@ inline std::optional<ma_chungchinn_ptr> getMaChungchinnById(long &id){
         return item;
 }
 
-inline std::optional<ma_chungchinn_ptr> getMaChungchinnByMa(QString &ma){
-    // QList<ma_chungchinn_ptr> list;
-    // QSqlError err = qx::dao::fetch(qx::dao::make_query(list).where("ma_ccnn = '" + ma + "'"));
-    // if (err.isValid())
-    //     return std::nullopt;
-    // else
-    //     return list.isEmpty() ? std::nullopt : std::make_optional(list.first());
+inline std::optional<ma_chungchinn_ptr> getMaChungchinnName(QString &name){
+    QList<ma_chungchinn_ptr> list;
+    qx_query query;
+    query.where("ten_ccnn").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query(query, list);
+
+    if (err.isValid()) {
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
 }
 
 inline bool deleteMaChungchinnById(long &id){

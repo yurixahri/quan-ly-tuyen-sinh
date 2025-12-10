@@ -5,7 +5,7 @@ QX_REGISTER_CPP(chungchi_tienganh)
 namespace qx {
 template<> void register_class(QxClass<chungchi_tienganh> & t)
 {
-    t.setName("chungchi_tienganh");
+    t.setName("chungchi_ngoaingu");
     t.id(&chungchi_tienganh::id, "id_cc");
     t.data(&chungchi_tienganh::diem, "diem");
     t.relationManyToOne(&chungchi_tienganh::thi_sinh, "id_thi_sinh");

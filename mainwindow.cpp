@@ -551,6 +551,21 @@ void MainWindow::on_import_sat_button_clicked(){
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
 }
 
+void MainWindow::on_import_ccnn_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importCCNN(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_import_hocba_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importHocBa(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
@@ -572,4 +587,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event){
 void MainWindow::on_close_clicked(){
     QCoreApplication::quit();
 }
+
+
+
+
+
 

@@ -42,8 +42,8 @@ inline std::optional<mon_hoc_ptr> getMonHocById(long &id){
 
 inline std::optional<mon_hoc_ptr> getMonHocByName(QString &name){
     QList<mon_hoc_ptr> list;
-    qx_query query;
-    query.where("ten_monhoc").isEqualTo(QVariant::fromValue(name));
+    qx_query query("where ten_monhoc ilike :name");
+    query.bind(":name", "%"+name+"%");
     QSqlError err = qx::dao::fetch_by_query(query, list);
 
     if (err.isValid()) {

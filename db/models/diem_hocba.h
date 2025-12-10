@@ -10,9 +10,9 @@ public:
     long id;
     thi_sinh_ptr thi_sinh;
     mon_hoc_ptr mon_hoc;
-    float lop10;
-    float lop11;
-    float lop12;
+    float lop10 = 0;
+    float lop11 = 0;
+    float lop12 = 0;
     diem_hocba();
     diem_hocba(long &id) : id(id){};
 };

@@ -29,11 +29,11 @@ SOURCES += \
     db/models/ma_nganh_tohop.cpp \
     db/models/ma_nganh.cpp \
     db/models/thi_sinh.cpp \
+    db/models/ma_chungchinn.cpp \
     db/models/chungchi_tienganh.cpp \
     db/models/diem_hocba.cpp \
     db/models/diem_thi_sat.cpp \
     db/models/doat_giai.cpp \
-    db/models/ma_chungchinn.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -65,11 +65,11 @@ HEADERS += \
     db/models/ma_nganh_ptxt.h \
     db/models/ma_nganh.h \
     db/models/thi_sinh.h \
+    db/models/ma_chungchinn.h \
     db/models/chungchi_tienganh.h \
     db/models/diem_hocba.h \
     db/models/diem_thi_sat.h \
     db/models/doat_giai.h \
-    db/models/ma_chungchinn.h \
     db/monhoc_dao.h \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \

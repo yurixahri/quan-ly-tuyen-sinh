@@ -76,6 +76,10 @@ private slots:
 
     void on_close_clicked();
 
+    void on_import_ccnn_button_clicked();
+
+    void on_import_hocba_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;
