@@ -23,6 +23,7 @@ private slots:
     void fillDiemSatTable();
     void fillDiemHocbaTable();
     void fillChungchiTienganhTable();
+    void fillDangKyXetTuyenTable();
 
     void on_diem_hocba_table_customContextMenuRequested(const QPoint &pos);
     void on_diem_sat_table_customContextMenuRequested(const QPoint &pos);
@@ -43,12 +44,19 @@ private slots:
     void updateChungchiTienganh(long id);
     void deleteChungchiTienganh(long id);
 
+    void updateDangKyXetTuyen(long id);
+    void deleteDangKyXetTuyen(long id);
+
     void on_add_diem_sat_button_clicked();
     void on_add_ccnn_button_clicked();
     void on_add_thanh_tich_button_clicked();
     void on_add_diem_hocba_button_clicked();
 
     void on_close_clicked();
+
+    void on_add_dang_ky_button_clicked();
+
+    void on_dang_ky_table_customContextMenuRequested(const QPoint &pos);
 
 private:
     Ui::thi_sinh_detail *ui;

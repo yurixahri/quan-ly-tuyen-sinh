@@ -4,12 +4,14 @@
 #include "db/doat_giai_dao.h"
 #include "db/diem_thi_sat_dao.h"
 #include "db/diem_hocba_dao.h"
+#include "db/dang_ky_xet_tuyen_dao.h"
 #include "db/chungchi_tienganh_dao.h"
 #include "ui/custom_message_box.h"
 #include "ui/thi_sinh/chungchi_tienganh_dialog.h"
 #include "ui/thi_sinh/diem_hocba_dialog.h"
 #include "ui/thi_sinh/diem_sat_dialog.h"
 #include "ui/thi_sinh/doat_giai_dialog.h"
+#include "ui/thi_sinh/dang_ky_xet_tuyen_dialog.h"
 
 #include <QMenu>
 
@@ -354,6 +356,91 @@ void thi_sinh_detail::deleteChungchiTienganh(long id){
     }
 }
 
+// ======== DANG KY XET TUYEN ========
+void thi_sinh_detail::fillDangKyXetTuyenTable(){
+    auto list = getDangKyByThiSinhId(item->id);
+    if (!list) {
+        qDebug() << "Error fetching dang_ky_xet_tuyen";
+        return;
+    }
+
+    ui->dang_ky_table->clearContents();
+    ui->dang_ky_table->setRowCount(0);
+    ui->dang_ky_table->setColumnCount(6);
+    ui->dang_ky_table->setHorizontalHeaderLabels({"ID Thí sinh", "ID Mã Ngành","Mã ngành", "Điểm", "Trạng thái", "PTXT"});
+
+    for (auto &item : *list) {
+        int row = ui->dang_ky_table->rowCount();
+        ui->dang_ky_table->insertRow(row);
+        ui->dang_ky_table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id_thi_sinh)));
+        ui->dang_ky_table->setItem(row, 1, new QTableWidgetItem(item->ma_nganh ? QString::number(item->ma_nganh->id) : ""));
+        ui->dang_ky_table->setItem(row, 2, new QTableWidgetItem(item->ma_nganh ? item->ma_nganh->nganh->ma_nganh : ""));
+        ui->dang_ky_table->setItem(row, 3, new QTableWidgetItem(QString::number(item->diem)));
+        ui->dang_ky_table->setItem(row, 4, new QTableWidgetItem(item->trang_thai));
+        ui->dang_ky_table->setItem(row, 5, new QTableWidgetItem(item->ptxt ? item->ptxt->ma : ""));
+    }
+
+    ui->dang_ky_table->setColumnHidden(0, true);
+    ui->dang_ky_table->setColumnHidden(1, true);
+}
+
+void thi_sinh_detail::on_add_dang_ky_button_clicked(){
+    dang_ky_xet_tuyen_dialog dlg(dang_ky_xet_tuyen_dialog::ADD, this);
+    dlg.id_thi_sinh = item->id;
+
+    if (dlg.exec() == QDialog::Accepted) {
+        fillDangKyXetTuyenTable();
+    }
+}
+
+void thi_sinh_detail::on_dang_ky_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem *tableItem = ui->dang_ky_table->itemAt(pos);
+
+    if (tableItem) {
+        QMenu contextMenu(tr("Context Menu"), this);
+        QAction *del = new QAction("Xóa", this);
+        QAction *change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=]() {
+            updateDangKyXetTuyen(ui->dang_ky_table->item(tableItem->row(), 1)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=]() {
+            deleteDangKyXetTuyen(ui->dang_ky_table->item(tableItem->row(), 1)->text().toLong());
+        });
+
+        contextMenu.exec(ui->dang_ky_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void thi_sinh_detail::updateDangKyXetTuyen(long id_ma_nganh){
+    auto dangky = getDangKyByIds(item->id, id_ma_nganh);
+    if (dangky) {
+        dang_ky_xet_tuyen_dialog dlg(dang_ky_xet_tuyen_dialog::CHANGE, this);
+        dlg.id_thi_sinh = item->id;
+        dlg.setEditItem(*dangky);
+
+        if (dlg.exec() == QDialog::Accepted) {
+            fillDangKyXetTuyenTable();
+        }
+    }
+}
+
+void thi_sinh_detail::deleteDangKyXetTuyen(long id_ma_nganh){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa đăng ký này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted) {
+        if (!deleteDangKyByIds(item->id, id_ma_nganh)) {
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        } else {
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillDangKyXetTuyenTable();
+    }
+}
+
+// ======== GENERAL ========
 void thi_sinh_detail::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
         m_dragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
@@ -381,5 +468,6 @@ void thi_sinh_detail::setThiSinh(thi_sinh_ptr item){
     fillDiemHocbaTable();
     fillChungchiTienganhTable();
     fillDoatGiaiTable();
+    fillDangKyXetTuyenTable();
 }
 

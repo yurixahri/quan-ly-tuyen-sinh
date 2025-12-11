@@ -469,9 +469,47 @@ void MainWindow::deletePtxt(long id){
 }
 
 // thi sinh
+void MainWindow::resetMaxThiSinhPageCount(){
+    auto max_page_count = getThiSinhPageCount();
+    ui->thi_sinh_current_page->setMaximum(max_page_count);
+    ui->thi_sinh_total_page->setText(QString::number(max_page_count));
+}
 
 void MainWindow::on_thi_sinh_button_clicked(){
     ui->stackedWidget->setCurrentIndex(7);
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+    ui->thi_sinh_current_page->setValue(1);
+    ui->thi_sinh_current_page->setMinimum(1);
+    resetMaxThiSinhPageCount();
+}
+
+void MainWindow::on_thi_sinh_current_page_editingFinished(){
+    resetMaxThiSinhPageCount();
+    uint page = ui->thi_sinh_current_page->value();
+    setThiSinhPage(page);
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_thi_sinh_current_page_valueChanged(int arg1){
+    resetMaxThiSinhPageCount();
+    uint page = ui->thi_sinh_current_page->value();
+    setThiSinhPage(page);
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_thi_sinh_previous_page_clicked(){
+    resetMaxThiSinhPageCount();
+    ui->thi_sinh_current_page->stepDown();
+    uint page = ui->thi_sinh_current_page->value();
+    setThiSinhPage(page);
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_thi_sinh_next_page_clicked(){
+    resetMaxThiSinhPageCount();
+    ui->thi_sinh_current_page->stepUp();
+    uint page = ui->thi_sinh_current_page->value();
+    setThiSinhPage(page);
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
 }
 
@@ -587,9 +625,4 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event){
 void MainWindow::on_close_clicked(){
     QCoreApplication::quit();
 }
-
-
-
-
-
 

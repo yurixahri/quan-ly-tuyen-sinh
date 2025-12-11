@@ -15,8 +15,17 @@
 #include "db/ptxt_dao.h"
 #include "db/monhoc_dao.h"
 
-static uint16_t page = 0;
-static uint16_t count = 100;
+static uint page = 0;
+static uint count = 100;
+
+inline uint getThiSinhPageCount(){
+    uint page = qCeil(qx::dao::count<thi_sinh_ptr>()/count);
+    return page;
+}
+
+inline void setThiSinhPage(uint &_page){
+    page = _page - 1;
+}
 
 inline bool addThiSinh(QString &cccd, QString &ho_ten,
                        QDate &ngay_sinh, QString &gioi_tinh,

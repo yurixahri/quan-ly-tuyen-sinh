@@ -47,7 +47,7 @@ inline std::optional<QList<diem_hocba_ptr>> getDiemHocbaByThiSinhId(long &id_thi
     QList<diem_hocba_ptr> list;
     qx_query query;
     query.where("id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
-    QSqlError err = qx::dao::fetch_by_query(query, list);
+    QSqlError err = qx::dao::fetch_by_query_with_relation("id_monhoc", query, list);
     if (err.isValid())
         return std::nullopt;
     else

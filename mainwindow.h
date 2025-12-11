@@ -69,16 +69,18 @@ private slots:
     void on_delete_all_monhoc_clicked();
     void on_import_tohop_clicked();
     void on_import_ptxt_clicked();
+    void on_thi_sinh_current_page_editingFinished();
+    void on_thi_sinh_previous_page_clicked();
+    void on_thi_sinh_next_page_clicked();
+    void resetMaxThiSinhPageCount();
 
     void on_ma_nganh_import_excel_clicked();
-
     void on_import_sat_button_clicked();
-
     void on_close_clicked();
-
     void on_import_ccnn_button_clicked();
-
     void on_import_hocba_button_clicked();
+
+    void on_thi_sinh_current_page_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

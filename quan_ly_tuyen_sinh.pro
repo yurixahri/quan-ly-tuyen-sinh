@@ -34,6 +34,7 @@ SOURCES += \
     db/models/diem_hocba.cpp \
     db/models/diem_thi_sat.cpp \
     db/models/doat_giai.cpp \
+    db/models/dang_ky_xet_tuyen.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
     ui/ptxt/ptxt_dialog.cpp \
     ui/thi_sinh/chungchi_tienganh_dialog.cpp \
+    ui/thi_sinh/dang_ky_xet_tuyen_dialog.cpp \
     ui/thi_sinh/diem_hocba_dialog.cpp \
     ui/thi_sinh/diem_sat_dialog.cpp \
     ui/thi_sinh/doat_giai_dialog.cpp \
@@ -70,6 +72,7 @@ HEADERS += \
     db/models/diem_hocba.h \
     db/models/diem_thi_sat.h \
     db/models/doat_giai.h \
+    db/models/dang_ky_xet_tuyen.h \
     db/monhoc_dao.h \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \
@@ -82,6 +85,7 @@ HEADERS += \
     db/doat_giai_dao.h \
     db/ma_chungchinn_dao.h \
     db/chungchi_tienganh_dao.h \
+    db/dang_ky_xet_tuyen_dao.h \
     excel/read_excel.h \
     logindialog.h \
     mainwindow.h \
@@ -101,6 +105,7 @@ HEADERS += \
     ui/nhom_nganh/nhom_nganh_dialog.h \
     ui/ptxt/ptxt_dialog.h \
     ui/thi_sinh/chungchi_tienganh_dialog.h \
+    ui/thi_sinh/dang_ky_xet_tuyen_dialog.h \
     ui/thi_sinh/diem_hocba_dialog.h \
     ui/thi_sinh/diem_sat_dialog.h \
     ui/thi_sinh/doat_giai_dialog.h \
@@ -122,6 +127,7 @@ FORMS += \
     ui/nhom_nganh/nhom_nganh_dialog.ui \
     ui/ptxt/ptxt_dialog.ui \
     ui/thi_sinh/chungchi_tienganh_dialog.ui \
+    ui/thi_sinh/dang_ky_xet_tuyen_dialog.ui \
     ui/thi_sinh/diem_hocba_dialog.ui \
     ui/thi_sinh/diem_sat_dialog.ui \
     ui/thi_sinh/doat_giai_dialog.ui \
