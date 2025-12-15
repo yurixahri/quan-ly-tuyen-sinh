@@ -3,6 +3,8 @@
 
 #include <QMenu>
 #include <QFileDialog>
+#include <QDialog>
+#include <QMenu>
 #include "pages/monhoc_page.h"
 #include "ui/add_mon_hoc_dialog.h"
 #include "ui/change_mon_hoc_dialog.h"
@@ -20,8 +22,20 @@
 #include "pages/ma_nganh_page.h"
 #include "ui/ma_nganh/ma_nganh_dialog.h"
 
+#include "db/ma_nganh_dao.h"
+
 #include "pages/ptxt_page.h"
 #include "ui/ptxt/ptxt_dialog.h"
+
+// new management pages & dialogs
+#include "pages/ccnn_page.h"
+#include "ui/ccnn/ccnn_dialog.h"
+#include "pages/ma_thanhtich_page.h"
+#include "ui/doat_giai/doatgiai_dialog.h"
+#include "pages/ma_dtut_page.h"
+#include "ui/dtut/dtut_dialog.h"
+#include "pages/ma_kvut_page.h"
+#include "ui/dtut/kvut_dialog.h"
 
 #include "pages/thi_sinh_page.h"
 #include "ui/thi_sinh/thi_sinh_dialog.h"
@@ -33,6 +47,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+
+    // Example shortcut: open CCNN manager with Ctrl+M
+    // QShortcut *openCcnn = new QShortcut(QKeySequence("Ctrl+M"), this);
+    // connect(openCcnn, &QShortcut::activated, this, &MainWindow::on_manage_ccnn_clicked);
 }
 
 MainWindow::~MainWindow(){
@@ -340,6 +358,249 @@ void MainWindow::on_ma_nganh_import_excel_clicked(){
     fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
 }
 
+void MainWindow::on_export_ma_nganh_button_clicked(){
+    QString path = QFileDialog::getSaveFileName(this, "Lưu file", "./ma_nganh.xlsx", "Excel (*.xlsx)");
+    if (path.isEmpty()) return;
+
+    if (exportMaNganhToExcel(path)){
+        custom_message_box("", "Xuất thành công", custom_message_box::Information).exec();
+    } else {
+        custom_message_box("", "Xuất thất bại", custom_message_box::Error).exec();
+    }
+}
+// ---- Management pages follow existing UI pattern ----
+
+void MainWindow::on_ccnn_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(8);
+    fillMaChungchinnTable(ui->ccnn_table, ui->ccnn_size);
+}
+
+void MainWindow::on_add_ccnn_button_clicked(){
+    ccnn_dialog dlg(ccnn_dialog::ADD, this);
+    if (dlg.exec() == QDialog::Accepted){
+        fillMaChungchinnTable(ui->ccnn_table, ui->ccnn_size);
+    }
+}
+
+void MainWindow::on_ccnn_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->ccnn_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateMaChungchinn(ui->ccnn_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteMaChungchinn(ui->ccnn_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->ccnn_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::updateMaChungchinn(long id){
+    auto item = getMaChungchinnById(id);
+    if (item){
+        ccnn_dialog dlg(ccnn_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+        if (dlg.exec() == QDialog::Accepted){
+            fillMaChungchinnTable(ui->ccnn_table, ui->ccnn_size);
+        }
+    }
+}
+
+void MainWindow::deleteMaChungchinn(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa chứng chỉ này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteMaChungchinnById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaChungchinnTable(ui->ccnn_table, ui->ccnn_size);
+    }
+}
+
+// thanh tich
+
+void MainWindow::on_thanh_tich_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(9);
+    fillMaThanhTichTable(ui->thanh_tich_table, ui->thanh_tich_size);
+}
+
+void MainWindow::on_add_thanh_tich_button_clicked(){
+    doatgiai_dialog dlg(doatgiai_dialog::ADD, this);
+    if (dlg.exec() == QDialog::Accepted){
+        fillMaThanhTichTable(ui->thanh_tich_table, ui->thanh_tich_size);
+    }
+}
+
+void MainWindow::on_thanh_tich_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->thanh_tich_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateMaThanhTich(ui->thanh_tich_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteMaThanhTich(ui->thanh_tich_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->thanh_tich_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::updateMaThanhTich(long id){
+    auto item = getMaThanhTichById(id);
+    if (item){
+        doatgiai_dialog dlg(doatgiai_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+        if (dlg.exec() == QDialog::Accepted){
+            fillMaThanhTichTable(ui->thanh_tich_table, ui->thanh_tich_size);
+        }
+    }
+}
+
+void MainWindow::deleteMaThanhTich(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa thành tích này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteMaThanhTichById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaThanhTichTable(ui->thanh_tich_table, ui->thanh_tich_size);
+    }
+}
+
+// doi tuong uu tien
+
+void MainWindow::on_dtut_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(10);
+    fillMaDtutTable(ui->dtut_table, ui->dtut_size);
+}
+
+void MainWindow::on_add_dtut_button_clicked(){
+    dtut_dialog dlg(dtut_dialog::ADD, this);
+    if (dlg.exec() == QDialog::Accepted){
+        fillMaDtutTable(ui->dtut_table, ui->dtut_size);
+    }
+}
+
+void MainWindow::on_dtut_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->dtut_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateMaDtut(ui->dtut_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteMaDtut(ui->dtut_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->dtut_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::updateMaDtut(long id){
+    auto item = getMaDtutById(id);
+    if (item){
+        dtut_dialog dlg(dtut_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+        if (dlg.exec() == QDialog::Accepted){
+            fillMaDtutTable(ui->dtut_table, ui->dtut_size);
+        }
+    }
+}
+
+void MainWindow::deleteMaDtut(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa điểm ưu tiên này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteMaDtutById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaDtutTable(ui->dtut_table, ui->dtut_size);
+    }
+}
+
+void MainWindow::on_kvut_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(11);
+    fillMaKvutTable(ui->kvut_table, ui->kvut_size);
+}
+
+void MainWindow::on_add_kvut_button_clicked(){
+    kvut_dialog dlg(kvut_dialog::ADD, this);
+    if (dlg.exec() == QDialog::Accepted){
+        fillMaKvutTable(ui->kvut_table, ui->kvut_size);
+    }
+}
+
+void MainWindow::on_kvut_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem* item = ui->kvut_table->itemAt(pos);
+
+    if (item){
+        QMenu contextMenu(tr(""), this);
+        QAction* del = new QAction("Xóa", this);
+        QAction* change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=](){
+            updateMaKvut(ui->kvut_table->item(item->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=](){
+            deleteMaKvut(ui->kvut_table->item(item->row(), 0)->text().toLong());
+        });
+        contextMenu.exec(ui->kvut_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::updateMaKvut(long id){
+    auto item = getMaKvutById(id);
+    if (item){
+        kvut_dialog dlg(kvut_dialog::CHANGE, this);
+        dlg.setEditItem(*item);
+        if (dlg.exec() == QDialog::Accepted){
+            fillMaKvutTable(ui->kvut_table, ui->kvut_size);
+        }
+    }
+}
+
+void MainWindow::deleteMaKvut(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa khu vực ưu tiên này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted){
+        if (!deleteMaKvutById(id)){
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        }else{
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillMaKvutTable(ui->kvut_table, ui->kvut_size);
+    }
+}
+
+
+// ma nganh
+
 void MainWindow::on_ma_nganh_table_customContextMenuRequested(const QPoint &pos){
     QTableWidgetItem* item = ui->ma_nganh_table->itemAt(pos);
 
@@ -472,14 +733,20 @@ void MainWindow::deletePtxt(long id){
 void MainWindow::resetMaxThiSinhPageCount(){
     auto max_page_count = getThiSinhPageCount();
     ui->thi_sinh_current_page->setMaximum(max_page_count);
+    ui->thi_sinh_current_page->setMinimum(1);
     ui->thi_sinh_total_page->setText(QString::number(max_page_count));
+}
+
+
+void MainWindow::on_thi_sinh_tim_kiem_editingFinished(){
+    search = ui->thi_sinh_tim_kiem->text();
+    on_thi_sinh_button_clicked();
 }
 
 void MainWindow::on_thi_sinh_button_clicked(){
     ui->stackedWidget->setCurrentIndex(7);
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
     ui->thi_sinh_current_page->setValue(1);
-    ui->thi_sinh_current_page->setMinimum(1);
     resetMaxThiSinhPageCount();
 }
 
@@ -491,7 +758,6 @@ void MainWindow::on_thi_sinh_current_page_editingFinished(){
 }
 
 void MainWindow::on_thi_sinh_current_page_valueChanged(int arg1){
-    resetMaxThiSinhPageCount();
     uint page = ui->thi_sinh_current_page->value();
     setThiSinhPage(page);
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
@@ -605,6 +871,29 @@ void MainWindow::on_import_hocba_button_clicked(){
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
 }
 
+void MainWindow::on_import_doatgiai_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importDoatGiai(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_import_uutien_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importUutien(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
+
+void MainWindow::on_import_dkxt_button_clicked(){
+    QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
+    if (!path.isEmpty()){
+        importNguyenVong(path);
+    }
+    fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
+}
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
         m_dragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
@@ -625,4 +914,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event){
 void MainWindow::on_close_clicked(){
     QCoreApplication::quit();
 }
+
+
+
+
+
+
 

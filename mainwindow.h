@@ -75,12 +75,46 @@ private slots:
     void resetMaxThiSinhPageCount();
 
     void on_ma_nganh_import_excel_clicked();
+    void on_export_ma_nganh_button_clicked();
     void on_import_sat_button_clicked();
     void on_close_clicked();
     void on_import_ccnn_button_clicked();
     void on_import_hocba_button_clicked();
 
     void on_thi_sinh_current_page_valueChanged(int arg1);
+
+    void on_add_ccnn_button_clicked();
+    void on_ccnn_table_customContextMenuRequested(const QPoint &pos);
+    void updateMaChungchinn(long id);
+    void deleteMaChungchinn(long id);
+
+    void on_add_thanh_tich_button_clicked();
+    void on_thanh_tich_table_customContextMenuRequested(const QPoint &pos);
+    void updateMaThanhTich(long id);
+    void deleteMaThanhTich(long id);
+
+    void on_add_dtut_button_clicked();
+    void on_dtut_table_customContextMenuRequested(const QPoint &pos);
+    void updateMaDtut(long id);
+    void deleteMaDtut(long id);
+
+    void on_add_kvut_button_clicked();
+    void on_kvut_table_customContextMenuRequested(const QPoint &pos);
+    void updateMaKvut(long id);
+    void deleteMaKvut(long id);
+
+    void on_ccnn_button_clicked();
+    void on_thanh_tich_button_clicked();
+    void on_dtut_button_clicked();
+    void on_kvut_button_clicked();
+
+    void on_import_doatgiai_button_clicked();
+
+    void on_thi_sinh_tim_kiem_editingFinished();
+
+    void on_import_uutien_button_clicked();
+
+    void on_import_dkxt_button_clicked();
 
 private:
     Ui::MainWindow *ui;

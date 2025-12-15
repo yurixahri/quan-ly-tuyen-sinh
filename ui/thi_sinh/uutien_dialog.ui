@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>doat_giai_dialog</class>
- <widget class="QDialog" name="doat_giai_dialog">
+ <class>uutien_dialog</class>
+ <widget class="QDialog" name="uutien_dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>268</height>
+    <width>535</width>
+    <height>191</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,30 @@ QLabel{
 	color: rgb(240,248,255)
 }
 
+QTableWidget {
+        background: transparent;
+        border: 1px solid rgb(181, 208, 220);
+        color: rgb(240,248,255);
+        gridline-color: rgb(181, 208, 220);
+        alternate-background-color: rgba(0, 95, 197, 40);
+        border-radius: 3px;
+    }
 
+QTableWidget QHeaderView, QTableWidget QHeaderView::section {
+    background: transparent;
+    color: rgb(240,248,255);
+}
+
+QTableWidget QHeaderView{
+    border-bottom: 1px solid rgb(181, 208, 220);
+}
+
+QTableWidget QHeaderView::section {
+    background: rgba(0, 0, 0, 20);
+    border-top: 1px solid rgb(181, 208, 220);
+    border-right: 1px solid rgb(181, 208, 220);
+    gridline-color: rgb(181, 208, 220);
+}
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -183,12 +206,12 @@ QLabel{
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Môn học</string>
+            <string>Đối tượng ưu tiên</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="mon_hoc"/>
+          <widget class="QComboBox" name="dtut"/>
          </item>
         </layout>
        </widget>
@@ -223,102 +246,12 @@ QLabel{
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Thành tích</string>
+            <string>Khu vực ưu tiên</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="thanh_tich"/>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="horizontalWidget_11" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <property name="leftMargin">
-          <number>10</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>10</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_10">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Điểm thi</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="diem">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum">
-            <double>1000.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="horizontalWidget_14" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_14">
-         <property name="leftMargin">
-          <number>10</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>10</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_12">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Phương thức xét tuyển</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="ptxt"/>
+          <widget class="QComboBox" name="kvut"/>
          </item>
         </layout>
        </widget>

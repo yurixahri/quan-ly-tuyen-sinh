@@ -66,8 +66,8 @@ inline std::optional<diem_thi_sat_ptr> getDiemThiSatById(long &id){
 inline std::optional<QList<diem_thi_sat_ptr>> getDiemThiSatByThiSinhId(long &id_thi_sinh){
     QList<diem_thi_sat_ptr> list;
     qx_query query;
-    query.where("id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
-    QSqlError err = qx::dao::fetch_by_query_with_relation("id_ptxt", query, list);
+    query.where("diem_thi_sat.id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
+    QSqlError err = qx::dao::fetch_by_query_with_all_relation(query, list);
     if (err.isValid())
         return std::nullopt;
     else

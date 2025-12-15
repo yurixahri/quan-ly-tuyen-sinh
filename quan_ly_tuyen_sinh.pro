@@ -20,6 +20,10 @@ CONFIG += c++17
 
 SOURCES += \
     db/db.cpp \
+    db/models/ma_dtut.cpp \
+    db/models/ma_kvut.cpp \
+    db/models/ma_chungchinn.cpp \
+    db/models/ma_thanhtich.cpp \
     db/models/mon_hoc.cpp \
     db/models/nhom_nganh.cpp \
     db/models/ptxt.cpp \
@@ -29,19 +33,23 @@ SOURCES += \
     db/models/ma_nganh_tohop.cpp \
     db/models/ma_nganh.cpp \
     db/models/thi_sinh.cpp \
-    db/models/ma_chungchinn.cpp \
     db/models/chungchi_tienganh.cpp \
     db/models/diem_hocba.cpp \
     db/models/diem_thi_sat.cpp \
     db/models/doat_giai.cpp \
     db/models/dang_ky_xet_tuyen.cpp \
+    db/models/uutien.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
     ui/add_mon_hoc_dialog.cpp \
+    ui/ccnn/ccnn_dialog.cpp \
     ui/change_mon_hoc_dialog.cpp \
     ui/components/MultiSelectComboBox.cpp \
     ui/custom_message_box.cpp \
+    ui/doat_giai/doatgiai_dialog.cpp \
+    ui/dtut/dtut_dialog.cpp \
+    ui/dtut/kvut_dialog.cpp \
     ui/ma_nganh/ma_nganh_dialog.cpp \
     ui/nganh/nganh_dialog.cpp \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
@@ -53,11 +61,16 @@ SOURCES += \
     ui/thi_sinh/doat_giai_dialog.cpp \
     ui/thi_sinh/thi_sinh_detail.cpp \
     ui/thi_sinh/thi_sinh_dialog.cpp \
+    ui/thi_sinh/uutien_dialog.cpp \
     ui/tohop/add_tohop_dialog.cpp \
     utils/config.cpp
 
 HEADERS += \
     db/db.h \
+    db/models/ma_chungchinn.h \
+    db/models/ma_dtut.h \
+    db/models/ma_kvut.h \
+    db/models/ma_thanhtich.h \
     db/models/mon_hoc.h \
     db/models/nhom_nganh.h \
     db/models/ptxt.h \
@@ -67,12 +80,15 @@ HEADERS += \
     db/models/ma_nganh_ptxt.h \
     db/models/ma_nganh.h \
     db/models/thi_sinh.h \
-    db/models/ma_chungchinn.h \
     db/models/chungchi_tienganh.h \
     db/models/diem_hocba.h \
     db/models/diem_thi_sat.h \
     db/models/doat_giai.h \
     db/models/dang_ky_xet_tuyen.h \
+    db/ma_dtut_dao.h \
+    db/ma_kvut_dao.h \
+    db/ma_thanhtich_dao.h \
+    db/models/uutien.h \
     db/monhoc_dao.h \
     db/nganh_dao.h \
     db/nhom_nganh_dao.h \
@@ -86,10 +102,15 @@ HEADERS += \
     db/ma_chungchinn_dao.h \
     db/chungchi_tienganh_dao.h \
     db/dang_ky_xet_tuyen_dao.h \
+    db/uutien_dao.h \
     excel/read_excel.h \
     logindialog.h \
     mainwindow.h \
+    pages/ccnn_page.h \
+    pages/ma_dtut_page.h \
+    pages/ma_kvut_page.h \
     pages/ma_nganh_page.h \
+    pages/ma_thanhtich_page.h \
     pages/monhoc_page.h \
     pages/nganh_page.h \
     pages/nhom_nganh_page.h \
@@ -97,9 +118,13 @@ HEADERS += \
     pages/thi_sinh_page.h \
     pages/tohop_page.h \
     ui/add_mon_hoc_dialog.h \
+    ui/ccnn/ccnn_dialog.h \
     ui/change_mon_hoc_dialog.h \
     ui/components/MultiSelectComboBox.h \
     ui/custom_message_box.h \
+    ui/doat_giai/doatgiai_dialog.h \
+    ui/dtut/dtut_dialog.h \
+    ui/dtut/kvut_dialog.h \
     ui/ma_nganh/ma_nganh_dialog.h \
     ui/nganh/nganh_dialog.h \
     ui/nhom_nganh/nhom_nganh_dialog.h \
@@ -111,6 +136,7 @@ HEADERS += \
     ui/thi_sinh/doat_giai_dialog.h \
     ui/thi_sinh/thi_sinh_detail.h \
     ui/thi_sinh/thi_sinh_dialog.h \
+    ui/thi_sinh/uutien_dialog.h \
     ui/tohop/add_tohop_dialog.h \
     utils/config.h \
     utils/fs.h \
@@ -120,8 +146,12 @@ FORMS += \
     logindialog.ui \
     mainwindow.ui \
     ui/add_mon_hoc_dialog.ui \
+    ui/ccnn/ccnn_dialog.ui \
     ui/change_mon_hoc_dialog.ui \
     ui/custom_message_box.ui \
+    ui/doat_giai/doatgiai_dialog.ui \
+    ui/dtut/dtut_dialog.ui \
+    ui/dtut/kvut_dialog.ui \
     ui/ma_nganh/ma_nganh_dialog.ui \
     ui/nganh/nganh_dialog.ui \
     ui/nhom_nganh/nhom_nganh_dialog.ui \
@@ -133,6 +163,7 @@ FORMS += \
     ui/thi_sinh/doat_giai_dialog.ui \
     ui/thi_sinh/thi_sinh_detail.ui \
     ui/thi_sinh/thi_sinh_dialog.ui \
+    ui/thi_sinh/uutien_dialog.ui \
     ui/tohop/add_tohop_dialog.ui
 
 # Default rules for deployment.

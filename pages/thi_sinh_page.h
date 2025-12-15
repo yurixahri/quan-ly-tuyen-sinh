@@ -23,7 +23,7 @@ void fillThiSinhTable(QTableWidget *table, QLabel *size){
         table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
         table->setItem(row, 1, new QTableWidgetItem(item->cccd));
         table->setItem(row, 2, new QTableWidgetItem(item->ho_ten));
-        table->setItem(row, 3, new QTableWidgetItem(item->ngay_sinh.toString() ));
+        table->setItem(row, 3, new QTableWidgetItem(item->ngay_sinh.toString("dd/MM/yyyy") ));
         table->setItem(row, 4, new QTableWidgetItem(item->gioi_tinh));
         table->setItem(row, 5, new QTableWidgetItem(item->email));
         table->setItem(row, 6, new QTableWidgetItem(item->sdt));

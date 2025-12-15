@@ -8,7 +8,7 @@ class ma_chungchinn
 public:
     long id;
     QString ma;
-    QString ten;
+    QString ten = "";
 
     ma_chungchinn();
     ma_chungchinn(long &id) : id(id){};

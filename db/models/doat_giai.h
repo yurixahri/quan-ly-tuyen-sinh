@@ -6,6 +6,7 @@
 #include "db/models/thi_sinh.h"
 #include "db/models/mon_hoc.h"
 #include "db/models/ptxt.h"
+#include "db/models/ma_thanhtich.h"
 
 class doat_giai
 {
@@ -13,7 +14,7 @@ public:
     long id;
     thi_sinh_ptr thi_sinh;
     mon_hoc_ptr mon_hoc;
-    QString thanh_tich;
+    ma_thanhtich_ptr thanh_tich;
     int diem_thanh_tich;
     ptxt_ptr ptxt;
 

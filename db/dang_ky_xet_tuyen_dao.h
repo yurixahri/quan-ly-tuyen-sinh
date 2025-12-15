@@ -65,7 +65,7 @@ inline std::optional<dang_ky_xet_tuyen_ptr> getDangKyByIds(long &id_thi_sinh, lo
 inline std::optional<QList<dang_ky_xet_tuyen_ptr>> getDangKyByThiSinhId(long &id_thi_sinh) {
     QList<dang_ky_xet_tuyen_ptr> list;
     qx_query query;
-    query.where("id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
+    query.where("dang_ky_xet_tuyen.id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
     QSqlError err = qx::dao::fetch_by_query_with_relation("*->*", query, list);
     if (err.isValid()) return std::nullopt;
     return list;

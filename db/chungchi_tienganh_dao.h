@@ -45,8 +45,8 @@ inline std::optional<QList<chungchi_tienganh_ptr>> getChungchiTienganhByThiSinhI
     QStringList relations;
     relations.append("id_ptxt");
     relations.append("id_ccnn");
-    query.where("id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
-    QSqlError err = qx::dao::fetch_by_query_with_relation(relations, query, list);
+    query.where("chungchi_ngoaingu.id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
+    QSqlError err = qx::dao::fetch_by_query_with_all_relation(query, list);
     if (err.isValid())
         return std::nullopt;
     else

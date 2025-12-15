@@ -11,15 +11,34 @@
 #include "db/diem_thi_sat_dao.h"
 #include "db/diem_hocba_dao.h"
 #include "db/chungchi_tienganh_dao.h"
+#include "db/doat_giai_dao.h"
+#include "db/ma_thanhtich_dao.h"
 #include "db/ma_chungchinn_dao.h"
+#include "db/ma_nganh_dao.h"
 #include "db/ptxt_dao.h"
 #include "db/monhoc_dao.h"
 
+#include "db/ma_dtut_dao.h"
+#include "db/ma_kvut_dao.h"
+#include "db/uutien_dao.h"
+#include "db/dang_ky_xet_tuyen_dao.h"
+
 static uint page = 0;
 static uint count = 100;
+static QString search = "";
+
+inline void setThiSinhSearchValue(QString &_search){
+    search = _search;
+}
 
 inline uint getThiSinhPageCount(){
-    uint page = qCeil(qx::dao::count<thi_sinh_ptr>()/count);
+    qx_query query("where ho_ten ilike :ten or so_cccd ilike :cccd");
+    query.bind(":ten", "%"+search+"%");
+    query.bind(":cccd", "%"+search+"%");
+
+    auto total = qx::dao::count<thi_sinh_ptr>(query);
+    uint page = total/count;
+    if (total%count != 0) ++page;
     return page;
 }
 
@@ -84,8 +103,12 @@ inline bool changeThiSinh(thi_sinh_ptr &item, QString &cccd, QString &ho_ten,
 inline std::optional<QList<thi_sinh_ptr>> getAllThiSinh(){
     QList<thi_sinh_ptr> list;
 
-    qx_query query;
-    query.limit(count, page*count);
+    qx_query query("where ho_ten ilike :ten or so_cccd ilike :cccd limit :limit offset :offset");
+    query.bind(":ten", "%"+search+"%");
+    query.bind(":cccd", "%"+search+"%");
+    query.bind(":limit", count);
+    query.bind(":offset", page*count);
+
     QSqlError err = qx::dao::fetch_by_query(query, list);
 
     if (err.isValid()) {
@@ -182,6 +205,31 @@ inline void importDiemSat(QString &path){
             }
             sat->ptxt = ptxt_opt.value();
 
+            doat_giai_ptr doatgiai;
+            doatgiai.reset(new doat_giai());
+            while (true){
+                if (row[4].isEmpty()) break;
+                auto thanhtich_opt = getMaThanhTichByName(row[5]);
+                if (thanhtich_opt){
+                    doatgiai->thanh_tich = thanhtich_opt.value();
+                    break;
+                }else{
+                    ma_thanhtich_ptr thanhtich;
+                    thanhtich.reset(new ma_thanhtich());
+                    thanhtich->ma = row[5];
+                    thanhtich->diem = row[7].toFloat();
+                    addMaThanhTich(thanhtich->ma, thanhtich->ten, thanhtich->diem);
+                }
+            }
+            doatgiai->thi_sinh = adding;
+            auto monhoc_opt = getMonHocByName(row[6]);
+            if (!monhoc_opt){
+                custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+            doatgiai->mon_hoc = monhoc_opt.value();
+
+            session += qx::dao::insert(doatgiai, session.database());
             session += qx::dao::insert(sat, session.database());
             if (!session.isValid()){
                 custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
@@ -246,7 +294,31 @@ inline void importCCNN(QString &path){
             }
             ccnn->ptxt = ptxt_opt.value();
 
+            doat_giai_ptr doatgiai;
+            doatgiai.reset(new doat_giai());
+            while (true){
+                if (row[4].isEmpty()) break;
+                auto thanhtich_opt = getMaThanhTichByName(row[5]);
+                if (thanhtich_opt){
+                    doatgiai->thanh_tich = thanhtich_opt.value();
+                    break;
+                }else{
+                    ma_thanhtich_ptr thanhtich;
+                    thanhtich.reset(new ma_thanhtich());
+                    thanhtich->ma = row[5];
+                    thanhtich->diem = row[7].toFloat();
+                    addMaThanhTich(thanhtich->ma, thanhtich->ten, thanhtich->diem);
+                }
+            }
+            doatgiai->thi_sinh = adding;
+            auto monhoc_opt = getMonHocByName(row[6]);
+            if (!monhoc_opt){
+                custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+            doatgiai->mon_hoc = monhoc_opt.value();
 
+            session += qx::dao::insert(doatgiai, session.database());
             session += qx::dao::insert(ccnn, session.database());
             if (!session.isValid()){
                 custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
@@ -360,5 +432,214 @@ inline void importHocBa(QString &path){
         }
     }
 }
+
+
+inline void importDoatGiai(QString &path){
+    qx::QxSession session;
+    int index = 3;
+    auto rows = readExcel(path);
+
+    if (rows->first().length() != 8 || !rows){
+        custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
+        return;
+    }else{
+        for (auto &row : *rows){
+            thi_sinh_ptr adding;
+            adding.reset(new thi_sinh());
+            for (auto &string : row) trimLeadingAndTrailing(string);
+
+            while (true){
+                auto thi_sinh_opt = getThiSinhByCCCD(row[3]);
+                if ( thi_sinh_opt){
+                    adding=  thi_sinh_opt.value();
+                    adding->ho_ten = row[0]+ " " + row[1];
+                    adding->gioi_tinh = row[2];
+                    changeThiSinh(adding, adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
+                    break;
+                }else{
+                    adding->cccd = row[3];
+                    adding->ho_ten = row[0]+ " " + row[1];
+                    adding->gioi_tinh = row[2];
+                    addThiSinh(adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
+                }
+            }
+
+            doat_giai_ptr doatgiai;
+            doatgiai.reset(new doat_giai());
+            while (true){
+                if (row[4].isEmpty()) break;
+                auto thanhtich_opt = getMaThanhTichByName(row[4]);
+                if (thanhtich_opt){
+                    doatgiai->thanh_tich = thanhtich_opt.value();
+                    break;
+                }else{
+                    ma_thanhtich_ptr thanhtich;
+                    thanhtich.reset(new ma_thanhtich());
+                    thanhtich->ma = row[4];
+                    addMaThanhTich(thanhtich->ma, thanhtich->ten, thanhtich->diem);
+                }
+            }
+
+            doatgiai->thi_sinh = adding;
+            doatgiai->diem_thanh_tich = row[6].toFloat();
+
+            auto ptxt_opt = getPtxtByName(row[7]);
+            if (!ptxt_opt){
+                custom_message_box("", "Phương thức xét tuyển không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+            doatgiai->ptxt = ptxt_opt.value();
+
+            auto monhoc_opt = getMonHocByName(row[5]);
+            if (!monhoc_opt){
+                custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+            doatgiai->mon_hoc = monhoc_opt.value();
+
+
+            session += qx::dao::insert(doatgiai, session.database());
+            if (!session.isValid()){
+                custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+                break;
+            }
+            ++index;
+        }
+    }
+}
+
+inline void importUutien(QString &path){
+    qx::QxSession session;
+    int index = 3;
+    auto rows = readExcel(path);
+
+    if (rows->first().length() != 9 || !rows){
+        custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
+        return;
+    }else{
+        for (auto &row : *rows){
+            thi_sinh_ptr adding;
+            adding.reset(new thi_sinh());
+            for (auto &string : row) trimLeadingAndTrailing(string);
+
+            while (true){
+                auto thi_sinh_opt = getThiSinhByCCCD(row[2]);
+                if ( thi_sinh_opt){
+                    adding = thi_sinh_opt.value();
+                    adding->ho_ten = row[1];
+                    adding->sbd = row[0];
+                    adding->gioi_tinh = row[4];
+                    adding->ngay_sinh = QDate::fromString(row[3], "dd/MM/yyyy");
+                    changeThiSinh(adding, adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
+                    break;
+                }else{
+                    adding->cccd = row[2];
+                    adding->ho_ten = row[1];
+                    adding->sbd = row[0];
+                    adding->gioi_tinh = row[4];
+                    adding->ngay_sinh = QDate::fromString(row[3], "dd/MM/yyyy");
+                    addThiSinh(adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
+                }
+            }
+
+            uutien_ptr ut;
+            ut.reset(new uutien());
+            ut->thi_sinh = adding;
+            if (!row[5].isEmpty()){
+                while (true) {
+                    auto ma_dtut_opt = getMaDtutByName(row[5]);
+                    if (ma_dtut_opt){
+                        ut->dtut = ma_dtut_opt.value();
+                        //ut->dtut->diem = row[6].toFloat();
+                        // changeMaDtut(ut->dtut, ut->dtut->ma, ut->dtut->ten, ut->dtut->diem);
+                        break;
+                    }else{
+                        ma_dtut_ptr dtut;
+                        dtut.reset(new ma_dtut());
+                        dtut->ma = row[5];
+                        dtut->diem = row[6].toFloat();
+                        addMaDtut(dtut->ma, dtut->ten, dtut->diem);
+                    }
+                }
+            }
+
+            if (!row[7].isEmpty()){
+                while (true) {
+                    auto ma_kvut_opt = getMaKvutByName(row[7]);
+                    if (ma_kvut_opt){
+                        ut->kvut = ma_kvut_opt.value();
+                        // ut->kvut->diem = row[8].toFloat();
+                        //changeMaKvut(ut->kvut, ut->kvut->ma, ut->kvut->ten, ut->kvut->diem);
+                        break;
+                    }else{
+                        ma_kvut_ptr kvut;
+                        kvut.reset(new ma_kvut());
+                        kvut->ma = row[7];
+                        kvut->diem = row[8].toFloat();
+                        addMaKvut(kvut->ma, kvut->ten, kvut->diem);
+                    }
+                }
+            }
+
+
+            QSqlError err = qx::dao::insert(ut);
+            if (err.isValid()){
+
+            }
+
+            ++index;
+        }
+    }
+}
+
+inline void importNguyenVong(QString &path){
+    qx::QxSession session;
+    int index = 3;
+    auto rows = readExcel(path);
+
+    if (rows->first().length() < 4 || !rows){
+        custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
+        return;
+    }else{
+        for (auto &row : *rows){
+            thi_sinh_ptr adding;
+            adding.reset(new thi_sinh());
+            for (auto &string : row) trimLeadingAndTrailing(string);
+
+            while (true){
+                auto thi_sinh_opt = getThiSinhByCCCD(row[0]);
+                if (thi_sinh_opt){
+                    adding = thi_sinh_opt.value();
+                    break;
+                }else{
+                    adding->cccd = row[0];
+                    addThiSinh(adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
+                }
+            }
+
+            dang_ky_xet_tuyen_ptr dkxt;
+            dkxt.reset(new dang_ky_xet_tuyen());
+
+            auto ma_nganh_opt = getMaNganhByName(row[2]);
+            if (!ma_nganh_opt){
+                custom_message_box("", "Mã ngành không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                return;
+            }
+            dkxt->ma_nganh = ma_nganh_opt.value();
+            dkxt->thi_sinh = adding;
+            dkxt->id_thi_sinh = adding->id;
+            dkxt->id_ma_nganh = dkxt->ma_nganh->id;
+
+            QSqlError err = qx::dao::insert(dkxt);
+            if (err.isValid()){
+
+            }
+            ++index;
+        }
+    }
+}
+
+
 
 #endif // THI_SINH_DAO_H

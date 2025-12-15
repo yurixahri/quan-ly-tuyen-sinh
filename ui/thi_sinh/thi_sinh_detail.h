@@ -24,11 +24,13 @@ private slots:
     void fillDiemHocbaTable();
     void fillChungchiTienganhTable();
     void fillDangKyXetTuyenTable();
+    void fillUuTienTable();
 
     void on_diem_hocba_table_customContextMenuRequested(const QPoint &pos);
     void on_diem_sat_table_customContextMenuRequested(const QPoint &pos);
     void on_thanh_tich_table_customContextMenuRequested(const QPoint &pos);
     void on_ccnn_table_customContextMenuRequested(const QPoint &pos);
+    void on_uutien_table_customContextMenuRequested(const QPoint &pos);
 
     void updateDoatGiai(long id);
     void deleteDoatGiai(long id);
@@ -47,10 +49,14 @@ private slots:
     void updateDangKyXetTuyen(long id);
     void deleteDangKyXetTuyen(long id);
 
+    void updateUuTien(long id);
+    void deleteUuTien(long id);
+
     void on_add_diem_sat_button_clicked();
     void on_add_ccnn_button_clicked();
     void on_add_thanh_tich_button_clicked();
     void on_add_diem_hocba_button_clicked();
+    void on_add_uutien_button_clicked();
 
     void on_close_clicked();
 

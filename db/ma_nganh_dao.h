@@ -13,6 +13,8 @@
 #include "ui/custom_message_box.h"
 #include "utils/string.h"
 
+#include "xlsxdocument.h"
+
 inline bool addMaNganh(long &id_nganh, QList<QVariant> &list_tohop, int &chi_tieu, QString &ghi_chu){
     ma_nganh_ptr adding;
     adding.reset(new ma_nganh());
@@ -102,6 +104,21 @@ inline std::optional<ma_nganh_ptr> getMaNganhById(long &id){
     }
 }
 
+inline std::optional<ma_nganh_ptr> getMaNganhByName(QString &name){
+    QList<ma_nganh_ptr> list;
+    qx_query query;
+    query.where("nganh.ma_nganh").isEqualTo(QVariant::fromValue(name));
+    QSqlError err = qx::dao::fetch_by_query_with_relation("*->*", query, list);
+
+    if (err.isValid()) {
+        qDebug() << "Fetch error:" << err.text();
+        return std::nullopt;
+    } else {
+        if (list.isEmpty()) return std::nullopt;
+        return list.first();
+    }
+}
+
 inline bool deleteMaNganhById(long &id){
     qx::QxSession session;
     auto item = std::make_shared<ma_nganh>(id);
@@ -174,7 +191,6 @@ inline void importMaNganh(QString &path){
                 adding->list_tohop.append(temp);
             }
 
-            qx::QxSession session;
             session += qx::dao::insert(adding, session.database());
 
             for (auto &item : adding->list_tohop){
@@ -189,6 +205,42 @@ inline void importMaNganh(QString &path){
             ++index;
         }
     }
+}
+
+inline bool exportMaNganhToExcel(QString &path){
+    auto list_opt = getAllMaNganh();
+    if (!list_opt) return false;
+    auto list = *list_opt;
+
+    QXlsx::Document xlsx;
+
+    // Header
+    int row = 1;
+    xlsx.write(row, 1, "ID");
+    xlsx.write(row, 2, "Mã ngành");
+    xlsx.write(row, 3, "Tên ngành");
+    xlsx.write(row, 4, "Chỉ tiêu");
+    xlsx.write(row, 5, "Ghi chú");
+    xlsx.write(row, 6, "Tổ hợp");
+
+    for (auto &item : list){
+        ++row;
+        QString ma_nganh = item->nganh ? item->nganh->ma_nganh : "";
+        QString ten_nganh = item->nganh ? item->nganh->ten_nganh : "";
+        QStringList tohop_names;
+        for (auto &t : item->list_tohop){
+            if (t->tohop) tohop_names << t->tohop->ma_tohop;
+        }
+
+        xlsx.write(row, 1, (long long)item->id);
+        xlsx.write(row, 2, ma_nganh);
+        xlsx.write(row, 3, ten_nganh);
+        xlsx.write(row, 4, item->chi_tieu);
+        xlsx.write(row, 5, item->ghi_chu);
+        xlsx.write(row, 6, tohop_names.join(", "));
+    }
+
+    return xlsx.saveAs(path);
 }
 
 #endif // MA_NGANH_DAO_H

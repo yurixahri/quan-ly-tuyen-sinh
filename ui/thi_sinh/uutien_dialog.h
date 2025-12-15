@@ -1,15 +1,15 @@
-#ifndef DOAT_GIAI_DIALOG_H
-#define DOAT_GIAI_DIALOG_H
+#ifndef UUTIEN_DIALOG_H
+#define UUTIEN_DIALOG_H
 
 #include <QDialog>
 #include <QMouseEvent>
-#include "db/models/doat_giai.h"
+#include "db/models/uutien.h"
 
 namespace Ui {
-class doat_giai_dialog;
+class uutien_dialog;
 }
 
-class doat_giai_dialog : public QDialog
+class uutien_dialog : public QDialog
 {
     Q_OBJECT
 
@@ -20,18 +20,16 @@ public:
     };
     uint8_t type;
 
-    explicit doat_giai_dialog(Type type, QWidget *parent = nullptr);
-    ~doat_giai_dialog();
+    long id_thi_sinh = -1;
 
-    doat_giai_ptr edit_item;
-    long id_thi_sinh;
-    void setEditItem(doat_giai_ptr &item);
+    explicit uutien_dialog(Type type = Type::ADD, QWidget *parent = nullptr);
+    ~uutien_dialog();
 
-    void loadPtxt();
-    void loadMonHoc();
-    void loadMaThanhTich();
+    uutien_ptr edit_item;
+    void setEditItem(uutien_ptr &item);
+
 private:
-    Ui::doat_giai_dialog *ui;
+    Ui::uutien_dialog *ui;
     bool m_dragging = false;
     QPoint m_dragPosition;
 
@@ -46,4 +44,4 @@ private slots:
     void on_accept_clicked();
 };
 
-#endif // DOAT_GIAI_DIALOG_H
+#endif // UUTIEN_DIALOG_H

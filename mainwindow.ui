@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>913</width>
-    <height>652</height>
+    <width>1370</width>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,13 @@ QMenu::separator {
     height: 1px;
     background-color: #555;
     margin: 5px 0;
+}
+
+QLineEdit{
+	background-color: rgba(0, 0, 0, 150);
+	color: rgb(240,248,255);
+	padding: 5px;
+	border-radius: 3px
 }
 </string>
   </property>
@@ -203,7 +210,7 @@ QPushButton:hover {
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="home_button">
             <property name="font">
              <font>
               <family>Segoe UI</family>
@@ -214,7 +221,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Trang chủ</string>
+             <string> Trang chủ</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/mainpage.png</normaloff>:/assets/images/mainpage.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -242,7 +253,17 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Mã ngành</string>
+             <string> Mã ngành</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/manganh.png</normaloff>:/assets/images/manganh.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -267,7 +288,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Ngành</string>
+             <string> Ngành</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/nghanh.png</normaloff>:/assets/images/nghanh.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -292,7 +317,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Nhóm ngành</string>
+             <string> Nhóm ngành</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/nhom-nghanh.png</normaloff>:/assets/images/nhom-nghanh.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -317,7 +346,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Tổ hợp môn</string>
+             <string> Tổ hợp môn</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/tohopmon.png</normaloff>:/assets/images/tohopmon.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -342,7 +375,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Môn học</string>
+             <string> Môn học</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/mon-hoc.png</normaloff>:/assets/images/mon-hoc.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -367,7 +404,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Phương thức xét tuyển</string>
+             <string> Phương thức xét tuyển</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/ptxt.png</normaloff>:/assets/images/ptxt.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -391,7 +432,11 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Thí sinh</string>
+             <string> Thí sinh</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/images/thisinh.png</normaloff>:/assets/images/thisinh.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -405,7 +450,7 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_9">
+           <widget class="QPushButton" name="ccnn_button">
             <property name="font">
              <font>
               <pointsize>10</pointsize>
@@ -415,7 +460,7 @@ QPushButton:hover {
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string>Xuất</string>
+             <string>Chứng chỉ ngoại ngữ</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -429,12 +474,80 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_10">
+           <widget class="QPushButton" name="thanh_tich_button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::FocusPolicy::TabFocus</enum>
             </property>
             <property name="text">
-             <string/>
+             <string>Mã thành tích</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dtut_button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Mã đối tượng ưu tiên</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="kvut_button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Mã khu vực ưu tiên</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="xuat_du_lieu_button">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Xuất dữ liệu</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -500,7 +613,7 @@ QTableWidget QHeaderView::section {
 }</string>
             </property>
             <property name="currentIndex">
-             <number>7</number>
+             <number>12</number>
             </property>
             <widget class="QWidget" name="home_page"/>
             <widget class="QWidget" name="ma_nganh_page">
@@ -692,29 +805,6 @@ QPushButton:hover{
                     <width>16</width>
                     <height>16</height>
                    </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_15">
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {
-	border-radius: 3px;
-	padding: 5px;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
-	color: rgb(240, 248, 255);
-}
-
-QPushButton:hover{
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
-}</string>
-                  </property>
-                  <property name="text">
-                   <string> Import từ Excel</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="assets.qrc">
-                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -1320,23 +1410,11 @@ QPushButton:hover{
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="page_8">
+            <widget class="QWidget" name="thi_sinh_page">
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
                <widget class="QWidget" name="widget" native="true">
                 <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
                  <item>
                   <widget class="QPushButton" name="add_thi_sinh_button">
                    <property name="styleSheet">
@@ -1436,6 +1514,75 @@ QPushButton:hover{
                   </widget>
                  </item>
                  <item>
+                  <widget class="QPushButton" name="import_doatgiai_button">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Import Đoạt giải</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="import_uutien_button">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Import Ưu tiên</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="import_dkxt_button">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Import Nguyện vọng</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <spacer name="horizontalSpacer_7">
                    <property name="orientation">
                     <enum>Qt::Orientation::Horizontal</enum>
@@ -1463,6 +1610,18 @@ QPushButton:hover{
                   </widget>
                  </item>
                 </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="thi_sinh_tim_kiem">
+                <property name="font">
+                 <font>
+                  <italic>false</italic>
+                 </font>
+                </property>
+                <property name="placeholderText">
+                 <string>Gõ để tìm kiếm thí sinh theo Tên, CCCD.</string>
+                </property>
                </widget>
               </item>
               <item>
@@ -1603,7 +1762,431 @@ QPushButton:hover{
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="page_9"/>
+            <widget class="QWidget" name="ccnn_page">
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <item>
+               <layout class="QHBoxLayout" name="_7">
+                <item>
+                 <widget class="QPushButton" name="add_ccnn_button">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Thêm</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>16</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_9">
+                  <property name="text">
+                   <string>Số lượng</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="ccnn_size">
+                  <property name="text">
+                   <string>TextLabel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="ccnn_table">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>ID</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mã xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Tên phương thức xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mô tả</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="thanh_tich_page">
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <item>
+               <layout class="QHBoxLayout" name="_9">
+                <item>
+                 <widget class="QPushButton" name="add_thanh_tich_button">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Thêm</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>16</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_10">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>Số lượng</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="thanh_tich_size">
+                  <property name="text">
+                   <string>TextLabel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="thanh_tich_table">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>ID</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mã xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Tên phương thức xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mô tả</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="dtut_page">
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <layout class="QHBoxLayout" name="_8">
+                <item>
+                 <widget class="QPushButton" name="add_dtut_button">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Thêm</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>16</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_9">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string>Số lượng</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="dtut_size">
+                  <property name="text">
+                   <string>TextLabel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="dtut_table">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>ID</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mã xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Tên phương thức xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mô tả</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="kvut_page">
+             <layout class="QVBoxLayout" name="verticalLayout_13">
+              <item>
+               <layout class="QHBoxLayout" name="_10">
+                <item>
+                 <widget class="QPushButton" name="add_kvut_button">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(14, 56, 110, 224), stop:1 rgba(18, 56, 145, 224));
+    color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0.00473934 rgba(21, 83, 162, 224), stop:1 rgba(46, 86, 179, 224));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Thêm</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/plus-100.png</normaloff>:/assets/images/plus-100.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>16</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_11">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>Số lượng</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="kvut_size">
+                  <property name="text">
+                   <string>TextLabel</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="kvut_table">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>ID</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mã xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Tên phương thức xét tuyển</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Mô tả</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="xuat_page"/>
            </widget>
           </item>
          </layout>

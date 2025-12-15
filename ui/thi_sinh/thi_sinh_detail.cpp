@@ -6,12 +6,14 @@
 #include "db/diem_hocba_dao.h"
 #include "db/dang_ky_xet_tuyen_dao.h"
 #include "db/chungchi_tienganh_dao.h"
+#include "db/uutien_dao.h"
 #include "ui/custom_message_box.h"
 #include "ui/thi_sinh/chungchi_tienganh_dialog.h"
 #include "ui/thi_sinh/diem_hocba_dialog.h"
 #include "ui/thi_sinh/diem_sat_dialog.h"
 #include "ui/thi_sinh/doat_giai_dialog.h"
 #include "ui/thi_sinh/dang_ky_xet_tuyen_dialog.h"
+#include "ui/thi_sinh/uutien_dialog.h"
 
 #include <QMenu>
 
@@ -47,11 +49,12 @@ void thi_sinh_detail::fillDoatGiaiTable(){
         ui->thanh_tich_table->insertRow(row);
         ui->thanh_tich_table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
         ui->thanh_tich_table->setItem(row, 1, new QTableWidgetItem(item->mon_hoc ? item->mon_hoc->ten_monhoc : ""));
-        ui->thanh_tich_table->setItem(row, 2, new QTableWidgetItem(item->thanh_tich));
+        ui->thanh_tich_table->setItem(row, 2, new QTableWidgetItem(item->thanh_tich->ma));
         ui->thanh_tich_table->setItem(row, 3, new QTableWidgetItem(QString::number(item->diem_thanh_tich)));
         ui->thanh_tich_table->setItem(row, 4, new QTableWidgetItem(item->ptxt ? item->ptxt->ma : ""));
     }
 
+    ui->thanh_tich_size->setText(QString::number(list->length()));
     ui->thanh_tich_table->setColumnHidden(0, true);
 }
 
@@ -133,7 +136,7 @@ void thi_sinh_detail::fillDiemSatTable(){
         ui->diem_sat_table->setItem(row, 3, new QTableWidgetItem(item->ten_dvtctdl));
         ui->diem_sat_table->setItem(row, 4, new QTableWidgetItem(item->ptxt->ma));
     }
-
+    ui->diem_sat_size->setText(QString::number(list->length()));
     ui->diem_sat_table->setColumnHidden(0, true);
 }
 
@@ -216,6 +219,7 @@ void thi_sinh_detail::fillDiemHocbaTable(){
         ui->diem_hocba_table->setItem(row, 4, new QTableWidgetItem(QString::number(item->lop12)));
     }
 
+    ui->diem_hocba_size->setText(QString::number(list->length()));
     ui->diem_hocba_table->setColumnHidden(0, true);
 }
 
@@ -297,6 +301,7 @@ void thi_sinh_detail::fillChungchiTienganhTable(){
         ui->ccnn_table->setItem(row, 3, new QTableWidgetItem(item->ptxt->ma));
     }
 
+    ui->ccnn_size->setText(QString::number(list->length()));
     ui->ccnn_table->setColumnHidden(0, true);
 }
 
@@ -382,6 +387,7 @@ void thi_sinh_detail::fillDangKyXetTuyenTable(){
 
     ui->dang_ky_table->setColumnHidden(0, true);
     ui->dang_ky_table->setColumnHidden(1, true);
+    ui->dang_ky_size->setText(QString::number(list->length()));
 }
 
 void thi_sinh_detail::on_add_dang_ky_button_clicked(){
@@ -412,6 +418,87 @@ void thi_sinh_detail::on_dang_ky_table_customContextMenuRequested(const QPoint &
         });
 
         contextMenu.exec(ui->dang_ky_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+// ======== UU TIEN ========
+void thi_sinh_detail::fillUuTienTable(){
+    auto list = getUuTienByThiSinhId(item->id);
+    if (!list) {
+        qDebug() << "Error fetching uutien";
+        return;
+    }
+
+    ui->uutien_table->clearContents();
+    ui->uutien_table->setRowCount(0);
+    ui->uutien_table->setColumnCount(3);
+    ui->uutien_table->setHorizontalHeaderLabels({"ID", "Đối tượng", "Khu vực"});
+
+    for (auto &it : *list) {
+        int row = ui->uutien_table->rowCount();
+        ui->uutien_table->insertRow(row);
+        ui->uutien_table->setItem(row, 0, new QTableWidgetItem(QString::number(it->id)));
+        ui->uutien_table->setItem(row, 1, new QTableWidgetItem(it->dtut ? it->dtut->ma : ""));
+        ui->uutien_table->setItem(row, 2, new QTableWidgetItem(it->kvut ? it->kvut->ma : ""));
+    }
+
+    ui->uutien_size->setText(QString::number(list->length()));
+    ui->uutien_table->setColumnHidden(0, true);
+}
+
+void thi_sinh_detail::on_add_uutien_button_clicked(){
+    uutien_dialog dlg(uutien_dialog::ADD, this);
+    dlg.id_thi_sinh = item->id;
+
+    if (dlg.exec() == QDialog::Accepted) {
+        fillUuTienTable();
+    }
+}
+
+void thi_sinh_detail::on_uutien_table_customContextMenuRequested(const QPoint &pos){
+    QTableWidgetItem *tableItem = ui->uutien_table->itemAt(pos);
+
+    if (tableItem) {
+        QMenu contextMenu(tr("Context Menu"), this);
+        QAction *del = new QAction("Xóa", this);
+        QAction *change = new QAction("Thay đổi", this);
+        contextMenu.addAction(del);
+        contextMenu.addAction(change);
+
+        connect(change, &QAction::triggered, this, [=]() {
+            updateUuTien(ui->uutien_table->item(tableItem->row(), 0)->text().toLong());
+        });
+
+        connect(del, &QAction::triggered, this, [=]() {
+            deleteUuTien(ui->uutien_table->item(tableItem->row(), 0)->text().toLong());
+        });
+
+        contextMenu.exec(ui->uutien_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void thi_sinh_detail::updateUuTien(long id){
+    auto ut = getUuTienById(id);
+    if (ut) {
+        uutien_dialog dlg(uutien_dialog::CHANGE, this);
+        dlg.id_thi_sinh = item->id;
+        dlg.setEditItem(*ut);
+
+        if (dlg.exec() == QDialog::Accepted) {
+            fillUuTienTable();
+        }
+    }
+}
+
+void thi_sinh_detail::deleteUuTien(long id){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa ưu tiên này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted) {
+        if (!deleteUuTienById(id)) {
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        } else {
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillUuTienTable();
     }
 }
 
@@ -469,5 +556,5 @@ void thi_sinh_detail::setThiSinh(thi_sinh_ptr item){
     fillChungchiTienganhTable();
     fillDoatGiaiTable();
     fillDangKyXetTuyenTable();
+    fillUuTienTable();
 }
-

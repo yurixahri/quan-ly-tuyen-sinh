@@ -10,5 +10,13 @@
         <file>assets/images/error-96.png</file>
         <file>assets/images/warning-96.png</file>
         <file>assets/images/delete-128.png</file>
+        <file>assets/images/thisinh.png</file>
+        <file>assets/images/ptxt.png</file>
+        <file>assets/images/mon-hoc.png</file>
+        <file>assets/images/tohopmon.png</file>
+        <file>assets/images/nhom-nghanh.png</file>
+        <file>assets/images/nghanh.png</file>
+        <file>assets/images/manganh.png</file>
+        <file>assets/images/mainpage.png</file>
     </qresource>
 </RCC>

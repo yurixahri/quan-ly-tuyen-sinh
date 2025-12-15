@@ -2,6 +2,7 @@
 #include "ui_doat_giai_dialog.h"
 
 #include "db/doat_giai_dao.h"
+#include "db/ma_thanhtich_dao.h"
 #include "db/monhoc_dao.h"
 #include "db/ptxt_dao.h"
 #include "ui/custom_message_box.h"
@@ -15,6 +16,7 @@ doat_giai_dialog::doat_giai_dialog(Type type, QWidget *parent)
 
     loadMonHoc();
     loadPtxt();
+    loadMaThanhTich();
 
     this->type = type;
 
@@ -45,6 +47,16 @@ void doat_giai_dialog::loadMonHoc(){
     }
 }
 
+void doat_giai_dialog::loadMaThanhTich(){
+    auto list = getAllMaThanhTich();
+    if (list) {
+        ui->thanh_tich->clear();
+        for (auto &item : *list) {
+            ui->thanh_tich->addItem(item->ma, QVariant::fromValue(item->id));
+        }
+    }
+}
+
 void doat_giai_dialog::loadPtxt(){
     auto list = getAllPtxt();
     if (list) {
@@ -57,13 +69,19 @@ void doat_giai_dialog::loadPtxt(){
 
 void doat_giai_dialog::setEditItem(doat_giai_ptr &item){
     this->edit_item = item;
-    ui->thanh_tich->setText(item->thanh_tich);
     ui->diem->setValue(item->diem_thanh_tich);
 
     if (item->mon_hoc) {
         int index = ui->mon_hoc->findData(QVariant::fromValue(item->mon_hoc->id_monhoc));
         if (index >= 0) {
             ui->mon_hoc->setCurrentIndex(index);
+        }
+    }
+
+    if (item->thanh_tich) {
+        int index = ui->thanh_tich->findData(QVariant::fromValue(item->thanh_tich->id));
+        if (index >= 0) {
+            ui->thanh_tich->setCurrentIndex(index);
         }
     }
 
@@ -76,14 +94,14 @@ void doat_giai_dialog::setEditItem(doat_giai_ptr &item){
 }
 
 void doat_giai_dialog::on_accept_clicked(){
-    QString thanh_tich = ui->thanh_tich->text().trimmed();
+    long id_thanh_tich = ui->thanh_tich->currentData().toLongLong();
     int diem_thanh_tich = ui->diem->value();
     long id_monhoc = ui->mon_hoc->currentData().toLongLong();
     long id_ptxt = ui->ptxt->currentData().toLongLong();
 
     switch (this->type) {
     case Type::ADD:{
-        if (!addDoatGiai(id_thi_sinh, id_monhoc, id_ptxt, thanh_tich, diem_thanh_tich)) {
+        if (!addDoatGiai(id_thi_sinh, id_monhoc, id_ptxt, id_thanh_tich, diem_thanh_tich)) {
             custom_message_box("", "Thêm thất bại", custom_message_box::Error).exec();
         } else {
             custom_message_box("", "Thêm thành công", custom_message_box::Information).exec();
@@ -97,7 +115,7 @@ void doat_giai_dialog::on_accept_clicked(){
             return;
         }
 
-        if (!changeDoatGiai(edit_item, id_monhoc, id_ptxt, thanh_tich, diem_thanh_tich)) {
+        if (!changeDoatGiai(edit_item, id_monhoc, id_ptxt, id_thanh_tich, diem_thanh_tich)) {
             custom_message_box("", "Cập nhật thất bại", custom_message_box::Error).exec();
         } else {
             custom_message_box("", "Cập nhật thành công", custom_message_box::Information).exec();
