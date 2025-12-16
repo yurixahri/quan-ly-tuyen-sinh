@@ -9,7 +9,7 @@ template<> void register_class(QxClass<ma_thanhtich> & t)
     t.id(&ma_thanhtich::id, "id");
     t.data(&ma_thanhtich::ma, "ma");
     t.data(&ma_thanhtich::ten, "ten");
-    t.data(&ma_thanhtich::diem, "diem");
+    t.data(&ma_thanhtich::diem, "diem_cong");
 }
 }
 
