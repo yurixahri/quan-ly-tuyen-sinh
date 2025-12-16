@@ -18,5 +18,6 @@
         <file>assets/images/nghanh.png</file>
         <file>assets/images/manganh.png</file>
         <file>assets/images/mainpage.png</file>
+        <file>assets/images/window-maximize.png</file>
     </qresource>
 </RCC>

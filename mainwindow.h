@@ -116,6 +116,8 @@ private slots:
 
     void on_import_dkxt_button_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;

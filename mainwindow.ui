@@ -96,6 +96,49 @@ QLineEdit{
         </spacer>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	background-color: rgba(0, 0, 0, 0);
+	color: rgb(240,248,255)
+}
+
+
+QPushButton:hover{
+	background-color:  rgba(13, 103, 213, 120);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="assets.qrc">
+           <normaloff>:/assets/images/window-maximize.png</normaloff>:/assets/images/window-maximize.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="close">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -613,7 +656,7 @@ QTableWidget QHeaderView::section {
 }</string>
             </property>
             <property name="currentIndex">
-             <number>12</number>
+             <number>7</number>
             </property>
             <widget class="QWidget" name="home_page"/>
             <widget class="QWidget" name="ma_nganh_page">

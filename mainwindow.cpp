@@ -915,9 +915,10 @@ void MainWindow::on_close_clicked(){
     QCoreApplication::quit();
 }
 
-
-
-
-
-
+void MainWindow::on_pushButton_clicked(){
+    if(!this->isMaximized())
+        this->showMaximized();
+    else
+        this->showNormal();
+}
 
