@@ -46,6 +46,7 @@ SOURCES += \
     ui/ccnn/ccnn_dialog.cpp \
     ui/change_mon_hoc_dialog.cpp \
     ui/components/MultiSelectComboBox.cpp \
+    ui/components/progressbar.cpp \
     ui/custom_message_box.cpp \
     ui/doat_giai/doatgiai_dialog.cpp \
     ui/dtut/dtut_dialog.cpp \
@@ -121,6 +122,7 @@ HEADERS += \
     ui/ccnn/ccnn_dialog.h \
     ui/change_mon_hoc_dialog.h \
     ui/components/MultiSelectComboBox.h \
+    ui/components/progressbar.h \
     ui/custom_message_box.h \
     ui/doat_giai/doatgiai_dialog.h \
     ui/dtut/dtut_dialog.h \
@@ -148,6 +150,7 @@ FORMS += \
     ui/add_mon_hoc_dialog.ui \
     ui/ccnn/ccnn_dialog.ui \
     ui/change_mon_hoc_dialog.ui \
+    ui/components/progressbar.ui \
     ui/custom_message_box.ui \
     ui/doat_giai/doatgiai_dialog.ui \
     ui/dtut/dtut_dialog.ui \

@@ -1,6 +1,8 @@
 #ifndef MA_NGANH_DAO_H
 #define MA_NGANH_DAO_H
 
+#include <QApplication>
+
 #include "db/models/ma_nganh.h"
 #include "db/models/ma_nganh_tohop.h"
 #include "db/models/nganh.h"
@@ -11,6 +13,7 @@
 
 #include "excel/read_excel.h"
 #include "ui/custom_message_box.h"
+#include "ui/components/progressbar.h"
 #include "utils/string.h"
 
 #include "xlsxdocument.h"
@@ -146,20 +149,20 @@ inline void importMaNganh(QString &path){
     qx::QxSession session;
     int index = 3;
     auto rows = readExcel(path);
-    qDebug() << rows;
     if (rows->first().length() != 4){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
-            qDebug() << "phase 1";
             ma_nganh_ptr adding;
             adding.reset(new ma_nganh());
             adding->chi_tieu = 0;
             for (auto &string : row) trimLeadingAndTrailing(string);
 
             while (true){
-                qDebug() << "phase 2";
                 auto nganh_opt = getNganhByName(row[0]);
                 if (nganh_opt){
                     adding->nganh = nganh_opt.value();
@@ -191,18 +194,25 @@ inline void importMaNganh(QString &path){
                 adding->list_tohop.append(temp);
             }
 
-            session += qx::dao::insert(adding, session.database());
+            QSqlError err = qx::dao::insert(adding);
 
             for (auto &item : adding->list_tohop){
-                session += qx::dao::insert(item, session.database());
+                QSqlError err = qx::dao::insert(item);
             }
 
-            if (!session.isValid()){
-                custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+            if (err.isValid()){
+                //custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                // return;
+                // break;
+            }
+            if (progress_bar.is_closed){
+                //session.rollback();
                 return;
-                break;
             }
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
+
         }
     }
 }

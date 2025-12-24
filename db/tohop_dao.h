@@ -1,11 +1,14 @@
 #ifndef TOHOP_DAO_H
 #define TOHOP_DAO_H
 
+#include <QApplication>
+
 #include "db/models/to_hop_mon.h"
 #include "excel/read_excel.h"
 #include "utils/string.h"
 #include "db/monhoc_dao.h"
 #include "ui/custom_message_box.h"
+#include "ui/components/progressbar.h"
 
 inline bool addToHop(QString &ma_tohop, long &id_mon_1, long &id_mon_2, long &id_mon_3){
     tohop_mon_ptr tohop_adding;
@@ -89,13 +92,6 @@ inline bool deleteAllToHop(){
 
 inline void importTohop(QString &path){
     qx::QxSession session;
-    // session += qx::dao::delete_all<tohop_mon>(session.database());
-
-    // if (!session.isValid()) {
-    //     return false;
-    // } else {
-    //     return true;
-    // }
     int index = 3;
     auto rows = readExcel(path);
     qDebug() << rows;
@@ -103,6 +99,9 @@ inline void importTohop(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
             auto monhoc_list = row[1].split(",");
             for (auto &monhoc : monhoc_list){
@@ -116,7 +115,7 @@ inline void importTohop(QString &path){
             }
 
             if (monhoc_list[0] == monhoc_list[1] || monhoc_list[0] == monhoc_list[2] || monhoc_list[1] == monhoc_list[2]){
-                session.rollback();
+                //session.rollback();
                 custom_message_box("", "Có môn học bị trùng. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                                    return;
             }
@@ -147,13 +146,19 @@ inline void importTohop(QString &path){
                 }
             }
 
-            session += qx::dao::insert(tohop_adding, session.database());
-            if (!session.isValid()){
-                custom_message_box("", "Có lỗi xảy ra khi thêm tổ hợp. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
-                                   return;
-                break;
+            QSqlError err = qx::dao::save(tohop_adding);
+            if (err.isValid()){
+                // custom_message_box("", "Có lỗi xảy ra khi thêm tổ hợp. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                //                    return;
+                // break;
+            }
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
             }
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
     }
 }

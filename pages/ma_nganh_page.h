@@ -17,7 +17,6 @@ void fillMaNganhTable(QTableWidget *table, QLabel *size){
     table->setHorizontalHeaderLabels({"ID", "Mã ngành", "Tên ngành", "Nhóm ngành", "Tổ hợp", "Chỉ tiêu", "Ghi chú"});
     // uint32_t stt = 1;
     for (auto &item : *list){
-        qDebug() << "nhom nganh" << item->nganh->nhom_nganh->id_nhom_nganh << item->nganh->nhom_nganh->ten;
         QString list_tohop;
         QString list_ptxt;
         for (auto &tohop : item->list_tohop)

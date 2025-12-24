@@ -2,12 +2,14 @@
 #define THI_SINH_DAO_H
 
 #include <QDate>
+#include <QApplication>
 
 #include "db/models/thi_sinh.h"
 #include "utils/string.h"
 
 #include "utils/string.h"
 #include "ui/custom_message_box.h"
+#include "ui/components/progressbar.h"
 #include "db/diem_thi_sat_dao.h"
 #include "db/diem_hocba_dao.h"
 #include "db/chungchi_tienganh_dao.h"
@@ -168,7 +170,15 @@ inline void importDiemSat(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -191,7 +201,7 @@ inline void importDiemSat(QString &path){
                     addThiSinh(adding->cccd, adding->ho_ten, adding->ngay_sinh, adding->gioi_tinh, adding->dia_chi, adding->email, adding->sdt, adding->sdt);
                 }
             }
-            qDebug() << "phase 2";
+
             diem_thi_sat_ptr sat;
             sat.reset(new diem_thi_sat());
             sat->thi_sinh = adding;
@@ -200,6 +210,8 @@ inline void importDiemSat(QString &path){
             sat->ten_dvtctdl = row[6];
             auto ptxt_opt = getPtxtByName(row[7]);
             if (!ptxt_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Phương thức xét tuyển không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -208,22 +220,24 @@ inline void importDiemSat(QString &path){
             doat_giai_ptr doatgiai;
             doatgiai.reset(new doat_giai());
             while (true){
-                if (row[4].isEmpty()) break;
-                auto thanhtich_opt = getMaThanhTichByName(row[5]);
+                if (row[8].isEmpty()) break;
+                auto thanhtich_opt = getMaThanhTichByName(row[8]);
                 if (thanhtich_opt){
                     doatgiai->thanh_tich = thanhtich_opt.value();
                     break;
                 }else{
                     ma_thanhtich_ptr thanhtich;
                     thanhtich.reset(new ma_thanhtich());
-                    thanhtich->ma = row[5];
-                    thanhtich->diem = row[7].toFloat();
+                    thanhtich->ma = row[8];
+                    thanhtich->diem = row[10].toFloat();
                     addMaThanhTich(thanhtich->ma, thanhtich->ten, thanhtich->diem);
                 }
             }
             doatgiai->thi_sinh = adding;
-            auto monhoc_opt = getMonHocByName(row[6]);
+            auto monhoc_opt = getMonHocByName(row[9]);
             if (!monhoc_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -232,12 +246,15 @@ inline void importDiemSat(QString &path){
             session += qx::dao::insert(doatgiai, session.database());
             session += qx::dao::insert(sat, session.database());
             if (!session.isValid()){
+                progress_bar.close();
                 custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
-                break;
             }
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 
@@ -250,7 +267,15 @@ inline void importCCNN(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -289,6 +314,8 @@ inline void importCCNN(QString &path){
             ccnn->diem = row[3].toFloat();
             auto ptxt_opt = getPtxtByName(row[8]);
             if (!ptxt_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Phương thức xét tuyển không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -297,7 +324,7 @@ inline void importCCNN(QString &path){
             doat_giai_ptr doatgiai;
             doatgiai.reset(new doat_giai());
             while (true){
-                if (row[4].isEmpty()) break;
+                if (row[5].isEmpty()) break;
                 auto thanhtich_opt = getMaThanhTichByName(row[5]);
                 if (thanhtich_opt){
                     doatgiai->thanh_tich = thanhtich_opt.value();
@@ -313,6 +340,8 @@ inline void importCCNN(QString &path){
             doatgiai->thi_sinh = adding;
             auto monhoc_opt = getMonHocByName(row[6]);
             if (!monhoc_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -326,7 +355,10 @@ inline void importCCNN(QString &path){
                 break;
             }
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 
@@ -354,7 +386,15 @@ inline void importHocBa(QString &path){
             }
         }
 
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr ts;
             ts.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -377,7 +417,6 @@ inline void importHocBa(QString &path){
                     addThiSinh(ts->cccd, ts->ho_ten, ts->ngay_sinh, ts->gioi_tinh, ts->dia_chi, ts->email, ts->sdt, ts->sdt);
                 }
             }
-
 
             short lop = row[5].toShort();
             for (int i = 6; i < row.length(); i++){
@@ -418,6 +457,8 @@ inline void importHocBa(QString &path){
                             addDiemHocba(dhb->thi_sinh->id, dhb->mon_hoc->id_monhoc, dhb->lop10, dhb->lop11, dhb->lop12);
                         }
                         if (!session.isValid()){
+                            progress_bar.close();
+                            session.rollback();
                             custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                             return;
                             break;
@@ -427,9 +468,11 @@ inline void importHocBa(QString &path){
                 }
             }
 
-
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 
@@ -443,7 +486,15 @@ inline void importDoatGiai(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -485,6 +536,8 @@ inline void importDoatGiai(QString &path){
 
             auto ptxt_opt = getPtxtByName(row[7]);
             if (!ptxt_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Phương thức xét tuyển không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -492,6 +545,8 @@ inline void importDoatGiai(QString &path){
 
             auto monhoc_opt = getMonHocByName(row[5]);
             if (!monhoc_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Môn đạt giải không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -502,10 +557,13 @@ inline void importDoatGiai(QString &path){
             if (!session.isValid()){
                 custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
-                break;
             }
+
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 
@@ -518,7 +576,15 @@ inline void importUutien(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -589,7 +655,10 @@ inline void importUutien(QString &path){
             }
 
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 
@@ -602,7 +671,15 @@ inline void importNguyenVong(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
+            if (progress_bar.is_closed){
+                session.rollback();
+                return;
+            }
+
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
             for (auto &string : row) trimLeadingAndTrailing(string);
@@ -623,6 +700,8 @@ inline void importNguyenVong(QString &path){
 
             auto ma_nganh_opt = getMaNganhByName(row[2]);
             if (!ma_nganh_opt){
+                progress_bar.close();
+                session.rollback();
                 custom_message_box("", "Mã ngành không tồn tại. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                 return;
             }
@@ -635,8 +714,12 @@ inline void importNguyenVong(QString &path){
             if (err.isValid()){
 
             }
+
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
+        progress_bar.close();
     }
 }
 

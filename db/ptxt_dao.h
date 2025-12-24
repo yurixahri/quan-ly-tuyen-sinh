@@ -1,10 +1,13 @@
 #ifndef PTXT_DAO_H
 #define PTXT_DAO_H
 
+#include <QApplication>
+
 #include "db/models/ptxt.h"
 #include "utils/string.h"
 #include "excel/read_excel.h"
 #include "ui/custom_message_box.h"
+#include "ui/components/progressbar.h"
 
 inline bool addPtxt(QString ma, QString ten, float thang_diem, QString mo_ta){
     ptxt_ptr adding;
@@ -113,6 +116,9 @@ inline void importPtxt(QString &path){
         custom_message_box("", "Format excel không hợp lệ", custom_message_box::Error).exec();
         return;
     }else{
+        progressBar progress_bar;
+        progress_bar.setInitValue(rows->length());
+        progress_bar.show();
         for (auto &row : *rows){
             ptxt_ptr adding;
             adding.reset(new ptxt());
@@ -123,13 +129,20 @@ inline void importPtxt(QString &path){
             adding->ten = row[1];
             adding->thang_diem = row[2].toFloat();
 
-            session += qx::dao::insert(adding, session.database());
-            if (!session.isValid()){
-                custom_message_box("", "Có lỗi xảy ra khi thêm phương thức xét tuyển. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+            QSqlError err = qx::dao::save(adding);
+            if (err.isValid()){
+                // progress_bar.close();
+                // session.rollback();
+                // custom_message_box("", "Có lỗi xảy ra khi thêm phương thức xét tuyển. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
+                // return;
+            }
+            if (progress_bar.is_closed){
+                session.rollback();
                 return;
-                break;
             }
             ++index;
+            progress_bar.setCurrentValue(index-3);
+            QApplication::processEvents();
         }
     }
 }
