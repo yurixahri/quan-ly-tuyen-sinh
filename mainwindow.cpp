@@ -41,12 +41,23 @@
 #include "ui/thi_sinh/thi_sinh_dialog.h"
 #include "ui/thi_sinh/thi_sinh_detail.h"
 
+#include "pages/trang_chu_page.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+
+    // Initialize and show the home dashboard page by default
+    ui->stackedWidget->setCurrentIndex(0);
+    TrangChuDashboard *dashboard = new TrangChuDashboard(ui->home_page);
+    QVBoxLayout *layout = new QVBoxLayout(ui->home_page);
+    layout->addWidget(dashboard);
+    layout->setContentsMargins(0, 0, 0, 0);
+    ui->home_page->setLayout(layout);
+    dashboard->loadDashboardData();
 
     // Example shortcut: open CCNN manager with Ctrl+M
     // QShortcut *openCcnn = new QShortcut(QKeySequence("Ctrl+M"), this);
@@ -55,6 +66,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow(){
     delete ui;
+}
+
+// Home Dashboard Page
+void MainWindow::on_home_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 

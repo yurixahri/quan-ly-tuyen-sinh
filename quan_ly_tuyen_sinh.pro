@@ -1,4 +1,4 @@
-QT += core gui sql core5compat
+QT += core gui sql core5compat charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 INCLUDEPATH += C:/msys64/mingw64/include
@@ -64,7 +64,8 @@ SOURCES += \
     ui/thi_sinh/thi_sinh_dialog.cpp \
     ui/thi_sinh/uutien_dialog.cpp \
     ui/tohop/add_tohop_dialog.cpp \
-    utils/config.cpp
+    utils/config.cpp \
+    pages/trang_chu_page.cpp
 
 HEADERS += \
     db/db.h \
@@ -118,6 +119,7 @@ HEADERS += \
     pages/ptxt_page.h \
     pages/thi_sinh_page.h \
     pages/tohop_page.h \
+    pages/trang_chu_page.h \
     ui/add_mon_hoc_dialog.h \
     ui/ccnn/ccnn_dialog.h \
     ui/change_mon_hoc_dialog.h \

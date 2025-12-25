@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,6 +19,9 @@ public:
     ~MainWindow();
 
 private slots:
+    // Home Dashboard Page
+    void on_home_button_clicked();
+    
     // mon hoc
     void on_monhoc_button_clicked();
     void on_add_monhoc_button_clicked();
