@@ -116,7 +116,8 @@ inline bool changeThiSinh(thi_sinh_ptr &item, QString &cccd, QString &ho_ten,
 inline std::optional<QList<thi_sinh_ptr>> getAllThiSinh(){
     QList<thi_sinh_ptr> list;
 
-    qx_query query("where unaccent(lower(ho_ten)) ilike '%' || unaccent(lower(:ten)) || '%' or so_cccd ilike :cccd limit :limit offset :offset");
+    qx_query query("where unaccent(lower(ho_ten)) ilike '%' || unaccent(lower(:ten)) || '%' or so_cccd ilike :cccd order by ho_ten asc"
+                   " limit :limit offset :offset");
     query.bind(":ten", "%"+search+"%");
     query.bind(":cccd", "%"+search+"%");
     query.bind(":limit", count);

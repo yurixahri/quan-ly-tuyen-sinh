@@ -37,7 +37,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#loginDialog {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 7, 24, 132), stop:1 rgba(11, 17, 27, 218));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(17, 39, 64, 154), stop:1 rgba(11, 17, 27, 218));
 	border: 1px solid rgb(0, 10, 50);
 }
 

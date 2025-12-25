@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>529</width>
-    <height>166</height>
+    <height>173</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,11 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Thông báo</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../assets.qrc">
+    <normaloff>:/assets/images/logo-100.png</normaloff>:/assets/images/logo-100.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
@@ -276,6 +280,8 @@ background-color:	qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../assets.qrc"/>
+ </resources>
  <connections/>
 </ui>
