@@ -33,16 +33,27 @@ inline void setThiSinhSearchValue(QString &_search){
     search = _search;
 }
 
-inline uint getThiSinhPageCount(){
-    qx_query query("where ho_ten ilike :ten or so_cccd ilike :cccd");
-    query.bind(":ten", "%"+search+"%");
+inline uint getThiSinhCount(){
+    auto total = qx::dao::count<thi_sinh_ptr>();
+    return total;
+}
+
+inline uint getThiSinhCountWithQuery(){
+    qx_query query("where unaccent(lower(ho_ten)) ilike '%' || unaccent(lower(:ten)) || '%' or so_cccd ilike :cccd");
+    query.bind(":ten", search);
     query.bind(":cccd", "%"+search+"%");
 
     auto total = qx::dao::count<thi_sinh_ptr>(query);
+    return total;
+}
+
+inline uint getThiSinhPageCount(){
+    auto total = getThiSinhCountWithQuery();
     uint page = total/count;
     if (total%count != 0) ++page;
     return page;
 }
+
 
 inline void setThiSinhPage(uint &_page){
     page = _page - 1;
@@ -105,7 +116,7 @@ inline bool changeThiSinh(thi_sinh_ptr &item, QString &cccd, QString &ho_ten,
 inline std::optional<QList<thi_sinh_ptr>> getAllThiSinh(){
     QList<thi_sinh_ptr> list;
 
-    qx_query query("where ho_ten ilike :ten or so_cccd ilike :cccd limit :limit offset :offset");
+    qx_query query("where unaccent(lower(ho_ten)) ilike '%' || unaccent(lower(:ten)) || '%' or so_cccd ilike :cccd limit :limit offset :offset");
     query.bind(":ten", "%"+search+"%");
     query.bind(":cccd", "%"+search+"%");
     query.bind(":limit", count);

@@ -3,6 +3,7 @@
 
 #include "db/models/diem_thi_sat.h"
 #include "utils/string.h"
+#include "excel/read_excel.h"
 
 inline bool addDiemThiSat(long &id_thi_sinh, long &id_ptxt, float &diem,
                           QString &ma_dvtctdl, QString &ten_dvtctdl){
@@ -74,6 +75,17 @@ inline std::optional<QList<diem_thi_sat_ptr>> getDiemThiSatByThiSinhId(long &id_
         return list;
 }
 
+inline std::optional<QList<diem_thi_sat_ptr>> getAllDiemThiSat(){
+    QList<diem_thi_sat_ptr> list;
+    qx_query query;
+    // query.orderAsc("");
+    QSqlError err = qx::dao::fetch_by_query_with_all_relation(query, list);
+    if (err.isValid())
+        return std::nullopt;
+    else
+        return list;
+}
+
 inline bool deleteDiemThiSatById(long &id){
     diem_thi_sat_ptr item;
     item.reset(new diem_thi_sat(id));
@@ -82,5 +94,47 @@ inline bool deleteDiemThiSatById(long &id){
         return false;
     else
         return true;
+}
+
+inline bool exportDiemSatToExcel(QString &path){
+    auto list_opt = getAllDiemThiSat();
+    if (!list_opt) return false;
+    auto list = *list_opt;
+
+    QXlsx::Document xlsx;
+    // Title
+    int row = 1;
+    xlsx.write(row, 1, "BẢNG ĐIỂM THI SAT CỦA THÍ SINH");
+    xlsx.mergeCells("A1:L1");
+    // Header
+    ++row;
+    xlsx.write(row, 1, "STT");
+    xlsx.write(row, 2, "Họ Tên");
+    xlsx.write(row, 3, "CMND/CCCD");
+    xlsx.write(row, 4, "Ngày sinh");
+    xlsx.write(row, 5, "Giới tính");
+    xlsx.write(row, 6, "Điểm");
+    xlsx.write(row, 7, "MADVTCTDL");
+    xlsx.write(row, 8, "TENDVTCTDL");
+    xlsx.write(row, 9, "PTXT");
+    xlsx.write(row, 10, "Thành tích");
+    xlsx.write(row, 11, "Môn đạt giải");
+    xlsx.write(row, 12, "Điểm cộng");
+
+    for (auto &item : list){
+        ++row;
+
+        xlsx.write(row, 1, row-2);
+        xlsx.write(row, 2, item->thi_sinh->ho_ten);
+        xlsx.write(row, 3, item->thi_sinh->cccd);
+        xlsx.write(row, 4, item->thi_sinh->ngay_sinh.toString("dd/MM/yyyy"));
+        xlsx.write(row, 5, item->thi_sinh->gioi_tinh);
+        xlsx.write(row, 6, item->diem);
+        xlsx.write(row, 7, item->ma_dvtctdl);
+        xlsx.write(row, 8, item->ten_dvtctdl);
+        xlsx.write(row, 9, item->ptxt->ma);
+    }
+
+    return xlsx.saveAs(path);
 }
 #endif // DIEM_THI_SAT_DAO_H

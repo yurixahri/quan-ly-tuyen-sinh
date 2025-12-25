@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1370</width>
-    <height>762</height>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -656,7 +656,7 @@ QTableWidget QHeaderView::section {
 }</string>
             </property>
             <property name="currentIndex">
-             <number>7</number>
+             <number>12</number>
             </property>
             <widget class="QWidget" name="home_page"/>
             <widget class="QWidget" name="ma_nganh_page">
@@ -2229,7 +2229,246 @@ QPushButton:hover{
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="xuat_page"/>
+            <widget class="QWidget" name="xuat_page">
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <item>
+               <widget class="QWidget" name="horizontalWidget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="QPushButton" name="export_ma_nganh">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Xuất Mã Ngành</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="export_to_hop">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Xuất Tổ Hợp</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="export_ptxt">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                   </property>
+                   <property name="text">
+                    <string> Xuất PTXT</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="assets.qrc">
+                     <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <widget class="QPushButton" name="export_sat">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Xuất Điểm SAT</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="import_tohop_9">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Import từ Excel</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="import_tohop_5">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Import từ Excel</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="import_tohop_2">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Import từ Excel</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="import_tohop_4">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Import từ Excel</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="import_tohop_10">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+	border-radius: 3px;
+	padding: 5px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 99, 54, 194), stop:1 rgba(0, 86, 62, 179));
+	color: rgb(240, 248, 255);
+}
+
+QPushButton:hover{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 119, 65, 219), stop:1 rgba(0, 119, 85, 196));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string> Import từ Excel</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="assets.qrc">
+                    <normaloff>:/assets/images/excel-100.png</normaloff>:/assets/images/excel-100.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>

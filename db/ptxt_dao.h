@@ -147,4 +147,35 @@ inline void importPtxt(QString &path){
     }
 }
 
+inline bool exportPtxtToExcel(QString &path){
+    auto list_opt = getAllPtxt();
+    if (!list_opt) return false;
+    auto list = *list_opt;
+
+    QXlsx::Document xlsx;
+    // Title
+    int row = 1;
+    xlsx.write(row, 1, "BẢNG PHƯƠNG THỨC XÉT TUYỂN");
+    xlsx.mergeCells("A1:D1");
+    // Header
+    ++row;
+    xlsx.write(row, 1, "STT");
+    xlsx.write(row, 2, "Mã PTXT");
+    xlsx.write(row, 3, "Tên PTXT");
+    xlsx.write(row, 4, "Thang điểm");
+
+    for (auto &item : list){
+        ++row;
+        QString ma= !item->ma.isEmpty() ? item->ma : "";
+        QString ten= !item->ten.isEmpty() ? item->ten : "";
+
+        xlsx.write(row, 1, row-2);
+        xlsx.write(row, 2, ma);
+        xlsx.write(row, 3, ten);
+        xlsx.write(row, 4, item->thang_diem);
+    }
+
+    return xlsx.saveAs(path);
+}
+
 #endif // PTXT_DAO_H

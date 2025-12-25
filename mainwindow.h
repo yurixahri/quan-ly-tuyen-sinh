@@ -118,6 +118,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_export_ma_nganh_clicked();
+
+    void on_export_to_hop_clicked();
+
+    void on_export_ptxt_clicked();
+
+    void on_export_sat_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;

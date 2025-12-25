@@ -223,31 +223,33 @@ inline bool exportMaNganhToExcel(QString &path){
     auto list = *list_opt;
 
     QXlsx::Document xlsx;
-
-    // Header
+    // Title
     int row = 1;
-    xlsx.write(row, 1, "ID");
+    xlsx.write(row, 1, "BẢNG MÃ NGÀNH");
+    xlsx.mergeCells("A1:E1");
+    // Header
+    ++row;
+    xlsx.write(row, 1, "STT");
     xlsx.write(row, 2, "Mã ngành");
-    xlsx.write(row, 3, "Tên ngành");
-    xlsx.write(row, 4, "Chỉ tiêu");
-    xlsx.write(row, 5, "Ghi chú");
-    xlsx.write(row, 6, "Tổ hợp");
+    xlsx.write(row, 3, "Ngành");
+    xlsx.write(row, 4, "Nhóm ngành");
+    xlsx.write(row, 5, "Tổ hợp");
 
     for (auto &item : list){
         ++row;
         QString ma_nganh = item->nganh ? item->nganh->ma_nganh : "";
         QString ten_nganh = item->nganh ? item->nganh->ten_nganh : "";
+        QString nhom_nganh = item->nganh ? item->nganh->nhom_nganh->ten : "";
         QStringList tohop_names;
         for (auto &t : item->list_tohop){
             if (t->tohop) tohop_names << t->tohop->ma_tohop;
         }
 
-        xlsx.write(row, 1, (long long)item->id);
+        xlsx.write(row, 1, row-2);
         xlsx.write(row, 2, ma_nganh);
         xlsx.write(row, 3, ten_nganh);
-        xlsx.write(row, 4, item->chi_tieu);
-        xlsx.write(row, 5, item->ghi_chu);
-        xlsx.write(row, 6, tohop_names.join(", "));
+        xlsx.write(row, 4, nhom_nganh);
+        xlsx.write(row, 5, tohop_names.join(", "));
     }
 
     return xlsx.saveAs(path);

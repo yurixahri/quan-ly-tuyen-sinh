@@ -163,4 +163,33 @@ inline void importTohop(QString &path){
     }
 }
 
+inline bool exportToHopToExcel(QString &path){
+    auto list_opt = getAllToHop();
+    if (!list_opt) return false;
+    auto list = *list_opt;
+
+    QXlsx::Document xlsx;
+    // Title
+    int row = 1;
+    xlsx.write(row, 1, "BẢNG TỔ HỢP");
+    xlsx.mergeCells("A1:C1");
+    // Header
+    ++row;
+    xlsx.write(row, 1, "STT");
+    xlsx.write(row, 2, "Tổ hợp");
+    xlsx.write(row, 3, "Môn học");
+
+    for (auto &item : list){
+        ++row;
+        QString ma = !item->ma_tohop.isEmpty() ? item->ma_tohop : "";
+        QString mon_hoc = item->mon_1->ten_monhoc + ", " + item->mon_2->ten_monhoc + ", " + item->mon_3->ten_monhoc;
+
+        xlsx.write(row, 1, row-2);
+        xlsx.write(row, 2, ma);
+        xlsx.write(row, 3, mon_hoc);
+    }
+
+    return xlsx.saveAs(path);
+}
+
 #endif // TOHOP_DAO_H

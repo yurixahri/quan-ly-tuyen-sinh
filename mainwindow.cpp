@@ -922,3 +922,56 @@ void MainWindow::on_pushButton_clicked(){
         this->showNormal();
 }
 
+
+void MainWindow::on_export_ma_nganh_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                    tr("Lưu file"), QDir::homePath(),
+                                                    tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportMaNganhToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_to_hop_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportToHopToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_ptxt_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportPtxtToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_sat_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportDiemSatToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
