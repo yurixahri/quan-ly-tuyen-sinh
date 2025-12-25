@@ -241,14 +241,14 @@ void TrangChuDashboard::loadDashboardData()
 
 void TrangChuDashboard::loadMetricsData()
 {
-    auto allThiSinh = getAllThiSinh();
+    auto allThiSinh = getThiSinhCount();
     auto allDangKy = getAllDangKy();
     
     int totalThiSinh = 0;
     int totalDangKy = 0;
     
-    if (allThiSinh && !allThiSinh->empty()) {
-        totalThiSinh = allThiSinh->size();
+    if (allThiSinh) {
+        totalThiSinh = allThiSinh;
     } else {
         qWarning() << "No thi_sinh data available";
     }

@@ -4,6 +4,11 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QDialog>
+#include <QTableWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLabel>
 #include <QMenu>
 #include "pages/monhoc_page.h"
 #include "ui/add_mon_hoc_dialog.h"
@@ -21,6 +26,8 @@
 
 #include "pages/ma_nganh_page.h"
 #include "ui/ma_nganh/ma_nganh_dialog.h"
+#include "ui/ma_nganh/ma_nganh_import_dialog.h"
+#include "ui/ma_nganh/ma_nganh_import_validator.h"
 
 #include "db/ma_nganh_dao.h"
 
@@ -369,9 +376,41 @@ void MainWindow::on_add_ma_nganh_button_clicked(){
 void MainWindow::on_ma_nganh_import_excel_clicked(){
     QString path = QFileDialog::getOpenFileName(this, "Chọn file", "./", "Excel (*.xlsx)");
     if (!path.isEmpty()){
-        importMaNganh(path);
+        qDebug() << "=== Starting MÃ NGÀNH Import ===";
+        qDebug() << "File path:" << path;
+        
+        // Read the excel data
+        auto rows = readExcel(path);
+        
+        if (!rows){
+            custom_message_box("", "Không thể đọc file Excel", custom_message_box::Error).exec();
+            return;
+        }
+        
+        // Validate and extract data using validator
+        QString errorMessage;
+        auto extractedData = MaNganhImportValidator::extractDataWithHeaderValidation(*rows, errorMessage);
+        
+        if (!extractedData.has_value()){
+            custom_message_box("", errorMessage, custom_message_box::Error).exec();
+            return;
+        }
+        
+        qDebug() << "Opening preview dialog...";
+        
+        // Show preview dialog
+        ma_nganh_import_dialog previewDialog(extractedData, this);
+        
+        if (previewDialog.exec() == QDialog::Accepted){
+            qDebug() << "User confirmed import. Proceeding with importMaNganh()";
+            importMaNganh(path);
+            fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
+            qDebug() << "✓ Import completed successfully";
+            custom_message_box("", "Import thành công", custom_message_box::Information).exec();
+        } else {
+            qDebug() << "User cancelled import";
+        }
     }
-    fillMaNganhTable(ui->ma_nganh_table, ui->ma_nganh_size);
 }
 
 void MainWindow::on_export_ma_nganh_button_clicked(){
@@ -1065,6 +1104,61 @@ void MainWindow::on_export_uutien_clicked(){
         }
     }else{
         custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_get_template_mn_clicked(){
+    QString defaultFileName = "MÃ NGÀNH(Template).xlsx";
+    QString defaultPath = QDir::homePath();
+    QString filePath = QFileDialog::getSaveFileName(this, 
+                                                    tr("Lưu template"), 
+                                                    defaultPath + "/" + defaultFileName,
+                                                    tr("Excel (*.xlsx)"));
+    if (!filePath.isEmpty()){
+        // Try multiple possible locations for the template file
+        QString templatePath;
+        
+        // Try: source directory (relative to build output)
+        QStringList possiblePaths = {
+            QCoreApplication::applicationDirPath() + "/../../../assets/templates/MÃ NGÀNH(Template).xlsx",
+            QCoreApplication::applicationDirPath() + "/../../assets/templates/MÃ NGÀNH(Template).xlsx",
+            QCoreApplication::applicationDirPath() + "/../assets/templates/MÃ NGÀNH(Template).xlsx",
+            QCoreApplication::applicationDirPath() + "/assets/templates/MÃ NGÀNH(Template).xlsx"
+        };
+        
+        qDebug() << "Application directory:" << QCoreApplication::applicationDirPath();
+        
+        for(const QString &path : possiblePaths){
+            qDebug() << "Checking path:" << path;
+            if(QFile::exists(path)){
+                templatePath = path;
+                qDebug() << "Found template at:" << templatePath;
+                break;
+            }
+        }
+        
+        if(templatePath.isEmpty()){
+            qDebug() << "ERROR: Template file not found in any of the expected locations";
+            custom_message_box("", "Lỗi: Không tìm thấy file template. Vui lòng kiểm tra file assets/templates/MÃ NGÀNH(Template).xlsx", custom_message_box::Error).exec();
+            return;
+        }
+        
+        qDebug() << "Save path:" << filePath;
+        
+        // Remove destination file if it exists
+        if(QFile::exists(filePath)){
+            if(!QFile::remove(filePath)){
+                qDebug() << "WARNING: Could not remove existing file:" << filePath;
+            }
+        }
+        
+        if(QFile::copy(templatePath, filePath)){
+            qDebug() << "SUCCESS: Template saved to:" << filePath;
+            custom_message_box("", "Lưu template thành công", custom_message_box::Information).exec();
+        } else {
+            qDebug() << "ERROR: Failed to copy template file";
+            custom_message_box("", "Lưu template thất bại. Vui lòng kiểm tra quyền truy cập", custom_message_box::Error).exec();
+        }
     }
 }
 
