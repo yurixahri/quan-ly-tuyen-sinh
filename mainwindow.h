@@ -144,6 +144,8 @@ private slots:
 
     void on_minimize_clicked();
 
+    void on_get_template_mn_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;

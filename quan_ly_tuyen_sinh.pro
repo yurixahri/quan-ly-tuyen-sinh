@@ -52,6 +52,8 @@ SOURCES += \
     ui/dtut/dtut_dialog.cpp \
     ui/dtut/kvut_dialog.cpp \
     ui/ma_nganh/ma_nganh_dialog.cpp \
+    ui/ma_nganh/ma_nganh_import_dialog.cpp \
+    ui/ma_nganh/ma_nganh_import_validator.cpp \
     ui/nganh/nganh_dialog.cpp \
     ui/nhom_nganh/nhom_nganh_dialog.cpp \
     ui/ptxt/ptxt_dialog.cpp \
@@ -130,6 +132,8 @@ HEADERS += \
     ui/dtut/dtut_dialog.h \
     ui/dtut/kvut_dialog.h \
     ui/ma_nganh/ma_nganh_dialog.h \
+    ui/ma_nganh/ma_nganh_import_dialog.h \
+    ui/ma_nganh/ma_nganh_import_validator.h \
     ui/nganh/nganh_dialog.h \
     ui/nhom_nganh/nhom_nganh_dialog.h \
     ui/ptxt/ptxt_dialog.h \
