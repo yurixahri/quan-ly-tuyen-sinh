@@ -41,6 +41,7 @@ void doat_giai_dialog::loadMonHoc(){
     auto list = getAllMonHoc();
     if (list) {
         ui->mon_hoc->clear();
+        ui->mon_hoc->addItem("", QVariant());
         for (auto &item : *list) {
             ui->mon_hoc->addItem(item->ten_monhoc, QVariant::fromValue(item->id_monhoc));
         }
@@ -51,6 +52,7 @@ void doat_giai_dialog::loadMaThanhTich(){
     auto list = getAllMaThanhTich();
     if (list) {
         ui->thanh_tich->clear();
+        ui->thanh_tich->addItem("", QVariant());
         for (auto &item : *list) {
             ui->thanh_tich->addItem(item->ma, QVariant::fromValue(item->id));
         }
@@ -61,6 +63,7 @@ void doat_giai_dialog::loadPtxt(){
     auto list = getAllPtxt();
     if (list) {
         ui->ptxt->clear();
+        ui->ptxt->addItem("", QVariant());
         for (auto &item : *list) {
             ui->ptxt->addItem(item->ma, QVariant::fromValue(item->id));
         }

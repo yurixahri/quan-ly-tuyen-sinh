@@ -49,8 +49,8 @@ void thi_sinh_detail::fillDoatGiaiTable(){
         ui->thanh_tich_table->insertRow(row);
         ui->thanh_tich_table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
         ui->thanh_tich_table->setItem(row, 1, new QTableWidgetItem(item->mon_hoc ? item->mon_hoc->ten_monhoc : ""));
-        ui->thanh_tich_table->setItem(row, 2, new QTableWidgetItem(item->thanh_tich->ma));
-        ui->thanh_tich_table->setItem(row, 3, new QTableWidgetItem(QString::number(item->diem_thanh_tich)));
+        ui->thanh_tich_table->setItem(row, 2, new QTableWidgetItem(item->thanh_tich ? item->thanh_tich->ma : ""));
+        ui->thanh_tich_table->setItem(row, 3, new QTableWidgetItem(item->diem_thanh_tich ? QString::number(item->diem_thanh_tich) : ""));
         ui->thanh_tich_table->setItem(row, 4, new QTableWidgetItem(item->ptxt ? item->ptxt->ma : ""));
     }
 
@@ -134,7 +134,7 @@ void thi_sinh_detail::fillDiemSatTable(){
         ui->diem_sat_table->setItem(row, 1, new QTableWidgetItem(QString::number(item->diem)));
         ui->diem_sat_table->setItem(row, 2, new QTableWidgetItem(item->ma_dvtctdl));
         ui->diem_sat_table->setItem(row, 3, new QTableWidgetItem(item->ten_dvtctdl));
-        ui->diem_sat_table->setItem(row, 4, new QTableWidgetItem(item->ptxt->ma));
+        ui->diem_sat_table->setItem(row, 4, new QTableWidgetItem(item->ptxt ? item->ptxt->ma : ""));
     }
     ui->diem_sat_size->setText(QString::number(list->length()));
     ui->diem_sat_table->setColumnHidden(0, true);
@@ -213,7 +213,7 @@ void thi_sinh_detail::fillDiemHocbaTable(){
         int row = ui->diem_hocba_table->rowCount();
         ui->diem_hocba_table->insertRow(row);
         ui->diem_hocba_table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
-        ui->diem_hocba_table->setItem(row, 1, new QTableWidgetItem(item->mon_hoc->ten_monhoc));
+        ui->diem_hocba_table->setItem(row, 1, new QTableWidgetItem(item->mon_hoc ? item->mon_hoc->ten_monhoc : ""));
         ui->diem_hocba_table->setItem(row, 2, new QTableWidgetItem(QString::number(item->lop10)));
         ui->diem_hocba_table->setItem(row, 3, new QTableWidgetItem(QString::number(item->lop11)));
         ui->diem_hocba_table->setItem(row, 4, new QTableWidgetItem(QString::number(item->lop12)));
@@ -296,9 +296,9 @@ void thi_sinh_detail::fillChungchiTienganhTable(){
         int row = ui->ccnn_table->rowCount();
         ui->ccnn_table->insertRow(row);
         ui->ccnn_table->setItem(row, 0, new QTableWidgetItem(QString::number(item->id)));
-        ui->ccnn_table->setItem(row, 1, new QTableWidgetItem(item->ccnn->ten));
+        ui->ccnn_table->setItem(row, 1, new QTableWidgetItem(item->ccnn ? item->ccnn->ten : ""));
         ui->ccnn_table->setItem(row, 2, new QTableWidgetItem(QString::number(item->diem)));
-        ui->ccnn_table->setItem(row, 3, new QTableWidgetItem(item->ptxt->ma));
+        ui->ccnn_table->setItem(row, 3, new QTableWidgetItem(item->ptxt ? item->ptxt->ma : ""));
     }
 
     ui->ccnn_size->setText(QString::number(list->length()));
@@ -372,7 +372,7 @@ void thi_sinh_detail::fillDangKyXetTuyenTable(){
     ui->dang_ky_table->clearContents();
     ui->dang_ky_table->setRowCount(0);
     ui->dang_ky_table->setColumnCount(6);
-    ui->dang_ky_table->setHorizontalHeaderLabels({"ID Thí sinh", "ID Mã Ngành","Mã ngành", "Điểm", "Trạng thái", "PTXT"});
+    ui->dang_ky_table->setHorizontalHeaderLabels({"ID Thí sinh", "ID Mã Ngành", "Mã ngành", "Điểm", "Trạng thái", "PTXT"});
 
     for (auto &item : *list) {
         int row = ui->dang_ky_table->rowCount();
@@ -418,6 +418,31 @@ void thi_sinh_detail::on_dang_ky_table_customContextMenuRequested(const QPoint &
         });
 
         contextMenu.exec(ui->dang_ky_table->viewport()->mapToGlobal(pos));
+    }
+}
+
+void thi_sinh_detail::updateDangKyXetTuyen(long id_ma_nganh){
+    auto dangky = getDangKyByIds(item->id, id_ma_nganh);
+    if (dangky) {
+        dang_ky_xet_tuyen_dialog dlg(dang_ky_xet_tuyen_dialog::CHANGE, this);
+        dlg.id_thi_sinh = item->id;
+        dlg.setEditItem(*dangky);
+
+        if (dlg.exec() == QDialog::Accepted) {
+            fillDangKyXetTuyenTable();
+        }
+    }
+}
+
+void thi_sinh_detail::deleteDangKyXetTuyen(long id_ma_nganh){
+    custom_message_box confirm("", "Bạn có chắc muốn xóa đăng ký này?", custom_message_box::Question, true);
+    if (confirm.exec() == QDialog::Accepted) {
+        if (!deleteDangKyByIds(item->id, id_ma_nganh)) {
+            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
+        } else {
+            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
+        }
+        fillDangKyXetTuyenTable();
     }
 }
 
@@ -499,31 +524,6 @@ void thi_sinh_detail::deleteUuTien(long id){
             custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
         }
         fillUuTienTable();
-    }
-}
-
-void thi_sinh_detail::updateDangKyXetTuyen(long id_ma_nganh){
-    auto dangky = getDangKyByIds(item->id, id_ma_nganh);
-    if (dangky) {
-        dang_ky_xet_tuyen_dialog dlg(dang_ky_xet_tuyen_dialog::CHANGE, this);
-        dlg.id_thi_sinh = item->id;
-        dlg.setEditItem(*dangky);
-
-        if (dlg.exec() == QDialog::Accepted) {
-            fillDangKyXetTuyenTable();
-        }
-    }
-}
-
-void thi_sinh_detail::deleteDangKyXetTuyen(long id_ma_nganh){
-    custom_message_box confirm("", "Bạn có chắc muốn xóa đăng ký này?", custom_message_box::Question, true);
-    if (confirm.exec() == QDialog::Accepted) {
-        if (!deleteDangKyByIds(item->id, id_ma_nganh)) {
-            custom_message_box("", "Xóa không thành công", custom_message_box::Error).exec();
-        } else {
-            custom_message_box("", "Xóa thành công", custom_message_box::Information).exec();
-        }
-        fillDangKyXetTuyenTable();
     }
 }
 

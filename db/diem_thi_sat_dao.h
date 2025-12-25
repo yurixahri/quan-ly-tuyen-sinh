@@ -132,7 +132,7 @@ inline bool exportDiemSatToExcel(QString &path){
         xlsx.write(row, 6, item->diem);
         xlsx.write(row, 7, item->ma_dvtctdl);
         xlsx.write(row, 8, item->ten_dvtctdl);
-        xlsx.write(row, 9, item->ptxt->ma);
+        xlsx.write(row, 9, item->ptxt ? item->ptxt->ma : "");
     }
 
     return xlsx.saveAs(path);

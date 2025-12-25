@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Chi tiết thí sinh</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../assets.qrc">
+    <normaloff>:/assets/images/logo-100.png</normaloff>:/assets/images/logo-100.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
@@ -201,7 +205,7 @@ QTabWidget::pane{
 }</string>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>0</number>
        </property>
        <property name="documentMode">
         <bool>true</bool>

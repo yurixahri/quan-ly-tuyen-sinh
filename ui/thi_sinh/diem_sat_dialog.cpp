@@ -13,6 +13,7 @@ diem_sat_dialog::diem_sat_dialog(Type type, QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
     auto ptxt_list = getAllPtxt();
+    ui->ptxt->addItem("", QVariant());
     for (const auto &item : *ptxt_list){
         ui->ptxt->addItem(item->ten, QVariant::fromValue(item->id));
     }

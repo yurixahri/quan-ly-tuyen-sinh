@@ -19,6 +19,7 @@ chungchi_tienganh_dialog::chungchi_tienganh_dialog(Type type, QWidget *parent)
     }
 
     auto ptxt_list = getAllPtxt();
+    ui->ptxt->addItem("", NULL);
     for (const auto &item : *ptxt_list){
         ui->ptxt->addItem(item->ten, QVariant::fromValue(item->id));
     }
@@ -56,7 +57,7 @@ void chungchi_tienganh_dialog::setEditItem(chungchi_tienganh_ptr &item){
 void chungchi_tienganh_dialog::on_accept_clicked(){
     float diem = ui->diem->value();
     long id_ccnn = ui->ccnn->currentData().toLongLong();
-    long id_ptxt = ui->ccnn->currentData().toLongLong();
+    long id_ptxt = ui->ptxt->currentData().toLongLong();
     switch (this->type) {
     case Type::ADD:{
         if (!addChungchiTienganh(id_thi_sinh, id_ccnn, diem, id_ptxt)) {

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Quản lý tuyển sinh</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="assets.qrc">
+    <normaloff>:/assets/images/logo-100.png</normaloff>:/assets/images/logo-100.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
@@ -656,7 +660,7 @@ QTableWidget QHeaderView::section {
 }</string>
             </property>
             <property name="currentIndex">
-             <number>12</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="home_page"/>
             <widget class="QWidget" name="ma_nganh_page">
@@ -2338,7 +2342,7 @@ QPushButton:hover{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="import_tohop_9">
+                 <widget class="QPushButton" name="export_ccnn">
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -2352,7 +2356,7 @@ QPushButton:hover{
 }</string>
                   </property>
                   <property name="text">
-                   <string> Import từ Excel</string>
+                   <string> Xuất CCNN</string>
                   </property>
                   <property name="icon">
                    <iconset resource="assets.qrc">
@@ -2361,7 +2365,7 @@ QPushButton:hover{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="import_tohop_5">
+                 <widget class="QPushButton" name="export_hoc_ba">
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -2375,7 +2379,7 @@ QPushButton:hover{
 }</string>
                   </property>
                   <property name="text">
-                   <string> Import từ Excel</string>
+                   <string> Xuất Học Bạ</string>
                   </property>
                   <property name="icon">
                    <iconset resource="assets.qrc">
@@ -2384,7 +2388,7 @@ QPushButton:hover{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="import_tohop_2">
+                 <widget class="QPushButton" name="export_dkxt">
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -2398,7 +2402,7 @@ QPushButton:hover{
 }</string>
                   </property>
                   <property name="text">
-                   <string> Import từ Excel</string>
+                   <string> Xuất ĐKXT</string>
                   </property>
                   <property name="icon">
                    <iconset resource="assets.qrc">
@@ -2407,7 +2411,7 @@ QPushButton:hover{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="import_tohop_4">
+                 <widget class="QPushButton" name="export_doat_giai">
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -2421,7 +2425,7 @@ QPushButton:hover{
 }</string>
                   </property>
                   <property name="text">
-                   <string> Import từ Excel</string>
+                   <string> Xuất Đoạt Giải </string>
                   </property>
                   <property name="icon">
                    <iconset resource="assets.qrc">
@@ -2430,7 +2434,7 @@ QPushButton:hover{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="import_tohop_10">
+                 <widget class="QPushButton" name="export_uutien">
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	border-radius: 3px;
@@ -2444,7 +2448,7 @@ QPushButton:hover{
 }</string>
                   </property>
                   <property name="text">
-                   <string> Import từ Excel</string>
+                   <string> Xuất Ưu Tiên</string>
                   </property>
                   <property name="icon">
                    <iconset resource="assets.qrc">

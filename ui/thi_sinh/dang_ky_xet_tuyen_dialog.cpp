@@ -52,6 +52,7 @@ void dang_ky_xet_tuyen_dialog::loadPtxt(){
     auto list = getAllPtxt();
     if (list) {
         ui->ptxt->clear();
+        ui->ptxt->addItem("", QVariant());
         for (auto &item : *list) {
             ui->ptxt->addItem(item->ma, QVariant::fromValue(item->id));
         }

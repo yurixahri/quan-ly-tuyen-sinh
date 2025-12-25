@@ -192,7 +192,7 @@ inline void importDiemSat(QString &path){
 
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[1]);
@@ -289,7 +289,7 @@ inline void importCCNN(QString &path){
 
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[1]);
@@ -384,7 +384,7 @@ inline void importHocBa(QString &path){
     }else{
         auto monhoc_name_list = *readHocBaMonHoc(path);
         QList<mon_hoc_ptr> monhoc_list;
-        for (auto &string : monhoc_name_list) trimLeadingAndTrailing(string);
+        for (auto &string : monhoc_name_list) string = string.trimmed();
         for (int i = 0; i < monhoc_name_list.length(); ++i){
             while (true) {
                 auto monhoc_opt = getMonHocByName(monhoc_name_list[i]);
@@ -402,13 +402,12 @@ inline void importHocBa(QString &path){
         progress_bar.show();
         for (auto &row : *rows){
             if (progress_bar.is_closed){
-                session.rollback();
                 return;
             }
 
             thi_sinh_ptr ts;
             ts.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[2]);
@@ -432,8 +431,8 @@ inline void importHocBa(QString &path){
             short lop = row[5].toShort();
             for (int i = 6; i < row.length(); i++){
                 if (!row[i].isEmpty()){
+                    qDebug() << lop << row[i].toFloat();
                     while (true) {
-                        qDebug() << monhoc_list[i-6]->ten_monhoc;
                         auto diem_hocba_opt = getDiemHocbaByThiSinhIdAndName(ts->id, monhoc_list[i-6]->id_monhoc);
                         if (diem_hocba_opt){
                             auto dhb = diem_hocba_opt.value();
@@ -448,7 +447,7 @@ inline void importHocBa(QString &path){
                                 dhb->lop12 = row[i].toFloat();
                                 break;
                             }
-                            session += qx::dao::update(dhb, session.database());
+                            qx::dao::save(dhb);
                         }else{
                             diem_hocba_ptr dhb;
                             dhb.reset(new diem_hocba());
@@ -469,7 +468,6 @@ inline void importHocBa(QString &path){
                         }
                         if (!session.isValid()){
                             progress_bar.close();
-                            session.rollback();
                             custom_message_box("", "Có lỗi xảy ra khi thêm. Lỗi ở hàng "+QString::number(index)+" trong file excel", custom_message_box::Error).exec();
                             return;
                             break;
@@ -508,7 +506,7 @@ inline void importDoatGiai(QString &path){
 
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[3]);
@@ -598,7 +596,7 @@ inline void importUutien(QString &path){
 
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[2]);
@@ -693,7 +691,7 @@ inline void importNguyenVong(QString &path){
 
             thi_sinh_ptr adding;
             adding.reset(new thi_sinh());
-            for (auto &string : row) trimLeadingAndTrailing(string);
+            for (auto &string : row) string = string.trimmed();
 
             while (true){
                 auto thi_sinh_opt = getThiSinhByCCCD(row[0]);

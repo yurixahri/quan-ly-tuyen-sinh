@@ -130,6 +130,18 @@ private slots:
 
     void on_export_sat_clicked();
 
+    void on_export_dkxt_clicked();
+
+    void on_export_hoc_ba_clicked();
+
+    void on_export_ccnn_clicked();
+
+    void on_export_doat_giai_clicked();
+
+    void on_export_uutien_clicked();
+
+    void on_xuat_du_lieu_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;

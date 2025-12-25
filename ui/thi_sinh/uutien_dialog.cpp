@@ -27,6 +27,7 @@ uutien_dialog::uutien_dialog(Type type, QWidget *parent)
 
     // populate dtut
     auto dtut_list = getAllMaDtut();
+    ui->dtut->addItem("", QVariant());
     if (dtut_list) {
         for (auto &d : *dtut_list) {
             ui->dtut->addItem(d->ma, QVariant::fromValue(d->id));
@@ -35,6 +36,7 @@ uutien_dialog::uutien_dialog(Type type, QWidget *parent)
 
     // populate kvut
     auto kvut_list = getAllMaKvut();
+    ui->kvut->addItem("", QVariant());
     if (kvut_list) {
         for (auto &k : *kvut_list) {
             ui->kvut->addItem(k->ma, QVariant::fromValue(k->id));

@@ -2,6 +2,7 @@
 #define UUTIEN_DAO_H
 
 #include "db/models/uutien.h"
+#include "excel/read_excel.h"
 
 inline bool addUuTien(long &id_thi_sinh, long &id_dtut, long &id_kvut){
     uutien_ptr adding;
@@ -55,12 +56,11 @@ inline std::optional<uutien_ptr> getUuTienById(long &id){
 
 inline std::optional<QList<uutien_ptr>> getUuTienByThiSinhId(long &id_thi_sinh){
     QList<uutien_ptr> list;
-    qx::QxSession session;
     qx_query query;
     query.where("dt_kv_uutien.id_thi_sinh").isEqualTo(QVariant::fromValue(id_thi_sinh));
-    session += qx::dao::fetch_by_query_with_all_relation(query, list, session.database());
+    QSqlError err = qx::dao::fetch_by_query_with_all_relation(query, list);
 
-    if (!session.isValid()) {
+    if (err.isValid()) {
         return std::nullopt;
     } else {
         return list;
@@ -88,4 +88,44 @@ inline bool deleteUuTienByThiSinhId(long &id_thi_sinh){
     return true;
 }
 
+inline bool exportUuTienToExcel(QString &path){
+    auto list_opt = getAllUuTien();
+    if (!list_opt) return false;
+    auto list = *list_opt;
+
+    QXlsx::Document xlsx;
+    // Title
+    int row = 1;
+    xlsx.write(row, 1, "DANH SÁCH ƯU TIÊN CỦA THÍ SINH");
+    xlsx.mergeCells("A1:J1");
+    // Header
+    ++row;
+    xlsx.write(row, 1, "STT");
+    xlsx.write(row, 2, "Số báo danh");
+    xlsx.write(row, 3, "Họ tên");
+    xlsx.write(row, 4, "CMND/CCCD");
+    xlsx.write(row, 5, "Ngày sinh");
+    xlsx.write(row, 6, "Giới tính");
+    xlsx.write(row, 7, "Đối tượng ưu tiên");
+    xlsx.write(row, 8, "Điểm đtưt");
+    xlsx.write(row, 9, "Khu vực ưu tiên");
+    xlsx.write(row, 10, "Điểm kvưt");
+
+    for (auto &item : list){
+        ++row;
+
+        xlsx.write(row, 1, row-2);
+        xlsx.write(row, 2, item->thi_sinh->sbd);
+        xlsx.write(row, 3, item->thi_sinh->ho_ten);
+        xlsx.write(row, 4, item->thi_sinh->cccd);
+        xlsx.write(row, 5, item->thi_sinh->ngay_sinh.toString("dd/MM/yyyy"));
+        xlsx.write(row, 6, item->thi_sinh->gioi_tinh);
+        xlsx.write(row, 7, item->dtut ? item->dtut->ma : "");
+        xlsx.write(row, 8, item->dtut ? item->dtut->diem : NULL);
+        xlsx.write(row, 9, item->kvut ? item->kvut->ma : "");
+        xlsx.write(row, 10, item->kvut ? item->kvut->diem : NULL);
+    }
+
+    return xlsx.saveAs(path);
+}
 #endif // UUTIEN_DAO_H

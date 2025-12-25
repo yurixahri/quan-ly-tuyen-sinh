@@ -29,7 +29,11 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Đăng nhập</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="assets.qrc">
+    <normaloff>:/assets/images/logo-100.png</normaloff>:/assets/images/logo-100.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#loginDialog {

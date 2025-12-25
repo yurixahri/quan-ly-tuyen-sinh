@@ -910,6 +910,8 @@ void MainWindow::on_import_dkxt_button_clicked(){
     }
     fillThiSinhTable(ui->thi_sinh_table, ui->thi_sinh_size);
 }
+
+// mouse event
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::LeftButton && ui->drag_area->geometry().contains(event->pos())) {
         m_dragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
@@ -938,6 +940,12 @@ void MainWindow::on_pushButton_clicked(){
         this->showNormal();
 }
 
+// export
+
+
+void MainWindow::on_xuat_du_lieu_button_clicked(){
+    ui->stackedWidget->setCurrentIndex(12);
+}
 
 void MainWindow::on_export_ma_nganh_clicked(){
     QString file_name = QFileDialog::getSaveFileName(this,
@@ -984,6 +992,71 @@ void MainWindow::on_export_sat_clicked(){
                                                      tr("Excel (*.xlsx)"));
     if (!file_name.isEmpty()){
         if(!exportDiemSatToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_dkxt_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportDKXTToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_hoc_ba_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportHocBaToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_ccnn_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportCCNNToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_doat_giai_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportDoatGiaiToExcel(file_name)){
+            custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
+        }
+    }else{
+        custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
+    }
+}
+
+void MainWindow::on_export_uutien_clicked(){
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     tr("Lưu file"), QDir::homePath(),
+                                                     tr("Excel (*.xlsx)"));
+    if (!file_name.isEmpty()){
+        if(!exportUuTienToExcel(file_name)){
             custom_message_box("", "Lưu không thành công, vui lòng đóng file trước khi lưu", custom_message_box::Error).exec();
         }
     }else{
