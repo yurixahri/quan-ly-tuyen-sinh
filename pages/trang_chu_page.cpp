@@ -18,7 +18,7 @@ MetricCard::MetricCard(const QString &title, const QString &value, const QString
     QString bgStyle = QString(
         "background-color: %1;"
         "border-radius: 8px;"
-        "padding: 15px;"
+        "padding: 0px;"
         "border: none;"
     ).arg(bgColor.name());
     setStyleSheet(bgStyle);
@@ -26,7 +26,7 @@ MetricCard::MetricCard(const QString &title, const QString &value, const QString
     setMaximumHeight(220);
     
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(12, 12, 12, 12);
+    layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(3);
     layout->setAlignment(Qt::AlignCenter);
     
