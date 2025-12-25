@@ -2,12 +2,95 @@
 #include <QtCharts>
 #include <QDebug>
 #include <QColor>
+#include <QFont>
+#include <cmath>
 
-TrangChuDashboard::TrangChuDashboard(QWidget *parent)
-    : QWidget(parent), chartViewThiSinh(nullptr), chartViewMaNganh(nullptr), 
-      chartViewDangKy(nullptr), labelTongThiSinh(nullptr), 
-      labelTongNganh(nullptr), labelTongDangKy(nullptr)
+// ========== MetricCard Implementation ==========
+MetricCard::MetricCard(const QString &title, const QString &value, const QString &subtitle,
+                       const QColor &bgColor, const QString &icon, QWidget *parent)
+    : QFrame(parent), labelValue(nullptr), labelSubtitle(nullptr), labelIcon(nullptr), labelTitle(nullptr)
 {
+    setFrameShape(QFrame::StyledPanel);
+    setFrameShadow(QFrame::Raised);
+    setLineWidth(0);
+    
+    // Set background color
+    QString bgStyle = QString(
+        "background-color: %1;"
+        "border-radius: 8px;"
+        "padding: 15px;"
+        "border: none;"
+    ).arg(bgColor.name());
+    setStyleSheet(bgStyle);
+    setMinimumHeight(180);
+    setMaximumHeight(220);
+    
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(12, 12, 12, 12);
+    layout->setSpacing(3);
+    layout->setAlignment(Qt::AlignCenter);
+    
+    // Icon
+    labelIcon = new QLabel(icon);
+    labelIcon->setFont(QFont("Arial", 24));
+    labelIcon->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    labelIcon->setStyleSheet("color: rgb(240, 248, 255);");
+    
+    // Title
+    labelTitle = new QLabel(title);
+    labelTitle->setFont(QFont("Arial", 11));
+    labelTitle->setStyleSheet("color: rgba(240, 248, 255, 180); background: transparent;");
+    labelTitle->setWordWrap(true);
+    
+    // Value
+    labelValue = new QLabel(value);
+    labelValue->setFont(QFont("Arial", 28, QFont::Bold));
+    labelValue->setStyleSheet("color: rgb(240, 248, 255); background: transparent;");
+    labelValue->setWordWrap(true);
+    
+    // Subtitle
+    labelSubtitle = new QLabel(subtitle);
+    labelSubtitle->setFont(QFont("Arial", 10));
+    labelSubtitle->setStyleSheet("color: rgba(240, 248, 255, 160); background: transparent;");
+    labelSubtitle->setWordWrap(true);
+    
+    QHBoxLayout *topLayout = new QHBoxLayout();
+    topLayout->addWidget(labelIcon);
+    topLayout->addStretch();
+    
+    layout->addLayout(topLayout);
+    layout->addWidget(labelTitle);
+    layout->addWidget(labelValue);
+    if (!subtitle.isEmpty()) {
+        layout->addWidget(labelSubtitle);
+    }
+    layout->addStretch();
+    
+    setLayout(layout);
+}
+
+void MetricCard::updateValue(const QString &newValue)
+{
+    if (labelValue) {
+        labelValue->setText(newValue);
+    }
+}
+
+void MetricCard::updateSubtitle(const QString &newSubtitle)
+{
+    if (labelSubtitle) {
+        labelSubtitle->setText(newSubtitle);
+    }
+}
+
+// ========== TrangChuDashboard Implementation ==========
+TrangChuDashboard::TrangChuDashboard(QWidget *parent)
+    : QWidget(parent),
+      cardTongHoSo(nullptr), cardNguyenVong(nullptr),
+      cardTyLeTrungTuyen(nullptr), cardChiTieuConLai(nullptr),
+      chartViewTop10Nganh(nullptr), chartViewPhuongThucXetTuyen(nullptr)
+{
+    setStyleSheet("background-color: rgb(30, 30, 30);");
     initializeUI();
 }
 
@@ -17,216 +100,493 @@ TrangChuDashboard::~TrangChuDashboard()
 
 void TrangChuDashboard::initializeUI()
 {
-    QGridLayout *mainLayout = new QGridLayout(this);
-    mainLayout->setSpacing(10);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-
-    // Statistics Section
-    QHBoxLayout *statsLayout = new QHBoxLayout();
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(20, 20, 20, 20);
+    mainLayout->setSpacing(20);
     
-    labelTongThiSinh = new QLabel("Tổng thí sinh: 0", this);
-    labelTongThiSinh->setStyleSheet(
-        "background-color: rgba(21, 83, 162, 224);"
-        "color: rgb(240, 248, 255);"
-        "padding: 15px;"
-        "border-radius: 5px;"
-        "font-weight: bold;"
-        "font-size: 14px;"
-    );
-
-    labelTongNganh = new QLabel("Tổng ngành: 0", this);
-    labelTongNganh->setStyleSheet(
-        "background-color: rgba(0, 99, 54, 194);"
-        "color: rgb(240, 248, 255);"
-        "padding: 15px;"
-        "border-radius: 5px;"
-        "font-weight: bold;"
-        "font-size: 14px;"
-    );
-
-    labelTongDangKy = new QLabel("Tổng đăng ký: 0", this);
-    labelTongDangKy->setStyleSheet(
-        "background-color: rgba(139, 69, 19, 194);"
-        "color: rgb(240, 248, 255);"
-        "padding: 15px;"
-        "border-radius: 5px;"
-        "font-weight: bold;"
-        "font-size: 14px;"
-    );
-
-    statsLayout->addWidget(labelTongThiSinh);
-    statsLayout->addWidget(labelTongNganh);
-    statsLayout->addWidget(labelTongDangKy);
-    statsLayout->addStretch();
-
-    mainLayout->addLayout(statsLayout, 0, 0, 1, 2);
-
-    // Chart 1: Thí sinh statistics (Pie Chart)
-    chartViewThiSinh = new QChartView(this);
-    chartViewThiSinh->setRenderHint(QPainter::Antialiasing);
-    chartViewThiSinh->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 0);"
-        "color: rgb(240, 248, 255);"
-    );
-    mainLayout->addWidget(chartViewThiSinh, 1, 0);
-
-    // Chart 2: Ngành statistics (Pie Chart)
-    chartViewMaNganh = new QChartView(this);
-    chartViewMaNganh->setRenderHint(QPainter::Antialiasing);
-    chartViewMaNganh->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 0);"
-        "color: rgb(240, 248, 255);"
-    );
-    mainLayout->addWidget(chartViewMaNganh, 1, 1);
-
-    // Chart 3: Đăng ký statistics (Bar Chart)
-    chartViewDangKy = new QChartView(this);
-    chartViewDangKy->setRenderHint(QPainter::Antialiasing);
-    chartViewDangKy->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 0);"
-        "color: rgb(240, 248, 255);"
-    );
-    mainLayout->addWidget(chartViewDangKy, 2, 0, 1, 2);
-
-    this->setLayout(mainLayout);
+    setupRegion1(mainLayout);
+    setupRegion2(mainLayout);
+    
+    mainLayout->addStretch();
+    setLayout(mainLayout);
 }
+
+void TrangChuDashboard::setupRegion1(QVBoxLayout *mainLayout)
+{
+    QLabel *titleRegion1 = new QLabel("📊 Chỉ Số Chính");
+    titleRegion1->setFont(QFont("Arial", 16, QFont::Bold));
+    titleRegion1->setStyleSheet("color: rgb(240, 248, 255); margin-bottom: 10px;");
+    
+    QWidget *region1Widget = new QWidget();
+    QVBoxLayout *region1Layout = new QVBoxLayout(region1Widget);
+    region1Layout->setContentsMargins(0, 0, 0, 0);
+    region1Layout->setSpacing(15);
+    
+    region1Layout->addWidget(titleRegion1);
+    
+    // 4 Metric Cards
+    QHBoxLayout *cardsLayout = new QHBoxLayout();
+    cardsLayout->setSpacing(15);
+    cardsLayout->setContentsMargins(0, 0, 0, 0);
+    
+    // Card 1: Tổng Hồ sơ
+    cardTongHoSo = new MetricCard(
+        "Tổng Hồ Sơ",
+        "0",
+        "",
+        QColor(21, 83, 162),  // Blue
+        "👤"
+    );
+    
+    // Card 2: Tổng Nguyện vọng
+    cardNguyenVong = new MetricCard(
+        "Tổng Nguyện Vọng",
+        "0",
+        "Trung bình: 0 NV/Thí sinh",
+        QColor(255, 140, 0),  // Orange
+        "📋"
+    );
+    
+    // Card 3: Tỷ lệ Trúng tuyển
+    cardTyLeTrungTuyen = new MetricCard(
+        "Tỷ Lệ Trúng Tuyển",
+        "0%",
+        "",
+        QColor(34, 139, 34),  // Green
+        "✓"
+    );
+    
+    // Card 4: Tổng chỉ tiêu còn lại
+    cardChiTieuConLai = new MetricCard(
+        "Chỉ Tiêu Còn Lại",
+        "0 / 0",
+        "",
+        QColor(178, 34, 34),  // Red
+        "⚠"
+    );
+    
+    cardsLayout->addWidget(cardTongHoSo);
+    cardsLayout->addWidget(cardNguyenVong);
+    cardsLayout->addWidget(cardTyLeTrungTuyen);
+    cardsLayout->addWidget(cardChiTieuConLai);
+    
+    region1Layout->addLayout(cardsLayout);
+    
+    if (mainLayout) {
+        mainLayout->addWidget(region1Widget);
+    }
+}
+
+void TrangChuDashboard::setupRegion2(QVBoxLayout *mainLayout)
+{
+    QLabel *titleRegion2 = new QLabel("🎯 Trọng Tâm Tuyển Sinh");
+    titleRegion2->setFont(QFont("Arial", 16, QFont::Bold));
+    titleRegion2->setStyleSheet("color: rgb(240, 248, 255); margin-bottom: 10px;");
+    
+    QWidget *region2Widget = new QWidget();
+    QVBoxLayout *region2Layout = new QVBoxLayout(region2Widget);
+    region2Layout->setContentsMargins(0, 0, 0, 0);
+    region2Layout->setSpacing(15);
+    
+    region2Layout->addWidget(titleRegion2);
+    
+    QHBoxLayout *chartsLayout = new QHBoxLayout();
+    chartsLayout->setSpacing(15);
+    chartsLayout->setContentsMargins(0, 0, 0, 0);
+    
+    // Left: Top 10 Ngành (Bar Chart) - 2/3 width
+    chartViewTop10Nganh = new QChartView(this);
+    chartViewTop10Nganh->setRenderHint(QPainter::Antialiasing);
+    chartViewTop10Nganh->setStyleSheet(
+        "QChartView {"
+        "  background-color: rgb(45, 45, 45);"
+        "  border-radius: 8px;"
+        "  border: 1px solid rgb(60, 60, 60);"
+        "}"
+    );
+    chartViewTop10Nganh->setMinimumHeight(420);
+    chartsLayout->addWidget(chartViewTop10Nganh, 2);
+    
+    // Right: Phương thức xét tuyển (Donut Chart) - 1/3 width
+    chartViewPhuongThucXetTuyen = new QChartView(this);
+    chartViewPhuongThucXetTuyen->setRenderHint(QPainter::Antialiasing);
+    chartViewPhuongThucXetTuyen->setStyleSheet(
+        "QChartView {"
+        "  background-color: rgb(45, 45, 45);"
+        "  border-radius: 8px;"
+        "  border: 1px solid rgb(60, 60, 60);"
+        "}"
+    );
+    chartViewPhuongThucXetTuyen->setMinimumHeight(420);
+    chartsLayout->addWidget(chartViewPhuongThucXetTuyen, 1);
+    
+    region2Layout->addLayout(chartsLayout);
+    
+    if (mainLayout) {
+        mainLayout->addWidget(region2Widget);
+    }
+}
+
+
 
 void TrangChuDashboard::loadDashboardData()
 {
-    // Load Thí Sinh data
-    createThiSinhChart();
-    createMaNganhChart();
-    createDangKyChart();
-    createStatisticsLabels();
+    calculateNganhDangKyMap();
+    calculatePtxtMap();
+    
+    loadMetricsData();
+    createTop10NganhChart();
+    createPhuongThucXetTuyenChart();
 }
 
-void TrangChuDashboard::createThiSinhChart()
+void TrangChuDashboard::loadMetricsData()
 {
     auto allThiSinh = getAllThiSinh();
-    if (!allThiSinh || allThiSinh->empty()) {
-        return;
-    }
-
-    // Create pie series - count students by gender or class
-    QPieSeries *series = new QPieSeries();
+    auto allDangKy = getAllDangKy();
     
-    // Simple distribution chart
-    QPieSlice *slice1 = new QPieSlice("Tổng thí sinh", allThiSinh->size());
-    slice1->setColor(QColor(21, 83, 162));
-    series->append(slice1);
-
-    // Create chart
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setTitle("Thống kê Thí Sinh");
-    chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
-    chart->setBackgroundBrush(QBrush(QColor(0, 0, 0, 0)));
-    chart->legend()->setLabelColor(QColor(240, 248, 255));
-
-    chartViewThiSinh->setChart(chart);
-}
-
-void TrangChuDashboard::createMaNganhChart()
-{
-    auto allMaNganh = getAllMaNganh();
-    if (!allMaNganh || allMaNganh->empty()) {
-        return;
+    int totalThiSinh = 0;
+    int totalDangKy = 0;
+    
+    if (allThiSinh && !allThiSinh->empty()) {
+        totalThiSinh = allThiSinh->size();
+    } else {
+        qWarning() << "No thi_sinh data available";
     }
-
-    // Count mã ngành by nhóm ngành
-    QMap<QString, int> nhomNganhCount;
-    for (const auto &maNganh : *allMaNganh) {
-        if (maNganh->nganh && maNganh->nganh->nhom_nganh) {
-            nhomNganhCount[maNganh->nganh->nhom_nganh->ten]++;
+    
+    if (allDangKy && !allDangKy->empty()) {
+        totalDangKy = allDangKy->size();
+    } else {
+        qWarning() << "No dang_ky data available";
+    }
+    
+    qDebug() << "Metrics: " << totalThiSinh << " thi sinh, " << totalDangKy << " dang ky";
+    
+    // Update Card 1: Tổng Hồ sơ
+    if (cardTongHoSo) {
+        cardTongHoSo->updateValue(QString::number(totalThiSinh));
+    }
+    
+    // Update Card 2: Tổng Nguyện vọng
+    if (cardNguyenVong) {
+        cardNguyenVong->updateValue(QString::number(totalDangKy));
+        if (totalThiSinh > 0) {
+            double avg = static_cast<double>(totalDangKy) / totalThiSinh;
+            cardNguyenVong->updateSubtitle(QString("Trung bình: %1 NV/Thí sinh").arg(avg, 0, 'f', 1));
+        } else {
+            cardNguyenVong->updateSubtitle("Trung bình: 0 NV/Thí sinh");
         }
     }
+    
+    // Update Card 3: Tỷ lệ Trúng tuyển
+    if (cardTyLeTrungTuyen && allDangKy) {
+        int successCount = 0;
+        for (const auto &dk : *allDangKy) {
+            if (dk && !dk->trang_thai.isEmpty() && dk->trang_thai.toLower() == "trúng tuyển") {
+                successCount++;
+            }
+        }
+        
+        double percentage = 0;
+        if (totalThiSinh > 0) {
+            percentage = (static_cast<double>(successCount) / totalThiSinh) * 100;
+        }
+        cardTyLeTrungTuyen->updateValue(QString("%1%").arg(static_cast<int>(percentage)));
+    }
+    
+    // Update Card 4: Tổng chỉ tiêu còn lại
+    if (cardChiTieuConLai) {
+        auto allMaNganh = getAllMaNganh();
+        int totalChiTieu = 0;
+        int usedChiTieu = 0;
+        
+        if (allMaNganh) {
+            for (const auto &mn : *allMaNganh) {
+                if (mn) {
+                    totalChiTieu += mn->chi_tieu;
+                    
+                    if (mn->nganh && nganhDangKyMap.contains(mn->nganh->ten_nganh)) {
+                        usedChiTieu += nganhDangKyMap[mn->nganh->ten_nganh];
+                    }
+                }
+            }
+        }
+        
+        int remaining = totalChiTieu - usedChiTieu;
+        remaining = (remaining < 0) ? 0 : remaining;
+        cardChiTieuConLai->updateValue(QString("%1 / %2").arg(remaining).arg(totalChiTieu));
+    }
+}
 
+void TrangChuDashboard::calculateNganhDangKyMap()
+{
+    nganhDangKyMap.clear();
+    auto allDangKy = getAllDangKy();
+    
+    if (!allDangKy) {
+        qWarning() << "getAllDangKy returned nullptr";
+        return;
+    }
+    
+    if (allDangKy->empty()) {
+        qWarning() << "getAllDangKy returned empty list";
+        return;
+    }
+    
+    auto allMaNganh = getAllMaNganh();
+    
+    for (const auto &dk : *allDangKy) {
+        if (!dk) {
+            continue;
+        }
+        
+        if (!dk->ma_nganh) {
+            continue;
+        }
+        
+        // Use the ma_nganh->nganh relationship, but with fallback
+        QString tenNganh;
+        
+        if (dk->ma_nganh->nganh && !dk->ma_nganh->nganh->ten_nganh.trimmed().isEmpty()) {
+            tenNganh = dk->ma_nganh->nganh->ten_nganh.trimmed();
+        } else {
+            // Fallback: try to find from allMaNganh
+            if (allMaNganh) {
+                for (const auto &mn : *allMaNganh) {
+                    if (mn && mn->id == dk->ma_nganh->id) {
+                        if (mn->nganh && !mn->nganh->ten_nganh.trimmed().isEmpty()) {
+                            tenNganh = mn->nganh->ten_nganh.trimmed();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (tenNganh.isEmpty()) {
+            // Last resort: use ma_nganh id as placeholder
+            tenNganh = QString("Ngành #%1").arg(dk->ma_nganh->id);
+        }
+        
+        nganhDangKyMap[tenNganh]++;
+    }
+    
+    qDebug() << "calculateNganhDangKyMap: " << nganhDangKyMap.size() << " nganh loaded";
+    for (auto it = nganhDangKyMap.begin(); it != nganhDangKyMap.end(); ++it) {
+        qDebug() << "  " << it.key() << ": " << it.value();
+    }
+}
+
+void TrangChuDashboard::calculatePtxtMap()
+{
+    ptxtMap.clear();
+    auto allDangKy = getAllDangKy();
+    
+    if (!allDangKy) {
+        qWarning() << "getAllDangKy returned nullptr";
+        return;
+    }
+    
+    if (allDangKy->empty()) {
+        qWarning() << "getAllDangKy returned empty list";
+        return;
+    }
+    
+    for (const auto &dk : *allDangKy) {
+        if (!dk) {
+            continue;
+        }
+        
+        if (!dk->ptxt) {
+            // ptxt may be null, which is ok
+            continue;
+        }
+        
+        QString tenPtxt = dk->ptxt->ten.trimmed();
+        if (tenPtxt.isEmpty()) {
+            qWarning() << "ten of ptxt is empty";
+            continue;
+        }
+        
+        ptxtMap[tenPtxt]++;
+    }
+    
+    qDebug() << "calculatePtxtMap: " << ptxtMap.size() << " phuong thuc loaded";
+    for (auto it = ptxtMap.begin(); it != ptxtMap.end(); ++it) {
+        qDebug() << "  " << it.key() << ": " << it.value();
+    }
+}
+
+
+
+void TrangChuDashboard::createTop10NganhChart()
+{
+    if (nganhDangKyMap.empty()) {
+        qCritical() << "ERROR: nganhDangKyMap is empty! No data for Top10 Nganh chart";
+        
+        // Show empty chart with message
+        QChart *chart = new QChart();
+        chart->setTitle("Top 10 Ngành Có Lượng Đăng Ký Cao Nhất - [Chưa Có Dữ Liệu]");
+        chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
+        chart->setBackgroundBrush(QBrush(QColor(45, 45, 45)));
+        
+        if (chartViewTop10Nganh) {
+            chartViewTop10Nganh->setChart(chart);
+        }
+        return;
+    }
+    
+    qDebug() << "Creating Top10 chart with" << nganhDangKyMap.size() << "nganh";
+    
+    // Sort by value (descending) and take top 10
+    QVector<QPair<QString, int>> sortedNganh;
+    for (auto it = nganhDangKyMap.begin(); it != nganhDangKyMap.end(); ++it) {
+        sortedNganh.append({it.key(), it.value()});
+    }
+    std::sort(sortedNganh.begin(), sortedNganh.end(),
+              [](const auto &a, const auto &b) { return a.second > b.second; });
+    
+    int limit = qMin(10, sortedNganh.size());
+    sortedNganh.erase(sortedNganh.begin() + limit, sortedNganh.end());
+    
+    qDebug() << "Showing top" << sortedNganh.size() << "nganh";
+    
+    // Reverse for horizontal display (top item at bottom visually)
+    std::reverse(sortedNganh.begin(), sortedNganh.end());
+    
+    // Create bar set
+    QBarSet *set = new QBarSet("Số Đăng Ký");
+    set->setColor(QColor(30, 144, 255));
+    
+    QStringList categories;
+    for (int i = 0; i < sortedNganh.size(); ++i) {
+        *set << sortedNganh[i].second;
+        categories << sortedNganh[i].first;
+        qDebug() << "  Bar" << (i+1) << ": " << sortedNganh[i].first << " = " << sortedNganh[i].second;
+    }
+    
+    QBarSeries *series = new QBarSeries();
+    series->append(set);
+    
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Top 10 Ngành Có Lượng Đăng Ký Cao Nhất");
+    chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
+    chart->setBackgroundBrush(QBrush(QColor(45, 45, 45)));
+    chart->setMargins(QMargins(20, 30, 20, 20));
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    axisX->setLabelsColor(QColor(200, 200, 200));
+    axisX->setLabelsFont(QFont("Arial", 10));
+    axisX->setTitleText("");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    series->attachAxis(axisX);
+    
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setLabelsColor(QColor(200, 200, 200));
+    axisY->setLabelsFont(QFont("Arial", 10));
+    axisY->setGridLineVisible(true);
+    axisY->setGridLineColor(QColor(60, 60, 60));
+    axisY->setTitleText("Số Lượng");
+    axisY->setTitleBrush(QBrush(QColor(200, 200, 200)));
+    chart->addAxis(axisY, Qt::AlignLeft);
+    series->attachAxis(axisY);
+    
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->legend()->setLabelColor(QColor(200, 200, 200));
+    chart->legend()->setMarkerShape(QLegend::MarkerShapeRectangle);
+    
+    if (chartViewTop10Nganh) {
+        chartViewTop10Nganh->setChart(chart);
+        chartViewTop10Nganh->setRenderHint(QPainter::Antialiasing);
+    }
+}
+
+void TrangChuDashboard::createPhuongThucXetTuyenChart()
+{
+    if (ptxtMap.empty()) {
+        qCritical() << "ERROR: ptxtMap is empty! No data for Phuong Thuc Xet Tuyen chart";
+        
+        // Show empty chart with message
+        QChart *chart = new QChart();
+        chart->setTitle("Cơ Cấu Theo Phương Thức Xét Tuyển - [Chưa Có Dữ Liệu]");
+        chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
+        chart->setBackgroundBrush(QBrush(QColor(45, 45, 45)));
+        
+        if (chartViewPhuongThucXetTuyen) {
+            chartViewPhuongThucXetTuyen->setChart(chart);
+        }
+        return;
+    }
+    
+    qDebug() << "Creating Phuong Thuc chart with" << ptxtMap.size() << "methods";
+    
     QPieSeries *series = new QPieSeries();
-    QStringList colors = {"#1553A2", "#006336", "#8B4513", "#FF6347", "#4169E1"};
+    series->setHoleSize(0.35);  // Create donut chart
+    
+    QStringList colors = {
+        "#FF6347",  // Tomato
+        "#4169E1",  // Royal Blue
+        "#32CD32",  // Lime Green
+        "#FFD700",  // Gold
+        "#FF8C00",  // Dark Orange
+        "#00CED1",  // Dark Turquoise
+        "#FFB6C1"   // Light Pink
+    };
+    
     int colorIndex = 0;
-
-    for (auto it = nhomNganhCount.begin(); it != nhomNganhCount.end(); ++it) {
+    double totalCount = 0;
+    
+    // Calculate total
+    for (auto it = ptxtMap.begin(); it != ptxtMap.end(); ++it) {
+        totalCount += it.value();
+    }
+    
+    qDebug() << "Total dang ky:" << static_cast<int>(totalCount);
+    
+    // Add slices
+    for (auto it = ptxtMap.begin(); it != ptxtMap.end(); ++it) {
+        qDebug() << "  " << it.key() << ":" << it.value();
+        
         QPieSlice *slice = new QPieSlice(it.key(), it.value());
         slice->setColor(QColor(colors[colorIndex % colors.size()]));
+        slice->setLabelVisible(true);
+        slice->setLabelPosition(QPieSlice::LabelOutside);
+        slice->setLabelArmLengthFactor(1.2);
+        
+        // Set percentage label
+        double percentage = (it.value() / totalCount) * 100;
+        QString label = QString("%1\n(%2%)")
+                        .arg(it.key())
+                        .arg(percentage, 0, 'f', 1);
+        slice->setLabel(label);
+        slice->setLabelFont(QFont("Arial", 9));
+        
         series->append(slice);
         colorIndex++;
     }
-
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setTitle("Thống kê Mã Ngành theo Nhóm Ngành");
-    chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
-    chart->setBackgroundBrush(QBrush(QColor(0, 0, 0, 0)));
-    chart->legend()->setLabelColor(QColor(240, 248, 255));
-
-    chartViewMaNganh->setChart(chart);
-}
-
-void TrangChuDashboard::createDangKyChart()
-{
-    auto allDangKy = getAllDangKy();
-    if (!allDangKy || allDangKy->empty()) {
-        return;
-    }
-
-    // Count đăng ký by mã ngành
-    QMap<QString, int> maNganhCount;
-    for (const auto &dangKy : *allDangKy) {
-        if (dangKy->ma_nganh && dangKy->ma_nganh->nganh) {
-            QString maNganh = dangKy->ma_nganh->nganh->ma_nganh;
-            maNganhCount[maNganh]++;
-        }
-    }
-
-    // Create bar set
-    QBarSet *set = new QBarSet("Số đăng ký");
-    set->setColor(QColor(21, 83, 162));
     
-    QStringList categories;
-    for (auto it = maNganhCount.begin(); it != maNganhCount.end(); ++it) {
-        *set << it.value();
-        categories << it.key();
-    }
-
-    QBarSeries *series = new QBarSeries();
-    series->append(set);
-
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Thống kê Đăng Ký theo Mã Ngành");
+    chart->setTitle("Cơ Cấu Theo Phương Thức Xét Tuyển");
     chart->setTitleBrush(QBrush(QColor(240, 248, 255)));
-    chart->setBackgroundBrush(QBrush(QColor(0, 0, 0, 0)));
-    chart->legend()->setLabelColor(QColor(240, 248, 255));
-
-    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(categories);
-    axisX->setLabelsColor(QColor(240, 248, 255));
-    chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setLabelsColor(QColor(240, 248, 255));
-    chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
-
-    chartViewDangKy->setChart(chart);
-}
-
-void TrangChuDashboard::createStatisticsLabels()
-{
-    auto allThiSinh = getAllThiSinh();
-    auto allMaNganh = getAllMaNganh();
-    auto allDangKy = getAllDangKy();
-
-    if (allThiSinh) {
-        labelTongThiSinh->setText(QString("Tổng thí sinh: %1").arg(allThiSinh->size()));
-    }
-
-    if (allMaNganh) {
-        labelTongNganh->setText(QString("Tổng mã ngành: %1").arg(allMaNganh->size()));
-    }
-
-    if (allDangKy) {
-        labelTongDangKy->setText(QString("Tổng đăng ký: %1").arg(allDangKy->size()));
+    chart->setBackgroundBrush(QBrush(QColor(45, 45, 45)));
+    chart->setMargins(QMargins(20, 30, 20, 20));
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->legend()->setLabelColor(QColor(200, 200, 200));
+    chart->legend()->setFont(QFont("Arial", 9));
+    
+    if (chartViewPhuongThucXetTuyen) {
+        chartViewPhuongThucXetTuyen->setChart(chart);
+        chartViewPhuongThucXetTuyen->setRenderHint(QPainter::Antialiasing);
     }
 }
+
+
+
+
