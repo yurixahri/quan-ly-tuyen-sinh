@@ -142,6 +142,8 @@ private slots:
 
     void on_xuat_du_lieu_button_clicked();
 
+    void on_minimize_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_dragging = false;

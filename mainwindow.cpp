@@ -940,6 +940,10 @@ void MainWindow::on_pushButton_clicked(){
         this->showNormal();
 }
 
+void MainWindow::on_minimize_clicked(){
+    this->showMinimized();
+}
+
 // export
 
 
@@ -1063,4 +1067,7 @@ void MainWindow::on_export_uutien_clicked(){
         custom_message_box("", "Vui lòng chọn địa chỉ và nhập tên để lưu", custom_message_box::Error).exec();
     }
 }
+
+
+
 
